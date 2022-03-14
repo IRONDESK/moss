@@ -1,12 +1,13 @@
 export const COLOR = {
-    main: '#34C88A',
-    rgbMain: '52, 200, 138',
-    point: '#FFD600',
-    black: '#333',
-    white: '#FFF',
-    grayText: '#B7B6B3',
-    gray: '#E7E6E2',
-    deepGray: '#666',
-  };
-  
-  //컴포넌트에서 사용하실 떄는 ${COLOR.main} 이런 식으로 사용하시면 됩니다~
+  main: '#34C88A',
+  rgbMain: '52, 200, 138',
+  point: '#FFD600',
+  black: '#333',
+  white: '#FFF',
+  grayText: '#B7B6B3',
+  gray: '#E7E6E2',
+  deepGray: '#666',
+  placeHolderText: '#AAA',
+};
+
+//컴포넌트에서 사용하실 떄는 ${COLOR.main} 이런 식으로 사용하시면 됩니다~

@@ -1,9 +1,12 @@
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
+import { TitleSearch } from '../components/TitleSearch';
 
 const Home: NextPage = () => {
   return (
-    <>TEST</>
-  )
-}
+    <>
+      <TitleSearch />
+    </>
+  );
+};
 
-export default Home
+export default Home;
