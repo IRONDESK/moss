@@ -7,14 +7,13 @@ export const JoinPage = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  // const [region, setRegion] = useState("");
   const [email, setEmail] = useState("");
 
 
   const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isName, setIsName] = useState(false);
-  // const [isRegion, setIsRegion] = useState(false);
+  const [isRegion, setIsRegion] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
 
   const [idMessage, setIdMessage] = useState("");
@@ -29,9 +28,9 @@ export const JoinPage = () => {
 
     if(name === "id") {
       setId(value);
-      const idRegex = /^[a-z0-9_,]{1,10}$/;
+      const idRegex = /^[a-z0-9_]{2,10}$/;
       if (!idRegex.test(value)) {
-        setIdMessage("영문, 숫자, 밑줄 및 마침표만 사용할 수 있습니다.");
+        setIdMessage("2~10자의 영문, 숫자, 밑줄만 사용할 수 있습니다.");
         setIsId(false);
       } else {
         setIsId(true);
@@ -50,7 +49,7 @@ export const JoinPage = () => {
     } else if (name === "name") {
       setName(value);
       if (value.length < 2 || value.length > 10) {
-        setNameMessage("2자~10자 이내여야 합니다.");
+        setNameMessage("2~10자 이내여야 합니다.");
         setIsName(false);
       } else {
         setIsName(true);
@@ -74,6 +73,15 @@ export const JoinPage = () => {
     setIsImage(img)
   }
 
+  const [regionColor, setRegionColor] = useState(`${COLOR.placeHolderText}`)
+
+  const handleSelect = (e: React.ChangeEvent<{ value: string }>) => {
+    if(e.target.value !== "0") {
+      setRegionColor(`${COLOR.black}`)
+      setIsRegion(true)
+    }
+  }
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   }
@@ -90,7 +98,7 @@ export const JoinPage = () => {
             placeholder="아이디"
             value={id}
             onChange={onChange}
-          ></Input>
+          />
         </Label>
         {id.length > 0 && (
           <Error className={`${isId ? "success" : "error"}`}> {idMessage}</Error>
@@ -102,7 +110,7 @@ export const JoinPage = () => {
             placeholder="비밀번호"
             value={password}
             onChange={onChange}
-          ></Input>
+          />
         </Label>
         {password.length > 0 && (
           <Error className={`${isPassword ? "success" : "error"}`}> {passwordMessage}</Error>
@@ -114,16 +122,21 @@ export const JoinPage = () => {
             placeholder="이름"
             value={name}
             onChange={onChange}
-          ></Input>
+          />
         </Label>
         {name.length > 0 && (
           <Error className={`${isName ? "success" : "error"}`}> {nameMessage}</Error>
         )}
         <Label className="arrow" icon="/images/location.svg">
-          <Select name="region">
-            <option value="" disabled hidden>거주지</option>
-            <option value="a">서울</option>
-            <option value="b">경기</option>
+          <Select
+            defaultValue="0"
+            name="region"
+            onChange={handleSelect}
+            color={regionColor}
+            >
+            <option value="0" disabled hidden>거주지</option>
+            <option value="1">서울</option>
+            <option value="2">경기</option>
           </Select>
         </Label>
         <Label icon="/images/mail.svg">
@@ -133,12 +146,12 @@ export const JoinPage = () => {
             placeholder="이메일"
             value={email}
             onChange={onChange}
-          ></Input>
+          />
         </Label>
         {email.length > 0 && (
           <Error className={`${isEmail ? "success" : "error"}`}> {emailMessage}</Error>
         )}
-        <Button disabled={!(isImage && isId && isPassword && isName && isEmail)}>회원가입</Button>
+        <Button disabled={!(isImage && isId && isPassword && isName && isRegion && isEmail)}>회원가입</Button>
       </Form>
     </Container>
   );
@@ -203,37 +216,33 @@ const Label = styled.label<{icon:string}>`
 
 const Input = styled.input`
   padding: 16px 31px;
-  border: 1px solid #E7E6E2;
+  border: 1px solid ${COLOR.gray};
   font-size: 14px;
   &:focus {
     border: 1px solid ${COLOR.main};
     outline: none;
   }
   &::placeholder {
-    color: #aaa;
+    color: ${COLOR.placeHolderText};
   }
 `;
 
 const Select = styled.select`
   position: relative;
   padding: 16px 31px;
-  border: 1px solid #E7E6E2;
-  color: #333;
+  border: 1px solid ${COLOR.gray};
   font-size: 14px;
   appearance: none;
   -o-appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  &:first-of-type {
-    color: #aaa;
-  }
+  color: ${props => props.color};
   &:focus {
     border: 1px solid ${COLOR.main};
     outline: none;
   }
   option {
-    color: #333;
-    font-size: 14px;
+    color: ${COLOR.black};
   }
 `;
 
@@ -243,11 +252,11 @@ const Button = styled.button`
   height: 48px;
   border: none;
   background: ${COLOR.main};
-  color: #fff;
+  color: ${COLOR.white};
   font-size: 16px;
   &:disabled {
-    background: #E7E6E2;
-    color: #B7B6B3;
+    background: ${COLOR.gray};
+    color: ${COLOR.grayText};
   }
 `;
 
