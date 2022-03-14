@@ -1,44 +1,127 @@
 import styled from "@emotion/styled";
 import { COLOR } from "../../constants";
+import React, { useState } from "react";
+import { FileUpload } from "./FileUpload";
 
 export const JoinPage = () => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  // const [region, setRegion] = useState("");
+  const [email, setEmail] = useState("");
+
+
+  const [isId, setIsId] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isName, setIsName] = useState(false);
+  // const [isRegion, setIsRegion] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+
+  const [idMessage, setIdMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = e;
+
+    if(name === "id") {
+      setId(value);
+      const idRegex = /^[a-z0-9_,]{1,10}$/;
+      if (!idRegex.test(value)) {
+        setIdMessage("영문, 숫자, 밑줄 및 마침표만 사용할 수 있습니다.");
+        setIsId(false);
+      } else {
+        setIsId(true);
+      }
+    } else if (name === "password") {
+      setPassword(value);
+      const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,}$/;
+      if (!passwordRegex.test(value)) {
+        setPasswordMessage(
+          "비밀번호는 6자 이상 영문과 숫자의 조합이어야 합니다."
+        );
+        setIsPassword(false);
+      } else {
+        setIsPassword(true);
+      }
+    } else if (name === "name") {
+      setName(value);
+      if (value.length < 2 || value.length > 10) {
+        setNameMessage("2자~10자 이내여야 합니다.");
+        setIsName(false);
+      } else {
+        setIsName(true);
+      }
+    } else if (name === "email") {
+      setEmail(value);
+      const emailRegex =
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      if (!emailRegex.test(value)) {
+        setEmailMessage("올바르지 않은 이메일 형식입니다.");
+        setIsEmail(false);
+      } else {
+        setIsEmail(true);
+      }
+    }
+  };
+
+  const [isImage, setIsImage] = useState(false)
+
+  const getIsImage = (img: boolean) => {
+    setIsImage(img)
+  }
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  }
 
   return (
     <Container>
       <Title>회원가입</Title>
-      <Form>
-        <ImgLabel>
-          <img  src="/images/profile.svg" alt="기본 프로필 이미지" />
-          <ImgInput
-            type="file"
-            name="upload"
-            accept="image/*"
-          />
-        </ImgLabel>
+      <Form onSubmit={onSubmit}>
+        <FileUpload getIsImage={getIsImage}/>
         <Label icon="/images/login.svg">
           <Input
             name="id"
             type="text"
             placeholder="아이디"
+            value={id}
+            onChange={onChange}
           ></Input>
         </Label>
+        {id.length > 0 && (
+          <Error className={`${isId ? "success" : "error"}`}> {idMessage}</Error>
+        )}
         <Label icon="/images/lock.svg">
           <Input
             name="password"
             type="password"
             placeholder="비밀번호"
+            value={password}
+            onChange={onChange}
           ></Input>
         </Label>
+        {password.length > 0 && (
+          <Error className={`${isPassword ? "success" : "error"}`}> {passwordMessage}</Error>
+        )}
         <Label icon="/images/name.svg">
           <Input
             name="name"
             type="text"
             placeholder="이름"
+            value={name}
+            onChange={onChange}
           ></Input>
         </Label>
+        {name.length > 0 && (
+          <Error className={`${isName ? "success" : "error"}`}> {nameMessage}</Error>
+        )}
         <Label className="arrow" icon="/images/location.svg">
-          <Select name="residence">
-            <option value="" disabled selected hidden>거주지</option>
+          <Select name="region">
+            <option value="" disabled hidden>거주지</option>
             <option value="a">서울</option>
             <option value="b">경기</option>
           </Select>
@@ -48,9 +131,14 @@ export const JoinPage = () => {
             name="email"
             type="email"
             placeholder="이메일"
+            value={email}
+            onChange={onChange}
           ></Input>
         </Label>
-        <Button disabled>회원가입</Button>
+        {email.length > 0 && (
+          <Error className={`${isEmail ? "success" : "error"}`}> {emailMessage}</Error>
+        )}
+        <Button disabled={!(isImage && isId && isPassword && isName && isEmail)}>회원가입</Button>
       </Form>
     </Container>
   );
@@ -94,29 +182,6 @@ const Form = styled.form`
     z-index: 10;
     }
   }
-`;
-
-const ImgLabel = styled.label`
-  display: block;
-  position: relative;
-  margin: 32px auto 20px;
-  width: 120px;
-  height: 120px;
-  cursor: pointer;
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 36px;
-    height: 36px;
-    border-radius: 25px;
-    background: ${COLOR.main} url("/images/image.svg") no-repeat center;
-  }
-`;
-
-const ImgInput = styled.input`
-  display: none;
 `;
 
 const Label = styled.label<{icon:string}>`
@@ -183,5 +248,17 @@ const Button = styled.button`
   &:disabled {
     background: #E7E6E2;
     color: #B7B6B3;
+  }
+`;
+
+const Error = styled.span`
+  font-size: 12px;
+  padding-bottom: 10px;
+  &.success {
+    display: none;
+  }
+  &.error {
+    display: block;
+    color: ${COLOR.main};
   }
 `;
