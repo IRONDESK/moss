@@ -3,21 +3,32 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { StayBtn } from './StayBtn';
 import Nav from './LoginLink';
+import { Title } from '../layouts';
 
-interface LoginProps {
-  Login: fucntion;
-  errorMsg: fucntion;
+interface ILoginForm {
+  Login(): Function;
+  errorMsg(): Function;
 }
-
-export const LoginForm = ({ Login, errorMsg }: LoginProps) => {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '' });
-  const onSubmit = (event) => {
+interface IUserInfo {
+  email: string | number;
+  password: string | number;
+}
+interface ISubmitBtnProps {
+  userinfo: object;
+}
+export const LoginForm = ({ Login, errorMsg }: ILoginForm) => {
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
+    email: '',
+    password: '',
+  });
+  const onSubmit = (event: React.ChangeEvent) => {
     event.preventDefault();
     Login(userInfo);
   };
 
   return (
     <LoginCont>
+      <Title title="로그인" />
       <h1>
         <div>로그인</div>
       </h1>
@@ -118,7 +129,7 @@ const Error = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const SubmitBtn = styled.button`
+const SubmitBtn = styled.button<ISubmitBtnProps>`
   border: none;
   padding: 16px 30px;
   width: 340px;

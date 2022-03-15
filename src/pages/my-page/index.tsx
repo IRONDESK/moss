@@ -1,5 +1,5 @@
-// import Title from '../../components/Title';
 import styled from '@emotion/styled';
+import { Title } from '../../components/layouts';
 
 export default function MyPage({ User, Logout }) {
   return (
