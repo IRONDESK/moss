@@ -1,8 +1,59 @@
 import React from 'react';
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import StayBtn from './StayLoggedIn';
+import { StayBtn } from './StayBtn';
 import Nav from './LoginLink';
+
+interface LoginProps {
+  Login: fucntion;
+  errorMsg: fucntion;
+}
+
+export const LoginForm = ({ Login, errorMsg }: LoginProps) => {
+  const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+  const onSubmit = (event) => {
+    event.preventDefault();
+    Login(userInfo);
+  };
+
+  return (
+    <LoginCont>
+      <h1>
+        <div>로그인</div>
+      </h1>
+      <form onSubmit={onSubmit}>
+        <InputCont>
+          <img src="images/login.svg" alt="로그인 아이콘" />
+          <input
+            onChange={(event) => {
+              setUserInfo({ ...userInfo, email: event.target.value });
+            }}
+            value={userInfo.email}
+            type="email"
+            placeholder="아이디"
+            name="email-id"
+          />
+        </InputCont>
+        <InputCont>
+          <img src="images/lock.svg" alt="잠금 아이콘" />
+          <input
+            onChange={(event) => {
+              setUserInfo({ ...userInfo, password: event.target.value });
+            }}
+            value={userInfo.password}
+            type="password"
+            placeholder="비밀번호"
+            name="password"
+          />
+        </InputCont>
+        <StayBtn />
+        {errorMsg !== '' ? <Error>{errorMsg}</Error> : null}
+        <SubmitBtn userinfo={userInfo}>로그인</SubmitBtn>
+        <Nav />
+      </form>
+    </LoginCont>
+  );
+};
 
 const LoginCont = styled.article`
   padding: 100px 0;
@@ -89,51 +140,3 @@ const InputCont = styled.div`
     left: 14px;
   }
 `;
-
-function LoginForm({ Login, errorMsg }) {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '' });
-  const onSubmit = (event) => {
-    event.preventDefault();
-    Login(userInfo);
-  };
-
-  return (
-    <LoginCont>
-      <h1>
-        <div>로그인</div>
-      </h1>
-      <form onSubmit={onSubmit}>
-        <InputCont>
-          <img src="images/login.svg" alt="로그인 아이콘" />
-          <input
-            onChange={(event) => {
-              setUserInfo({ ...userInfo, email: event.target.value });
-            }}
-            value={userInfo.email}
-            type="email"
-            placeholder="아이디"
-            name="email-id"
-          />
-        </InputCont>
-        <InputCont>
-          <img src="images/lock.svg" alt="잠금 아이콘" />
-          <input
-            onChange={(event) => {
-              setUserInfo({ ...userInfo, password: event.target.value });
-            }}
-            value={userInfo.password}
-            type="password"
-            placeholder="비밀번호"
-            name="password"
-          />
-        </InputCont>
-        <StayBtn />
-        {errorMsg !== '' ? <Error>{errorMsg}</Error> : null}
-        <SubmitBtn userinfo={userInfo}>로그인</SubmitBtn>
-        <Nav />
-      </form>
-    </LoginCont>
-  );
-}
-
-export default LoginForm;

@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { COLOR } from '../../constants';
 
-function StayLoggedIn() {
+interface SpanProps {
+  txtColor: string;
+}
+export const StayBtn = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const onClick = () => {
     setLoggedIn(!loggedIn);
   };
-
   return (
     <Container>
       <button type="button" onClick={onClick}>
@@ -18,23 +21,21 @@ function StayLoggedIn() {
         )}
       </button>
       {loggedIn ? (
-        <Span txtColor="#34C88A">로그인 상태유지</Span>
+        <Span txtColor={COLOR.main}>로그인 상태유지</Span>
       ) : (
-        <Span txtColor="#767676">로그인 상태유지</Span>
+        <Span txtColor={COLOR.grayText}>로그인 상태유지</Span>
       )}
     </Container>
   );
-}
-export default StayLoggedIn;
+};
 const Container = styled.div`
-  margin: 10px 0;
   display: flex;
   align-items: center;
   button {
     margin-right: 5px;
   }
 `;
-const Span = styled.div`
+const Span = styled.div<SpanProps>`
   transition: color 0.3s ease-in-out;
   font-size: 13px;
   line-height: 15px;

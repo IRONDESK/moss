@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import MyPage from '../my-page';
-import LoginForm from '../../components/Login/LoginForm';
+import { LoginForm } from '../../components/Login/LoginForm';
 
 interface UserInfo {
   email: string;
