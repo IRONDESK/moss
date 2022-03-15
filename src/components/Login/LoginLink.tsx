@@ -1,6 +1,26 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 
+export const LoginLink = () => {
+  return (
+    <div>
+      <Container>
+        <li>
+          <Link href="/login/find-id">아이디 찾기</Link>
+        </li>
+        <Slash />
+        <li>
+          <Link href="/login/find-pw">비밀번호 찾기</Link>
+        </li>
+        <Slash />
+        <li>
+          <Link href="/join">회원가입</Link>
+        </li>
+      </Container>
+    </div>
+  );
+};
+
 const Container = styled.ul`
   padding: 6px;
   width: 100%;
@@ -23,24 +43,3 @@ const Slash = styled.div`
   border-left: 1px solid #c4c4c4;
   height: 8px;
 `;
-function LoginLink() {
-  return (
-    <div>
-      <Container>
-        <li>
-          <Link href="/login/find_id">아이디 찾기</Link>
-        </li>
-        <Slash />
-        <li>
-          <Link href="/login/find_pw">비밀번호 찾기</Link>
-        </li>
-        <Slash />
-        <li>
-          <Link href="/join">회원가입</Link>
-        </li>
-      </Container>
-    </div>
-  );
-}
-
-export default LoginLink;

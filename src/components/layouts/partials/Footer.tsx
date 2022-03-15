@@ -33,7 +33,6 @@ export const Footer = () => {
   );
 };
 const FooterCont = styled.footer`
-  font-family: 'GmarketSansMedium';
   padding: 0 100px;
   margin-top: 10vh;
   section {

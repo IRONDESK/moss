@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { StayBtn } from './StayBtn';
-import Nav from './LoginLink';
+import { LoginLink } from '../Login/LoginLink';
 import { Title } from '../layouts';
 
 interface ILoginForm {
@@ -60,7 +60,7 @@ export const LoginForm = ({ Login, errorMsg }: ILoginForm) => {
         <StayBtn />
         {errorMsg !== '' ? <Error>{errorMsg}</Error> : null}
         <SubmitBtn userinfo={userInfo}>로그인</SubmitBtn>
-        <Nav />
+        <LoginLink />
       </form>
     </LoginCont>
   );
