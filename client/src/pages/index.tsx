@@ -7,21 +7,8 @@ import { Scroll } from '../components/Scroll/Scroll';
 import { useEffect, useState } from 'react';
 
 const Home: NextPage = () => {
-  const [backData, setBackData] = useState([{}]);
-  useEffect(() => {
-    fetch('/api')
-      .then((response) => response.json())
-      .then((data) => {
-        setBackData(data);
-      });
-  }, []);
   return (
     <>
-      {typeof backData.users === 'undefined' ? (
-        <h1>Loading...</h1>
-      ) : (
-        backData.users.map((user, i) => <p key={i}>{user}</p>)
-      )}
       <Banner />
       <TitleSearch />
       <StudyList>

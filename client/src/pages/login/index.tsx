@@ -2,25 +2,30 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import MyPage from '../my-page';
 import { LoginForm } from '../../components/Login/LoginForm';
+import { parse } from 'path';
 
-interface UserInfo {
-  email: string;
-  password: string | number;
-}
+// interface UserInfo {
+//   email: string;
+//   password: string | number;
+// }
 
 export default function LoginApp() {
-  //가상유저 템플릿
-  const admnUser = {
-    email: 'moss@111',
-    password: '111',
-  };
+  const [userData, setUserData] = useState([{}]);
+  useEffect(() => {
+    fetch('/api')
+      .then((response) => response.json())
+      .then((data) => {
+        setUserData(data);
+      });
+  }, []);
+
   const [user, setUser] = useState({ email: '' });
   const [error, setError] = useState('');
 
-  const Login = (userInfo: UserInfo) => {
+  const Login = (userInfo) => {
     if (
-      userInfo.email == admnUser.email &&
-      userInfo.password == admnUser.password
+      userInfo.email == userData.user.email &&
+      userInfo.password == userData.user.password
     ) {
       setUser({
         email: userInfo.email,
@@ -31,13 +36,12 @@ export default function LoginApp() {
     }
   };
   const Logout = () => {
-    console.log('logout');
     setUser({ email: '' });
   };
   return (
     <LoginCont>
       {user.email !== '' ? (
-        <MyPage User={user.email} Logout={Logout} />
+        <MyPage User={userData.user.name} Logout={Logout} />
       ) : (
         <LoginForm Login={Login} errorMsg={error} />
       )}
