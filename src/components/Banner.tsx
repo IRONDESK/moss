@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { COLOR } from '../../../../팀프로젝트/moss_version1/moss/src/constants';
+import { COLOR } from '../constants';
+
 export const Banner = () => {
   return (
     <BannerPage>
@@ -10,7 +11,7 @@ export const Banner = () => {
         <p>혼자 공부하기 힘든 사람 모여라!</p>
         <p>서로 서로자극이 되어 함께 성장해요!</p>
       </div>
-      <Link href="/join" passHref>
+      <Link href="/login" passHref>
         <button>시작하기</button>
       </Link>
     </BannerPage>
