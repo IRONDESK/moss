@@ -2,14 +2,26 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import MyPage from '../my-page';
 import { LoginForm } from '../../components/Login/LoginForm';
-import { parse } from 'path';
-
-// interface UserInfo {
-//   email: string;
-//   password: string | number;
-// }
+import axios from 'axios';
 
 export default function LoginApp() {
+  const [name, setName] = useState();
+  const [data, setData] = useState('');
+  useEffect(() => {
+    axios.get('http://localhost:4000/home').then((response) => {
+      setData(response.data);
+    });
+  }, []);
+  async function postName(event) {
+    event.preventDefault();
+    try {
+      await axios.post('http://localhost:4000/post_name', { name });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //
   const [userData, setUserData] = useState([{}]);
   useEffect(() => {
     fetch('/api')
@@ -40,6 +52,15 @@ export default function LoginApp() {
   };
   return (
     <LoginCont>
+      <form onSubmit={postName}>
+        <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+          type="text"
+        />
+        <button type="submit">Send Name</button>
+      </form>
+      {data}
       {user.email !== '' ? (
         <MyPage User={userData.user.name} Logout={Logout} />
       ) : (
