@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import rootRouter from "./routers/rootRouter";
 
 const app = express();
 
@@ -11,9 +12,7 @@ app.post("/post_name", async (req, res) => {
   let { name } = req.body;
   console.log(name);
 });
-app.get("/home", async (req, res) => {
-  res.send(`This is a data from Backend!`);
-});
+app.use("/", rootRouter);
 
 const PORT = 4000;
 app.listen(PORT, () => console.log(`✅ MOSS server listening on ${PORT}!!🔥`));
