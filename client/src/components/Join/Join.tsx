@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import React, { useState } from 'react';
 import { FileUpload } from './FileUpload';
+import axios from 'axios';
 
 export const JoinPage = () => {
   const [id, setId] = useState('');
@@ -81,13 +82,22 @@ export const JoinPage = () => {
     }
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    // e.preventDefault();
+    try {
+      await axios.post('http://localhost:4000/join', {
+        id,
+        password,
+        name,
+        email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Container>
-      <Title>회원가입</Title>
       <Form onSubmit={onSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
@@ -165,9 +175,9 @@ export const JoinPage = () => {
           </Error>
         )}
         <Button
-          disabled={
-            !(isImage && isId && isPassword && isName && isRegion && isEmail)
-          }
+        // disabled={
+        //   !(isImage && isId && isPassword && isName && isRegion && isEmail)
+        // }
         >
           회원가입
         </Button>
