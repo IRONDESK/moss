@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { JoinPage } from '../components/Join/Join';
 import { Title } from '../components/layouts';
 
