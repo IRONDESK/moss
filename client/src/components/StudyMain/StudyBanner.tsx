@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { COLOR } from '../../constants';
+import { JoinStudyModal } from '../JoinStudy/JoinStudyModal';
 
 export const StudyBanner = (props: {
   logo: string;
@@ -10,6 +12,8 @@ export const StudyBanner = (props: {
   member: number;
   link: string;
 }) => {
+  const [modal, setModal] = useState(false);
+  const openModal = () => setModal((prev) => !prev);
   return (
     <Banner>
       <StudyIntro>
@@ -22,11 +26,14 @@ export const StudyBanner = (props: {
           </StudyDetail>
           <Join>
             <Member>{props.member}/10</Member>
-            <StudyBtn href={props.link}>스터디 신청하기</StudyBtn>
+            <StudyBtn onClick={openModal} href={props.link}>
+              스터디 신청하기
+            </StudyBtn>
           </Join>
         </StudyDescription>
       </StudyIntro>
       <Hashtag>{props.hashtag}</Hashtag>
+      <JoinStudyModal modal={modal} setModal={setModal} />
     </Banner>
   );
 };

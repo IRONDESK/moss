@@ -1,40 +1,54 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
+import { useSpring, animated } from 'react-spring';
 
-export const JoinStudyModal = ({ modal, setModal }) => {
+interface IModal {
+  modal: boolean;
+  setModal: Function;
+}
+
+export const JoinStudyModal = ({ modal, setModal }: IModal) => {
+  const animation = useSpring({
+    config: {
+      duration: 250,
+    },
+    opacity: modal ? 1 : 0,
+    transfrom: modal ? `translateY(0%)` : `translateY(-100%)`,
+  });
   return (
     <>
       {modal ? (
-        <Container>
-          <button onClick={() => setModal((prev) => !prev)}>❌</button>
-          <h1>
-            <div>로그인</div>
-          </h1>
-          <form action="">
-            <div>
-              <label htmlFor="goal">각오한마디</label>
-              <input id="goal" type="text" placeholder="placeholder" />
-            </div>
-            <div>
-              <label htmlFor="reason">참여목적</label>
-              <textarea
-                maxLength="300"
-                id="reason"
-                type="text"
-                placeholder="placeholder"
-              />
-            </div>
-            <button>스터디 신청</button>
-          </form>
-        </Container>
+        <animated.div style={animation}>
+          <Container>
+            <button onClick={() => setModal((prev: boolean) => !prev)}>
+              ❌
+            </button>
+            <h1>
+              <div>로그인</div>
+            </h1>
+            <form action="">
+              <div>
+                <label htmlFor="goal">각오한마디</label>
+                <input id="goal" type="text" placeholder="placeholder" />
+              </div>
+              <div>
+                <label htmlFor="reason">참여목적</label>
+                <textarea id="reason" type="text" placeholder="placeholder" />
+              </div>
+              <button>스터디 신청</button>
+            </form>
+          </Container>
+        </animated.div>
       ) : null}
     </>
   );
 };
 const Container = styled.section`
-  background-color: #ffff;
   position: absolute;
-  margin-top: 40vh;
+  top: 15vh;
+  left: 50%;
+  transform: translate(-50%);
+  background-color: #ffff;
   z-index: 999;
   border: 1px solid ${COLOR.gray};
   padding: 90px 50px;

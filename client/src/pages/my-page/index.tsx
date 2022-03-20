@@ -8,12 +8,12 @@ export default function MyPage({ User, Logout }) {
   const openModal = () => setModal((prev) => !prev);
   return (
     <Container>
+      <JoinStudyModal modal={modal} setModal={setModal} />
       <Title title="마이페이지" />
       <h1>Welcome to My Page</h1>
       <h1>할수있다! {User}</h1>
       <button>로그아웃</button>
       <button onClick={openModal}>스터디 신청</button>
-      <JoinStudyModal modal={modal} setModal={setModal} />
     </Container>
   );
 }

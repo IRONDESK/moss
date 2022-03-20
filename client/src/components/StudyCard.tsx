@@ -19,7 +19,7 @@ export const StudyCard = (props: {
       </Thumbnail>
       <Join>
         <Member>{props.member}/10</Member>
-        <Link href="/my-page">
+        <Link href="/study">
           <StudyBtn href={props.link}>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>
