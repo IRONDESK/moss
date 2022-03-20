@@ -179,6 +179,9 @@ export const JoinPage = () => {
 const Container = styled.section`
   margin: 100px auto 0;
   max-width: 340px;
+  @media (max-width: 440px) {
+    margin: 60px auto 0;
+  }
 `;
 
 const Title = styled.h2`
