@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { COLOR } from '../constants';
+import { COLOR } from '../../constants';
 
 export const StudyBanner = (props: {
   logo: string;

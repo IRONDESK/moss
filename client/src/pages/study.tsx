@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import styled from '@emotion/styled';
-import { StudyBanner } from '../components/StudyBanner';
+import { StudyBanner } from '../components/StudyMain/StudyBanner';
+import { Notice } from '../components/StudyMain/Notice';
 
 export default function StudyPage() {
   return (
@@ -14,6 +15,7 @@ export default function StudyPage() {
         member={7}
         link="#"
       />
+      <Notice />
     </>
   );
 }
