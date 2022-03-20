@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import MyPage from '../my-page';
 import { LoginForm } from '../../components/Login/LoginForm';
 
 export default function LoginApp() {
