@@ -1,26 +1,42 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { COLOR } from "../constants";
 
-export const StudyCard = (props: {
+interface CardProps {
   category: string;
   title: string;
   hashtag: string;
   member: number;
   link: string;
-}) => {
+  leader: boolean;
+}
+
+export const StudyCard = ({
+  category,
+  title,
+  hashtag,
+  member,
+  link,
+  leader = false,
+}: CardProps) => {
   return (
     <CardWrap>
       <Thumbnail>
-        <Detail>
-          <Category>{props.category}</Category>
-          <Title>{props.title}</Title>
-          <Hashtag>{props.hashtag}</Hashtag>
-        </Detail>
+        <Header>
+          <Category>{category}</Category>
+          <Title>{title}</Title>
+          <Hashtag>{hashtag}</Hashtag>
+        </Header>
       </Thumbnail>
       <Join>
-        <Member>{props.member}/10</Member>
+        <Detail>
+          <MemberIcon src='/images/login.svg' />
+          <Member>{member}/10</Member>
+          <LeaderTag default={leader}>스터디장</LeaderTag>
+        </Detail>
+
         <Link href="/study">
-          <StudyBtn href={props.link}>
+          <StudyBtn href={link}>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>
         </Link>
@@ -41,7 +57,7 @@ const Thumbnail = styled.div`
   background: skyblue;
 `;
 
-const Detail = styled.div`
+const Header = styled.div`
   position: absolute;
   padding: 14px;
   top: 0;
@@ -84,22 +100,30 @@ const Join = styled.div`
   margin-top: 9px;
 `;
 
+const Detail = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const MemberIcon = styled.img`
+  width: 17px;
+`;
 const Member = styled.span`
-  position: relative;
-  margin-top: 5px;
-  padding-left: 24px;
+  padding-top: 6px;
   font-size: 0.9rem;
-  &::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 0;
-    background: url('/images/login.svg');
-    background-position: top;
-    background-size: 16px;
-    width: 15px;
-    height: 15px;
-  }
+`;
+const LeaderTag = styled.div<{default: boolean}>`
+  display: ${props => props.default ? 'block' : 'none'};
+  padding: 4px 7px 1px 19px;
+  font-size: 0.85rem;
+  background-color: #EB5757;
+  color: #fff;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-image: url('/images/goal.svg');
+  background-size: 13px;
+  background-position: 5px;
+  background-repeat: no-repeat;
 `;
 const StudyBtn = styled.a`
   display: flex;
@@ -107,7 +131,7 @@ const StudyBtn = styled.a`
   justify-content: center;
   width: 32px;
   height: 32px;
-  background-color: #fff;
+  background-color: ${COLOR.white};
   border: 1px solid rgba(52, 200, 138, 0.4);
 `;
 const EnterImg = styled.img`
