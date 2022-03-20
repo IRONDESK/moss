@@ -18,4 +18,9 @@ const Container = styled.section`
   width: 1224px;
   max-width: calc(100% - 60px);
   margin: 0 auto 80px auto;
+
+  @media (max-width: 440px) {
+    width: 100%;
+    scrollbar-width: none;
+  }
 `;
