@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { COLOR } from "../../constants";
 
 interface ImageProps {
@@ -11,11 +11,17 @@ export const FileUpload = ({getIsImage}: ImageProps) => {
   const [image, setImage] = useState("/images/profile.svg")
   const [isImage, setIsImage] = useState(false)
 
-  const imagePreview = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement
-    const files = target.files as FileList
+  const preview = (file: Blob) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => setImage(`${reader.result}`)
+  }
 
-    setImage(URL.createObjectURL(files[0]))
+  const imagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if(files && files.length) {
+      preview(files[0])
+    }
     setIsImage(true)
     getIsImage(true)
   }
@@ -52,7 +58,7 @@ const ImgLabel = styled.label`
   }
 `;
 
-const Img = styled.img `
+const Img = styled.img<{ src: string }>`
   width: 100%;
   height: 100%;
   background: url('${props => props.src}');
