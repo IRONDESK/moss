@@ -29,4 +29,9 @@ const Wrap = styled.div`
       vertical-align: -0.1em;
     }
   }
+  @media (max-width: 440px) {
+    h2 {
+      width: 100%;
+    }
+  }
 `;
