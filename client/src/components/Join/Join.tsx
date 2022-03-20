@@ -1,10 +1,9 @@
 import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 export const JoinPage = () => {
   // const [id, setId] = useState('');
@@ -17,13 +16,11 @@ export const JoinPage = () => {
 
   const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const [isPassword2, setIsPassword2] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
 
   const [idMessage, setIdMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
-  const [pwConfirm, setPwConfirm] = useState('');
   const [nameMessage, setNameMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
 
@@ -52,15 +49,8 @@ export const JoinPage = () => {
       } else {
         setIsPassword(true);
       }
-      //비밀번호 일치여부 확인
     } else if (name === 'password2') {
       setPassword2(value);
-      if (password !== password2) {
-        setPwConfirm('비밀번호가 일치하지 않습니다!');
-        setIsPassword2(false);
-      } else {
-        setIsPassword2(true);
-      }
     } else if (name === 'name') {
       setName(value);
       if (value.length < 2 || value.length > 10) {
@@ -97,23 +87,13 @@ export const JoinPage = () => {
     }
   };
   const router = useRouter();
-  const [data, setData] = useState('');
   const handleSubmit = async (event) => {
     event.preventDefault();
     joinUser(userId, password, password2, name, email, location);
-    axios.get('http://localhost:9000/join').then((response) => {
-      setData(response.data);
-    });
     return router.push('/login');
   };
-  // useEffect(() => {
-  //   axios.get('http://localhost:9000/join').then((response) => {
-  //     setData(response.data);
-  //   });
-  // }, []);
   return (
     <Container>
-      {data}
       <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
@@ -144,19 +124,15 @@ export const JoinPage = () => {
           <Input
             name="password2"
             type="password"
-            placeholder="비밀번호 재확인"
+            placeholder="비밀번호"
             value={password2}
             onChange={onChange}
           />
         </Label>
         {password.length > 0 && (
           <Error className={`${isPassword ? 'success' : 'error'}`}>
+            {' '}
             {passwordMessage}
-          </Error>
-        )}
-        {password.length > 0 && (
-          <Error className={`${isPassword2 ? 'success' : 'error'}`}>
-            {pwConfirm}
           </Error>
         )}
         <Label icon="/images/name.svg">
