@@ -8,6 +8,7 @@ export const COLOR = {
   gray: '#E7E6E2',
   deepGray: '#666',
   placeHolderText: '#AAA',
+  error: '#FF3636',
   boxBorder: '#DDD',
   ListBorder: '#EEE'
 };

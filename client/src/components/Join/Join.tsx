@@ -6,17 +6,18 @@ import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
 
 export const JoinPage = () => {
-  // const [id, setId] = useState('');
+
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [location, setLocation] = useState('xx');
 
-  const [isId, setIsId] = useState(false);
+  const [isuserId, setIsuserId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isName, setIsName] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
+  const [isLocation, setIsLocation] = useState(false);
 
   const [idMessage, setIdMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
@@ -33,9 +34,9 @@ export const JoinPage = () => {
       const idRegex = /^[a-z0-9_]{2,10}$/;
       if (!idRegex.test(value)) {
         setIdMessage('2~10자의 영문, 숫자, 밑줄만 사용할 수 있습니다.');
-        setIsId(false);
+        setIsuserId(false);
       } else {
-        setIsId(true);
+        setIsuserId(true);
       }
     } else if (name === 'password') {
       setPassword(value);
@@ -81,16 +82,21 @@ export const JoinPage = () => {
     if (event.target.value !== 'xx') {
       setRegionColor(`${COLOR.black}`);
       setLocation(event.target.value);
+      setIsLocation(true)
     }
   };
+
   const router = useRouter();
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     joinUser(userId, password, name, email, location);
     return router.push('/login');
   };
+
   return (
     <Container>
+      <Title>회원가입</Title>
       <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
@@ -103,8 +109,7 @@ export const JoinPage = () => {
           />
         </Label>
         {userId.length > 0 && (
-          <Error className={`${isId ? 'success' : 'error'}`}>
-            {' '}
+          <Error className={`${isuserId ? 'success' : 'error'}`}>
             {idMessage}
           </Error>
         )}
@@ -115,11 +120,11 @@ export const JoinPage = () => {
             placeholder="비밀번호"
             value={password}
             onChange={onChange}
+            className={`${isPassword}`}
           />
         </Label>
         {password.length > 0 && (
           <Error className={`${isPassword ? 'success' : 'error'}`}>
-            {' '}
             {passwordMessage}
           </Error>
         )}
@@ -134,18 +139,17 @@ export const JoinPage = () => {
         </Label>
         {name.length > 0 && (
           <Error className={`${isName ? 'success' : 'error'}`}>
-            {' '}
             {nameMessage}
           </Error>
         )}
         <Label className="arrow" icon="/images/location.svg">
           <Select
-            defaultValue="0"
+            defaultValue="xx"
             name="region"
             onChange={handleSelect}
             color={regionColor}
           >
-            <option value="xx">거주지</option>
+            <option value="xx" disabled hidden>거주지</option>
             <option value="서울">서울</option>
             <option value="경기">경기</option>
           </Select>
@@ -161,15 +165,13 @@ export const JoinPage = () => {
         </Label>
         {email.length > 0 && (
           <Error className={`${isEmail ? 'success' : 'error'}`}>
-            {' '}
             {emailMessage}
           </Error>
         )}
         <Button
-
-        // disabled={
-        //   !(isImage && isId && isPassword && isName && isRegion && isEmail)
-        // }
+        disabled={
+          !(isImage && isuserId && isPassword && isName && isLocation && isEmail)
+        }
         >
           회원가입
         </Button>
@@ -179,8 +181,9 @@ export const JoinPage = () => {
 };
 
 const Container = styled.section`
-  margin: 100px auto 0;
-  max-width: 340px;
+  margin: 44px auto 0;
+  max-width: 440px;
+  width: 340px;
 `;
 
 const Title = styled.h2`
@@ -194,10 +197,10 @@ const Title = styled.h2`
     position: absolute;
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, 0);
     width: 60px;
     height: 4px;
     background-color: ${COLOR.main};
+    transform: translate(-50%, 0);
   }
 `;
 
@@ -248,21 +251,23 @@ const Input = styled.input`
   }
 `;
 
-const Select = styled.select`
+const Select = styled.select<{ color: string }>`
   position: relative;
   padding: 16px 31px;
   border: 1px solid ${COLOR.gray};
+  color: ${(props) => props.color};
+  font-family: 'Gmarket Sans';
   font-size: 14px;
   appearance: none;
   -o-appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  color: ${(props) => props.color};
   &:focus {
     border: 1px solid ${COLOR.main};
     outline: none;
   }
   option {
+    padding: 15px;
     color: ${COLOR.black};
   }
 `;
@@ -282,13 +287,14 @@ const Button = styled.button`
 `;
 
 const Error = styled.span`
+  font-family: 'Noto Sans KR';
   font-size: 12px;
-  padding-bottom: 10px;
+  padding: 0 7px 10px;
   &.success {
     display: none;
   }
   &.error {
     display: block;
-    color: ${COLOR.main};
+    color: ${COLOR.error};
   }
 `;
