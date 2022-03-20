@@ -25,7 +25,6 @@ const BannerPage = styled.section`
   align-items: center;
   text-align: center;
   padding: 70px 0;
-  font-family: 'GmarketSansMedium';
   h2 {
     margin-bottom: 24px;
     color: ${COLOR.main};
@@ -46,7 +45,11 @@ const BannerPage = styled.section`
     width: 260px;
     height: 48px;
     margin-top: 37px;
+    font-size: 16px;
     background-color: ${COLOR.main};
     color: ${COLOR.white};
+    &:hover {
+      background-color: ${COLOR.buttonHover};
+    }
   }
 `;

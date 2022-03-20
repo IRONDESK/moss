@@ -18,6 +18,7 @@ const Home: NextPage = () => {
           hashtag="#리액트 #프론트엔드"
           member={1}
           link="#"
+          leader={true}
         />
         <StudyCard
           category="카테고리"
@@ -25,6 +26,8 @@ const Home: NextPage = () => {
           hashtag="#리액트 #프론트엔드"
           member={1}
           link="#"
+          leader={false}
+
         />
         <StudyCard
           category="카테고리"
@@ -32,6 +35,8 @@ const Home: NextPage = () => {
           hashtag="#리액트 #프론트엔드"
           member={1}
           link="#"
+          leader={false}
+
         />
         <StudyCard
           category="카테고리"
@@ -39,6 +44,8 @@ const Home: NextPage = () => {
           hashtag="#리액트 #프론트엔드"
           member={1}
           link="#"
+          leader={false}
+
         />
         <StudyCard
           category="카테고리"
@@ -46,6 +53,8 @@ const Home: NextPage = () => {
           hashtag="#리액트 #프론트엔드"
           member={1}
           link="#"
+          leader={false}
+
         />
       </StudyList>
       <Scroll />
