@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { StayBtn } from './StayBtn';
 import { LoginLink } from '../Login/LoginLink';
 import { Title } from '../layouts';
+import { COLOR } from '../../constants';
 
 interface ILoginForm {
   Login(): Function;
@@ -103,12 +104,12 @@ const LoginCont = styled.article`
       }
       &:nth-of-type(1) {
         &:focus {
-          outline: 1px solid #34c88a;
+          outline: 1px solid ${COLOR.main};
         }
       }
       &:nth-of-type(2) {
         &:focus {
-          outline: 1px solid #34c88a;
+          outline: 1px solid ${COLOR.main};
         }
       }
     }

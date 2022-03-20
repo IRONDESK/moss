@@ -8,6 +8,8 @@ export const COLOR = {
   gray: '#E7E6E2',
   deepGray: '#666',
   placeHolderText: '#AAA',
+  boxBorder: '#DDD',
+  ListBorder: '#EEE'
 };
 
 //컴포넌트에서 사용하실 떄는 ${COLOR.main} 이런 식으로 사용하시면 됩니다~
