@@ -56,6 +56,10 @@ const StudyList = styled.section`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  @media (max-width: 440px) {
+    grid-template-columns: repeat(1, 1fr);
+    margin: 0 0 20px;
+  }
 `;
 
 export default Home;
