@@ -1,12 +1,11 @@
+import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import React, { useState } from 'react';
 import { FileUpload } from './FileUpload';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 export const JoinPage = () => {
-  const router = useRouter();
   // const [id, setId] = useState('');
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -84,25 +83,15 @@ export const JoinPage = () => {
       setLocation(event.target.value);
     }
   };
-
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    try {
-      await axios.post('http://localhost:4000/join', {
-        userId,
-        password,
-        name,
-        email,
-        location,
-      });
-      return router.push('/login');
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
+  const router = useRouter();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    joinUser(userId, password, name, email, location);
+    return router.push('/login');
+  };
   return (
     <Container>
-      <Form method="post" onSubmit={onSubmit}>
+      <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
           <Input
@@ -177,6 +166,7 @@ export const JoinPage = () => {
           </Error>
         )}
         <Button
+
         // disabled={
         //   !(isImage && isId && isPassword && isName && isRegion && isEmail)
         // }
