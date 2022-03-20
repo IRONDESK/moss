@@ -83,4 +83,17 @@ const Search = styled.form`
     border: 0;
     padding: 0;
   }
+  @media (max-width: 440px) {
+    input {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      width: 1px;
+      height: 1px;
+      position: absolute;
+    }
+    button {
+      background: ${COLOR.main} url(/images/search_white.svg) no-repeat 50% 50% /
+        60%;
+    }
+  }
 `;
