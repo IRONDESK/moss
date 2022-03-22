@@ -23,7 +23,10 @@ export const StudyCard = ({
     <CardWrap>
       <Thumbnail>
         <Header>
-          <Category>{category}</Category>
+          <StudyTag>
+            <Category>{category}</Category>
+            <LeaderTag default={leader}><img src='/images/crown.svg' alt='스터디장' /></LeaderTag>
+          </StudyTag>
           <Title>{title}</Title>
           <Hashtag>{hashtag}</Hashtag>
         </Header>
@@ -32,7 +35,6 @@ export const StudyCard = ({
         <Detail>
           <MemberIcon src='/images/login.svg' />
           <Member>{member}/10</Member>
-          <LeaderTag default={leader}>스터디장</LeaderTag>
         </Detail>
 
         <Link href="/study">
@@ -59,7 +61,7 @@ const Thumbnail = styled.div`
 
 const Header = styled.div`
   position: absolute;
-  padding: 14px;
+  padding: 10px 14px;
   top: 0;
   left: 0;
   width: 100%;
@@ -67,9 +69,15 @@ const Header = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 `;
 
+const StudyTag = styled.div`
+  display: flex;
+  height: 31px;
+  justify-content: space-between;
+  align-items: center;
+`;
 const Category = styled.span`
   display: inline-block;
-  padding: 4px 8px;
+  padding: 6px 12px;
   background-color: rgba(0, 0, 0, 0.2);
   font-family: 'Noto Sans KR';
   font-size: 0.8rem;
@@ -78,6 +86,20 @@ const Category = styled.span`
   box-sizing: border-box;
   z-index: 1;
 `;
+const LeaderTag = styled.div<{default: boolean}>`
+  display: ${props => props.default ? 'flex' : 'none'};
+  justify-content: center;
+  background-color: ${COLOR.main};
+  width: 31px;
+  height: 31px;
+  font-size: 0.85rem;
+  border-radius: 100%;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  img {
+    width: 21px;
+  }
+`;
+
 const Title = styled.h3`
   position: absolute;
   bottom: calc(14px + 1rem);
@@ -111,19 +133,6 @@ const MemberIcon = styled.img`
 const Member = styled.span`
   padding-top: 6px;
   font-size: 0.9rem;
-`;
-const LeaderTag = styled.div<{default: boolean}>`
-  display: ${props => props.default ? 'block' : 'none'};
-  padding: 4px 7px 1px 19px;
-  font-size: 0.85rem;
-  background-color: #EB5757;
-  color: #fff;
-  border-radius: 20px;
-  box-sizing: border-box;
-  background-image: url('/images/goal.svg');
-  background-size: 13px;
-  background-position: 5px;
-  background-repeat: no-repeat;
 `;
 const StudyBtn = styled.a`
   display: flex;
