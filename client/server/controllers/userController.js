@@ -1,16 +1,22 @@
-export const home = (req, res) => {
-  return res.send(`home`);
-};
+import User from '../models/User';
 
-export const getRegister = (req, res) => {
-  return res.send(`register`);
-};
-export const postRegister = (req, res) => {
-  return res.send(`register`);
-};
-export const getLogin = (req, res) => {
-  return res.send(`Login`);
+//CREATE
+export const postJoin = async (req, res) => {
+  res.send(`hello world`);
+  // const { userId, password, password2, name, email, location } = req.body;
+  // try {
+  //   const user = await User.create({
+  //     userId,
+  //     password,
+  //     name,
+  //     email,
+  //     location,
+  //   });
+  //   console.log(user);
+  // } catch (error) {
+  //   return res.send('error._message');
+  // }
 };
 export const postLogin = (req, res) => {
-  return res.send(`Login`);
+  return;
 };

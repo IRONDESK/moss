@@ -1,6 +1,9 @@
+import './db';
+import './models/User';
+import rootRouter from './router/rootRouter';
+
 const express = require('express');
 const next = require('next');
-const { default: rootRouter } = require('./routers/rootRouter');
 
 const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -12,6 +15,8 @@ app
   .then(() => {
     //1. prepare to go to Next framework
     const server = express();
+
+    server.use(express.json());
 
     server.use('/', rootRouter);
 

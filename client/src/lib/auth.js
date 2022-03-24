@@ -1,20 +1,19 @@
 import axios from 'axios';
-import { useState } from 'react';
 
 export const joinUser = async (
   userId,
   password,
   password2,
   name,
-  email,
   location,
+  email,
 ) => {
-  await axios.post('http://localhost:9000/join', {
+  const { data } = await axios.post('/api/join', {
     userId,
     password,
     password2,
     name,
-    email,
     location,
+    email,
   });
 };

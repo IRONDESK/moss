@@ -1,12 +1,12 @@
-import { joinUser } from '../../lib/auth';
+import { joinError, joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import React, { useEffect, useState } from 'react';
 import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 export const JoinPage = () => {
-  // const [id, setId] = useState('');
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -87,15 +87,25 @@ export const JoinPage = () => {
     }
   };
   const router = useRouter();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     joinUser(userId, password, password2, name, email, location);
     return router.push('/login');
   };
-
+  const [data, setData] = useState('');
+  const api = axios.create({
+    baseURL: `http://localhost:3000/api/join`,
+  });
+  useEffect(() => {
+    api.get('/').then((res) => {
+      console.log(res.data);
+      setData(res.data);
+    });
+  }, []);
   return (
     <Container>
-      {/* {backData} */}
+      {data}
       <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
@@ -126,7 +136,7 @@ export const JoinPage = () => {
           <Input
             name="password2"
             type="password"
-            placeholder="비밀번호"
+            placeholder="비밀번호 재확인"
             value={password2}
             onChange={onChange}
           />
