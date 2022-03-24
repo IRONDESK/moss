@@ -1,7 +1,7 @@
 import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
 
@@ -92,8 +92,10 @@ export const JoinPage = () => {
     joinUser(userId, password, password2, name, email, location);
     return router.push('/login');
   };
+
   return (
     <Container>
+      {/* {backData} */}
       <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
