@@ -6,16 +6,83 @@ type TimeProps = {
     goalHour: number,
     goalMinute: number,
 };
+const defaultTime = {
+    time : 0,
+    seconds : 0,
+    minutes : 0,
+    hours : 0,
+};
 export const StudyTimer = ({goalHour, goalMinute}: TimeProps) => {
+    const [remainTime, setRemainTime] = useState(defaultTime);
+    const [playStatus, setPlayStatus] = useState(false);
+    const [alreadyStart, setAlreadyStart] = useState(false);
+    const [startTime, setStartTime] = useState<string|undefined>();
+    const targetTime = (goalMinute*60) + (goalHour*60*60);
+    
+    useEffect(() => {
+        setRemainTime({
+            time: (goalMinute*60) + (goalHour*60*60),
+            seconds: 0,
+            hours: goalHour,
+            minutes: goalMinute
+        });
+    }, [alreadyStart])
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (remainTime.time === 0) {
+                return ;
+            }
+            if (playStatus) {
+                setRemainTime({
+                    time: remainTime.time - 1,
+                    seconds : remainTime.time - Math.floor((remainTime.time - 1)/60) * 60 - 1,
+                    minutes : Math.floor((remainTime.time - 1)/60) - (Math.floor((remainTime.time - 1)/60/60)*60),
+                    hours : Math.floor((remainTime.time - 1)/60/60),
+                });
+            };
+        }, 1000);
+    }, [remainTime.time, playStatus]);
+
+    useEffect(() => {
+        if (remainTime.time < targetTime) {
+            setAlreadyStart(true);
+        };
+    }, [playStatus]);
+    
+    useEffect(() => {
+        getStartTime();
+    }, [alreadyStart])
+    
+    function ChangePlayStatus () {
+        if (!playStatus && (goalHour > 0 || goalMinute > 0)){
+            setPlayStatus(true);
+        } else {
+            setPlayStatus(false);
+        }
+    };
+
+    function getStartTime () {
+        const today = new Date();
+        const now = today.toLocaleString().split(" ");
+        setStartTime(now[3] + " " + now[4]);
+    };
+    function StopTimerReset () {
+        setPlayStatus(false);
+        setAlreadyStart(false);
+    };
+    function ChangeDigit (nums: number) {
+        return ('00' + nums).slice(-2);
+    };
     return (
     <Wrap>
         <BtnWrap>
-            <PlayBtn></PlayBtn>
-            <StopBtn></StopBtn>
+            <PlayBtn onClick={ChangePlayStatus} defaultChecked={playStatus}></PlayBtn>
+            <StopBtn onClick={StopTimerReset}></StopBtn>
         </BtnWrap>
         <TimeWrap>
-            <Timer>02:53:13</Timer>
-            <StartTime>시작시간 20:20:13</StartTime>
+            <Timer>{ChangeDigit(remainTime.hours)}:{ChangeDigit(remainTime.minutes)}:{ChangeDigit(remainTime.seconds)}</Timer>
+            <StartTime>{alreadyStart ? "시작시간 " + startTime : null}</StartTime>
         </TimeWrap>
     </Wrap>
     )
@@ -40,8 +107,8 @@ const BtnWrap = styled.div`
         background-repeat: no-repeat;
     }
 `;
-const PlayBtn = styled.button`
-    background-position: center;
+const PlayBtn = styled.button<{defaultChecked: boolean}>`
+    background-position-x: ${props => props.defaultChecked ? "3px" : "center"};
 `;
 const StopBtn = styled.button`
     background-position-x: -62px;
