@@ -1,6 +1,7 @@
 import User from "../model/User";
+import bcrypt from "bcrypt";
 
-//CREATE
+//CREATE (회원가입)
 export const getJoin = (req, res) => {};
 
 export const postJoin = async (req, res) => {
@@ -33,18 +34,23 @@ export const postJoin = async (req, res) => {
     console.log(error);
   }
 };
-//READ
+//READ (로그인)
 export const getLogin = (req, res) => {
   return res.send(`login`);
 };
 export const postLogin = async (req, res) => {
-  const {
-    body: { userId, password },
-  } = req;
-  const exists = await User.exists({ userId });
-  if (!exists) {
+  const { userId, password } = req.body;
+  const user = await User.findOne({ userId });
+  //아이디 존재유무확인
+  if (!user) {
     return console.log(`존재하지 않는 아이디 입니다!`);
   }
+  //비번 일치여부 확인
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) {
+    return console.log(`비밀번호가 일치하지 않습니다!`);
+  }
+  return console.log(`로그인 성공!!`);
 };
 //UPDATE
 //DELETE
