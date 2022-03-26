@@ -56,7 +56,7 @@ const HeaderCont = styled.header`
           width: 100px;
           font-size: 14px;
           line-height: 14px;
-          &:nth-child(2) {
+          &:nth-of-type(2) {
             border: 1px solid #34c88a;
             color: #34c88a;
           }

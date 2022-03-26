@@ -1,18 +1,22 @@
+import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileUpload } from './FileUpload';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
 export const JoinPage = () => {
-  const [id, setId] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [location, setLocation] = useState('xx');
 
   const [isId, setIsId] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isName, setIsName] = useState(false);
-  const [isRegion, setIsRegion] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
 
   const [idMessage, setIdMessage] = useState('');
@@ -20,13 +24,21 @@ export const JoinPage = () => {
   const [nameMessage, setNameMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
 
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    joinUser(userId, password, password2, name, email, location);
+    return router.push('/login');
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
     } = e;
 
-    if (name === 'id') {
-      setId(value);
+    if (name === 'userId') {
+      setUserId(value);
       const idRegex = /^[a-z0-9_]{2,10}$/;
       if (!idRegex.test(value)) {
         setIdMessage('2~10자의 영문, 숫자, 밑줄만 사용할 수 있습니다.');
@@ -45,6 +57,8 @@ export const JoinPage = () => {
       } else {
         setIsPassword(true);
       }
+    } else if (name === 'password2') {
+      setPassword2(value);
     } else if (name === 'name') {
       setName(value);
       if (value.length < 2 || value.length > 10) {
@@ -74,32 +88,27 @@ export const JoinPage = () => {
 
   const [regionColor, setRegionColor] = useState(`${COLOR.placeHolderText}`);
 
-  const handleSelect = (e: React.ChangeEvent<{ value: string }>) => {
-    if (e.target.value !== '0') {
+  const handleSelect = (event: React.ChangeEvent<{ value: string }>) => {
+    if (event.target.value !== 'xx') {
       setRegionColor(`${COLOR.black}`);
-      setIsRegion(true);
+      setLocation(event.target.value);
     }
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
   };
 
   return (
     <Container>
-      <Title>회원가입</Title>
-      <Form onSubmit={onSubmit}>
+      <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">
           <Input
-            name="id"
+            name="userId"
             type="text"
             placeholder="아이디"
-            value={id}
+            value={userId}
             onChange={onChange}
           />
         </Label>
-        {id.length > 0 && (
+        {userId.length > 0 && (
           <Error className={`${isId ? 'success' : 'error'}`}>
             {' '}
             {idMessage}
@@ -111,6 +120,15 @@ export const JoinPage = () => {
             type="password"
             placeholder="비밀번호"
             value={password}
+            onChange={onChange}
+          />
+        </Label>
+        <Label icon="/images/lock.svg">
+          <Input
+            name="password2"
+            type="password"
+            placeholder="비밀번호 재확인"
+            value={password2}
             onChange={onChange}
           />
         </Label>
@@ -142,11 +160,9 @@ export const JoinPage = () => {
             onChange={handleSelect}
             color={regionColor}
           >
-            <option value="0" disabled hidden>
-              거주지
-            </option>
-            <option value="1">서울</option>
-            <option value="2">경기</option>
+            <option value="xx">거주지</option>
+            <option value="서울">서울</option>
+            <option value="경기">경기</option>
           </Select>
         </Label>
         <Label icon="/images/mail.svg">
@@ -165,9 +181,10 @@ export const JoinPage = () => {
           </Error>
         )}
         <Button
-          disabled={
-            !(isImage && isId && isPassword && isName && isRegion && isEmail)
-          }
+
+        // disabled={
+        //   !(isImage && isId && isPassword && isName && isRegion && isEmail)
+        // }
         >
           회원가입
         </Button>
