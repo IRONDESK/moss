@@ -1,4 +1,4 @@
-import { joinError, joinUser } from '../../lib/auth';
+import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import React, { useEffect, useState } from 'react';
@@ -23,6 +23,14 @@ export const JoinPage = () => {
   const [passwordMessage, setPasswordMessage] = useState('');
   const [nameMessage, setNameMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
+
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    joinUser(userId, password, password2, name, email, location);
+    return router.push('/login');
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -86,26 +94,9 @@ export const JoinPage = () => {
       setLocation(event.target.value);
     }
   };
-  const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    joinUser(userId, password, password2, name, email, location);
-    return router.push('/login');
-  };
-  const [data, setData] = useState('');
-  const api = axios.create({
-    baseURL: `http://localhost:3000/api/join`,
-  });
-  useEffect(() => {
-    api.get('/').then((res) => {
-      console.log(res.data);
-      setData(res.data);
-    });
-  }, []);
   return (
     <Container>
-      {data}
       <Form method="post" onSubmit={handleSubmit}>
         <FileUpload getIsImage={getIsImage} />
         <Label icon="/images/login.svg">

@@ -8,7 +8,7 @@ export const joinUser = async (
   location,
   email,
 ) => {
-  const { data } = await axios.post('/api/join', {
+  await axios.post('http://localhost:9000/join', {
     userId,
     password,
     password2,
@@ -17,3 +17,7 @@ export const joinUser = async (
     email,
   });
 };
+// export const message = async () => {
+//   const response = await axios.get('http://localhost:9000/join');
+//   console.log(response);
+// };
