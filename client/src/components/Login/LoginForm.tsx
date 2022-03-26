@@ -2,65 +2,59 @@ import React from 'react';
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { StayBtn } from './StayBtn';
-import { LoginLink } from '../Login/LoginLink';
+import { LoginLink } from './LoginLink';
 import { Title } from '../layouts';
 import { COLOR } from '../../constants';
+import { loginUser } from '../../lib/auth';
 
-interface ILoginForm {
-  Login(): Function;
-  errorMsg(): Function;
-}
-interface IUserInfo {
-  email: string | number;
-  password: string | number;
-}
-interface ISubmitBtnProps {
-  userinfo: object;
-}
-export const LoginForm = ({ Login, errorMsg }: ILoginForm) => {
-  const [userInfo, setUserInfo] = useState<IUserInfo>({
-    email: '',
-    password: '',
-  });
-  const onSubmit = (event: React.ChangeEvent) => {
+export const LoginForm = () => {
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (event: React.ChangeEvent) => {
     event.preventDefault();
-    Login(userInfo);
+    loginUser(userId, password);
   };
-
+  const handleChange = (event) => {
+    const {
+      target: { name, value },
+    } = event;
+    if (name === 'userId') {
+      setUserId(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
+  };
   return (
     <LoginCont>
       <Title title="로그인" />
       <h1>
         <div>로그인</div>
       </h1>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <InputCont>
           <img src="images/login.svg" alt="로그인 아이콘" />
           <input
-            onChange={(event) => {
-              setUserInfo({ ...userInfo, email: event.target.value });
-            }}
-            value={userInfo.email}
-            type="email"
+            onChange={handleChange}
+            value={userId}
+            type="text"
             placeholder="아이디"
-            name="email-id"
+            name="userId"
           />
         </InputCont>
         <InputCont>
           <img src="images/lock.svg" alt="잠금 아이콘" />
           <input
-            onChange={(event) => {
-              setUserInfo({ ...userInfo, password: event.target.value });
-            }}
-            value={userInfo.password}
+            onChange={handleChange}
+            value={password}
             type="password"
             placeholder="비밀번호"
             name="password"
           />
         </InputCont>
         <StayBtn />
-        {errorMsg !== '' ? <Error>{errorMsg}</Error> : null}
-        <SubmitBtn userinfo={userInfo}>로그인</SubmitBtn>
+        {/* {errorMsg !== '' ? <Error>{errorMsg}</Error> : null} */}
+        <SubmitBtn>로그인</SubmitBtn>
         <LoginLink />
       </form>
     </LoginCont>
@@ -130,18 +124,20 @@ const Error = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const SubmitBtn = styled.button<ISubmitBtnProps>`
+const SubmitBtn = styled.button`
   border: none;
   padding: 16px 30px;
   width: 340px;
   font-size: 16px;
   color: #b7b6b3;
+  color: black;
   transition: background-color 0.5s ease-in-out;
-  ${(props) =>
+  background-color: #34c88a;
+`;
+/* ${(props) =>
     props.userinfo.email && props.userinfo.password
       ? `background-color:#34C88A; color:#FFFFFF`
-      : `background-color:#e7e6e2`}
-`;
+      : `background-color:#e7e6e2`} */
 const InputCont = styled.div`
   position: relative;
   img {

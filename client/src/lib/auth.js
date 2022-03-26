@@ -17,7 +17,7 @@ export const joinUser = async (
     email,
   });
 };
-// export const message = async () => {
-//   const response = await axios.get('http://localhost:9000/join');
-//   console.log(response);
-// };
+
+export const loginUser = async (userId, password) => {
+  await axios.post('http://localhost:9000/login', { userId, password });
+};

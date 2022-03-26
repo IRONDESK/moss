@@ -37,6 +37,14 @@ export const postJoin = async (req, res) => {
 export const getLogin = (req, res) => {
   return res.send(`login`);
 };
-export const postLogin = async (req, res) => {};
+export const postLogin = async (req, res) => {
+  const {
+    body: { userId, password },
+  } = req;
+  const exists = await User.exists({ userId });
+  if (!exists) {
+    return console.log(`존재하지 않는 아이디 입니다!`);
+  }
+};
 //UPDATE
 //DELETE
