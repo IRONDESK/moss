@@ -6,7 +6,6 @@ import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
 
 export const JoinPage = () => {
-
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -82,7 +81,7 @@ export const JoinPage = () => {
     if (event.target.value !== 'xx') {
       setRegionColor(`${COLOR.black}`);
       setLocation(event.target.value);
-      setIsLocation(true)
+      setIsLocation(true);
     }
   };
 
@@ -149,7 +148,9 @@ export const JoinPage = () => {
             onChange={handleSelect}
             color={regionColor}
           >
-            <option value="xx" disabled hidden>거주지</option>
+            <option value="xx" disabled hidden>
+              거주지
+            </option>
             <option value="서울">서울</option>
             <option value="경기">경기</option>
           </Select>
@@ -169,9 +170,16 @@ export const JoinPage = () => {
           </Error>
         )}
         <Button
-        disabled={
-          !(isImage && isuserId && isPassword && isName && isLocation && isEmail)
-        }
+          disabled={
+            !(
+              isImage &&
+              isuserId &&
+              isPassword &&
+              isName &&
+              isLocation &&
+              isEmail
+            )
+          }
         >
           회원가입
         </Button>
