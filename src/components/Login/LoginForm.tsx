@@ -5,7 +5,6 @@ import { StayBtn } from './StayBtn';
 import { LoginLink } from './LoginLink';
 import { Title } from '../layouts';
 import { COLOR } from '../../constants';
-import { loginUser } from '../../lib/auth';
 
 export const LoginForm = () => {
   const [userId, setUserId] = useState('');
@@ -13,7 +12,6 @@ export const LoginForm = () => {
 
   const handleSubmit = (event: React.ChangeEvent) => {
     event.preventDefault();
-    loginUser(userId, password);
   };
   const handleChange = (event) => {
     const {

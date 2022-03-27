@@ -19,7 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/login/index.jsx",
+    "src/pages/login/index.tsx",
     "src/components/Join/Join.tsx"
   ],
   "exclude": ["node_modules"]

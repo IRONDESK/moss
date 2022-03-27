@@ -1,10 +1,8 @@
-import { joinUser } from '../../lib/auth';
 import styled from '@emotion/styled';
+import React, { useState } from 'react';
 import { COLOR } from '../../constants';
-import React, { useEffect, useState } from 'react';
 import { FileUpload } from './FileUpload';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 
 export const JoinPage = () => {
   const [userId, setUserId] = useState('');
@@ -29,7 +27,6 @@ export const JoinPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    joinUser(userId, password, password2, name, email, location);
     return router.push('/login');
   };
 
@@ -95,14 +92,6 @@ export const JoinPage = () => {
       setLocation(event.target.value);
       setIsLocation(true);
     }
-  };
-
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    joinUser(userId, password, name, email, location);
-    return router.push('/login');
   };
 
   return (
