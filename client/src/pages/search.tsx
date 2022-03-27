@@ -11,7 +11,7 @@ export default function SearchPage() {
     <SearchPageWrap>
       <SearchInput />
       <NoData>
-        "<strong>{searchText}</strong>" 스터디를 찾을 수 없습니다.
+        &quot;<strong>{searchText}</strong>&quot; 스터디를 찾을 수 없습니다.
       </NoData>
     </SearchPageWrap>
   );
