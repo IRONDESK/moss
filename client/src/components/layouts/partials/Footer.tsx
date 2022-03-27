@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { COLOR } from '../../../constants';
 
 export const Footer = () => {
   return (
@@ -32,7 +33,14 @@ export const Footer = () => {
     </FooterCont>
   );
 };
+
+// 반응형 컴포넌트 대기?
+// const breakpoints = [390, 1440];
+
+// const mq = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
+
 const FooterCont = styled.footer`
+  height: 100px;
   padding: 0 100px;
   margin-top: 10vh;
   section {
@@ -42,6 +50,39 @@ const FooterCont = styled.footer`
     align-items: center;
     border-top: 1px solid #c4c4c4;
   }
+  @media (max-width: 440px) {
+    position: relative;
+    margin-top: 0;
+    height: fit-content;
+    padding: 0;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -28px;
+      right: 28px;
+      width: 48px;
+      height: 48px;
+      border: 1px solid ${COLOR.point};
+      border-radius: 50%;
+      background: ${COLOR.white};
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -7px;
+      right: 46px;
+      border: 1px solid ${COLOR.black};
+      border-width: 0 0 2px 2px;
+      width: 10px;
+      height: 10px;
+      transform: rotate(135deg);
+    }
+    section {
+      padding: 1.5rem 1.5rem;
+    }
+  } ;
 `;
 
 const FooterLogo = styled.div`
@@ -62,5 +103,10 @@ const MemberList = styled.ul`
   li > small {
     color: #666666;
     font-size: 14px;
+  }
+  @media (max-width: 440px) {
+    display: grid;
+    grid: repeat(2, 20px) / auto-flow 45px;
+    width: calc(100% / 2.3);
   }
 `;

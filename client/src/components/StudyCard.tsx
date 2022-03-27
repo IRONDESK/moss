@@ -1,26 +1,44 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { COLOR } from "../constants";
 
-export const StudyCard = (props: {
+interface CardProps {
   category: string;
   title: string;
   hashtag: string;
   member: number;
   link: string;
-}) => {
+  leader: boolean;
+}
+
+export const StudyCard = ({
+  category,
+  title,
+  hashtag,
+  member,
+  link,
+  leader = false,
+}: CardProps) => {
   return (
     <CardWrap>
       <Thumbnail>
-        <Detail>
-          <Category>{props.category}</Category>
-          <Title>{props.title}</Title>
-          <Hashtag>{props.hashtag}</Hashtag>
-        </Detail>
+        <Header>
+          <StudyTag>
+            <Category>{category}</Category>
+            <LeaderTag default={leader}><img src='/images/crown.svg' alt='스터디장' /></LeaderTag>
+          </StudyTag>
+          <Title>{title}</Title>
+          <Hashtag>{hashtag}</Hashtag>
+        </Header>
       </Thumbnail>
       <Join>
-        <Member>{props.member}/10</Member>
-        <Link href="/my-page">
-          <StudyBtn href={props.link}>
+        <Detail>
+          <MemberIcon src='/images/login.svg' />
+          <Member>{member}/10</Member>
+        </Detail>
+
+        <Link href="/study">
+          <StudyBtn href={link}>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>
         </Link>
@@ -41,9 +59,9 @@ const Thumbnail = styled.div`
   background: skyblue;
 `;
 
-const Detail = styled.div`
+const Header = styled.div`
   position: absolute;
-  padding: 14px;
+  padding: 10px 14px;
   top: 0;
   left: 0;
   width: 100%;
@@ -51,9 +69,15 @@ const Detail = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 `;
 
+const StudyTag = styled.div`
+  display: flex;
+  height: 31px;
+  justify-content: space-between;
+  align-items: center;
+`;
 const Category = styled.span`
   display: inline-block;
-  padding: 4px 8px;
+  padding: 6px 12px;
   background-color: rgba(0, 0, 0, 0.2);
   font-family: 'Noto Sans KR';
   font-size: 0.8rem;
@@ -62,6 +86,20 @@ const Category = styled.span`
   box-sizing: border-box;
   z-index: 1;
 `;
+const LeaderTag = styled.div<{default: boolean}>`
+  display: ${props => props.default ? 'flex' : 'none'};
+  justify-content: center;
+  background-color: ${COLOR.main};
+  width: 31px;
+  height: 31px;
+  font-size: 0.85rem;
+  border-radius: 100%;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  img {
+    width: 21px;
+  }
+`;
+
 const Title = styled.h3`
   position: absolute;
   bottom: calc(14px + 1rem);
@@ -84,22 +122,17 @@ const Join = styled.div`
   margin-top: 9px;
 `;
 
+const Detail = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+const MemberIcon = styled.img`
+  width: 17px;
+`;
 const Member = styled.span`
-  position: relative;
-  margin-top: 5px;
-  padding-left: 24px;
+  padding-top: 6px;
   font-size: 0.9rem;
-  &::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: 0;
-    background: url('/images/login.svg');
-    background-position: top;
-    background-size: 16px;
-    width: 15px;
-    height: 15px;
-  }
 `;
 const StudyBtn = styled.a`
   display: flex;
@@ -107,7 +140,7 @@ const StudyBtn = styled.a`
   justify-content: center;
   width: 32px;
   height: 32px;
-  background-color: #fff;
+  background-color: ${COLOR.white};
   border: 1px solid rgba(52, 200, 138, 0.4);
 `;
 const EnterImg = styled.img`
