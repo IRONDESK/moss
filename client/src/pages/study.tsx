@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { StudyBanner } from '../components/StudyMain/StudyBanner';
 import { Notice } from '../components/StudyMain/Notice';
 import { Record } from '../components/StudyMain/Record';
+import { TodoList } from '../components/StudyMain/Todo';
+import { StudyComponents } from '../components/StudyMain/Container';
 
 export default function StudyPage() {
   return (
@@ -16,8 +18,10 @@ export default function StudyPage() {
         member={7}
         link="#"
       />
-      <Notice />
-      <Record />
+      <StudyComponents />
+      {/* <Record />
+      <TodoList />
+      <Notice /> */}
     </>
   );
 }
