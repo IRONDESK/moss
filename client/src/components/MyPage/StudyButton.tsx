@@ -9,9 +9,51 @@ interface StudyModal {
   setModal: Function;
 }
 export const StudyButton = ({ modal, setModal }: StudyModal) => {
-  const [isImage, setIsImage] = useState(false);
+  const [name, setName] = useState('');
+  const [des, setDes] = useState('');
+  const [tag, setTag] = useState('');
+  const [member, setMember] = useState('');
+  const [link, setLink] = useState('');
   const [sayhi, setSayhi] = useState('가입을 환영합니다🤚');
+
+  const [isName, setIsName] = useState(false);
+  const [isDes, setIsDes] = useState(false);
+  const [isTag, setIsTag] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [isLink, setIsLink] = useState(false);
   const [isHi, setIsHi] = useState(false);
+  const [isImage, setIsImage] = useState(false);
+
+  const [memberMessage, setMemberMessage] = useState('');
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value },
+    } = e;
+    if (name === 'name') {
+      setName(value);
+      setIsName(true);
+    } else if (name === 'des') {
+      setDes(value);
+      setIsDes(true);
+    } else if (name === 'tag') {
+      setTag(value);
+      setIsTag(true);
+    } else if (name === 'link') {
+      setLink(value);
+      setIsLink(true);
+    } else if (name === 'member') {
+      setMember(value);
+      setIsMember(true);
+      if (parseInt(value) <= 0) {
+        setMemberMessage('최소 인원은 1명 입니다.');
+        setIsMember(false);
+      } else {
+        setIsMember(true);
+      }
+    }
+  };
+
   const getIsImage = (img: boolean) => {
     setIsImage(img);
   };
@@ -43,7 +85,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             <CloseBtn
               onClick={() => setModal((prev: boolean) => !prev)}
             ></CloseBtn>
-            <Form>
+            <Form method="post">
               <h1>
                 <div>스터디 개설</div>
               </h1>
@@ -51,33 +93,53 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               <Label></Label>
               <Label htmlFor="study-name">스터디 이름</Label>
               <Input
+                name="name"
                 id="study-name"
                 type="text"
                 placeholder="스터디 이름을 작성해주세요"
+                value={name}
+                onChange={onChange}
               />
               <Label htmlFor="study-des">소개</Label>
               <Input
+                name="des"
                 id="study-des"
                 type="text"
                 placeholder="스터디 소개을 작성해주세요"
+                value={des}
+                onChange={onChange}
               />
               <Label htmlFor="study-tag">태그</Label>
               <Input
+                name="tag"
                 id="study-tag"
                 type="text"
                 placeholder="스터디에 해당하는 태그를 작성해주세요"
+                value={tag}
+                onChange={onChange}
               />
               <Label htmlFor="study-tag">스터디 인원</Label>
               <Input
+                name="member"
                 id="study-tag"
                 type="number"
                 placeholder="스터디 인원 제한을 설정하세요"
+                value={member}
+                onChange={onChange}
               />
+              {member.length < 0 && (
+                <Error className={`${isMember ? 'success' : 'error'}`}>
+                  {memberMessage}
+                </Error>
+              )}
               <Label htmlFor="study-tag">카카오톡 오픈채팅 링크</Label>
               <Input
+                name="link"
                 id="study-tag"
                 type="text"
                 placeholder="오픈 채팅 url을 넣어주세요"
+                value={link}
+                onChange={onChange}
               />
               <Label className="arrow">
                 가입 인사
@@ -94,7 +156,13 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
                   <option value="반갑습니다🥰">반갑습니다🥰</option>
                 </Select>
               </Label>
-              <MakeBtn>스터디 개설</MakeBtn>
+              <MakeBtn
+                disabled={
+                  !(isName && isDes && isTag && isLink && isMember && isHi)
+                }
+              >
+                스터디 개설
+              </MakeBtn>
             </Form>
           </Container>
         </animated.div>
@@ -223,6 +291,23 @@ const MakeBtn = styled.button`
   width: 400px;
   height: 48px;
   margin-top: 33px;
-  background-color: ${COLOR.gray};
-  color: ${COLOR.grayText};
+  background: ${COLOR.main};
+  color: #fff;
+  &:disabled {
+    background: ${COLOR.gray};
+    color: ${COLOR.grayText};
+  }
+`;
+
+const Error = styled.span`
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  padding: 0 7px 10px;
+  &.success {
+    display: none;
+  }
+  &.error {
+    display: block;
+    color: ${COLOR.error};
+  }
 `;

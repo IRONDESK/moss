@@ -20,5 +20,4 @@ const MyPageBanners = styled.section`
   background-color: ${COLOR.main};
   background-size: cover;
   padding: 51px 48px;
-  width: 88.5vw;
 `;
