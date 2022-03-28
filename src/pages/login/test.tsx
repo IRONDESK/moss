@@ -10,7 +10,12 @@ interface JoinForm {
 }
 
 export default function Test() {
-  const { register, handleSubmit, watch } = useForm<JoinForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<JoinForm>({ mode: 'onBlur' });
 
   const onValid = (data: JoinForm) => {
     console.log(`계정생성 성공!`);
@@ -19,17 +24,23 @@ export default function Test() {
     console.log(errors);
   };
 
-  // console.log(watch());
+  console.log(errors);
 
   return (
     <>
       <H1>회원가입</H1>
       <JoinForm onSubmit={handleSubmit(onValid, InValid)}>
         <input
-          {...register('userId', { required: '아이디가 필요합니다!!' })}
+          {...register('userId', {
+            required: '아이디가 필요합니다!!',
+            validate: {
+              forbidden: (value) => !value.includes('voldmote') || '볼드모트',
+            },
+          })}
           type="text"
           placeholder="아이디"
         />
+        {errors.userId?.message}
         <input
           {...register('password', {
             required: '비밀번호가 필요합니다!!',
@@ -41,21 +52,25 @@ export default function Test() {
           type="password"
           placeholder="비밀번호"
         />
+        {errors.password?.message}
         <input
           {...register('username', { required: '이름이 필요합니다!!' })}
           type="text"
           placeholder="이름"
         />
+        {errors.username?.message}
         <input
           {...register('location', { required: '거주지가 필요합니다!!' })}
           type="text"
           placeholder="거주지"
         />
+        {errors.location?.message}
         <input
           {...register('email', { required: '이메일이 필요합니다!!' })}
-          type="text"
+          type="email"
           placeholder="이메일"
         />
+        {errors.email?.message}
         <input type="submit" value="회원가입" />
       </JoinForm>
     </>
