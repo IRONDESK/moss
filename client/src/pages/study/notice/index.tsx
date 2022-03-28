@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
-import { StudyBanner } from '../../components/StudyMain/StudyBanner';
-import { Button } from '../../components/Notice/Button';
-import { NoticeTitle } from '../../components/Notice/NoticeTitle';
-import { COLOR } from '../../constants';
+import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
+import { Button } from '../../../components/Notice/Button';
+import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
+import { COLOR } from '../../../constants';
 
 export default function NoticePage(): JSX.Element {
   return (

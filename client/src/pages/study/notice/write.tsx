@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { StudyBanner } from '../../components/StudyMain/StudyBanner';
-import { COLOR } from '../../constants';
+import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
+import { COLOR } from '../../../constants';
 import dynamic from 'next/dynamic';
-import { NoticeTitle } from '../../components/Notice/NoticeTitle';
-import { Button } from '../../components/Notice/Button';
-const PostEditor = dynamic(() => import('../../components/Notice/PostEditor'), {
+import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
+import { Button } from '../../../components/Notice/Button';
+const PostEditor = dynamic(() => import('../../../components/Notice/PostEditor'), {
   ssr: false,
 });
 
