@@ -1,10 +1,10 @@
 import type { NextPage } from 'next';
 import styled from '@emotion/styled';
-import { StudyBanner } from '../components/StudyMain/StudyBanner';
-import { Notice } from '../components/StudyMain/Notice';
-import { Record } from '../components/StudyMain/Record';
-import { TodoList } from '../components/StudyMain/Todo';
-import { StudyComponents } from '../components/StudyMain/Container';
+import { StudyBanner } from '../../components/StudyMain/StudyBanner';
+import { Notice } from '../../components/StudyMain/Notice';
+import { Record } from '../../components/StudyMain/Record';
+import { TodoList } from '../../components/StudyMain/Todo';
+import { StudyComponents } from '../../components/StudyMain/Container';
 
 export default function StudyPage() {
   return (
