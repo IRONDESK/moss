@@ -18,7 +18,7 @@ model User {
   password  String?
   email     String?   @unique
   phone     BigInt?   @unique
-  name      String
+  username  String
   avatar    String?
   location  String?
   createdAt DateTime @default(now())

@@ -1,55 +1,41 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export default function Test() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const onNameChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setName(value);
+  const { register, handleSubmit, watch } = useForm();
+  const onValid = () => {
+    console.log(`Create Account Succeed!!`);
   };
-  const onEmailChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setEmail(value);
-  };
-  const onPasswordChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setPassword(value);
-  };
-
-  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(name, email, password);
-  };
-
+  console.log(watch());
   return (
     <>
-      <H1>로그인</H1>
-      <JoinForm onSubmit={handleSubmit}>
+      <H1>회원가입</H1>
+      <JoinForm onSubmit={handleSubmit(onValid)}>
         <input
-          required
-          onChange={onNameChange}
-          value={name}
+          {...register('userId', { required: true })}
+          type="text"
+          placeholder="아이디"
+        />
+        <input
+          {...register('password', { required: true })}
+          type="password"
+          placeholder="비밀번호"
+        />
+        <input
+          {...register('name', { required: true })}
           type="text"
           placeholder="이름"
         />
         <input
-          required
-          onChange={onEmailChange}
-          value={email}
+          {...register('location', { required: true })}
+          type="text"
+          placeholder="거주지"
+        />
+        <input
+          {...register('email', { required: true })}
           type="text"
           placeholder="이메일"
         />
-        <input
-          required
-          onChange={onPasswordChange}
-          value={password}
-          type="password"
-          placeholder="비밀번호"
-        />
-        <button type="button">로그인 상태유지</button>
         <input type="submit" value="회원가입" />
       </JoinForm>
     </>
