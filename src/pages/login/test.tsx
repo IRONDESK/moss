@@ -7,6 +7,7 @@ interface JoinForm {
   username: string;
   location: string;
   email: string;
+  globalErrors?: string;
 }
 
 export default function Test() {
@@ -14,11 +15,14 @@ export default function Test() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    setError,
+    reset,
   } = useForm<JoinForm>({ mode: 'onBlur' });
 
   const onValid = (data: JoinForm) => {
     console.log(`계정생성 성공!`);
+    setError('globalErrors', { message: '백엔드가 오프라인 상태입니다!' });
+    reset();
   };
   const InValid = (errors: FieldErrors) => {
     console.log(errors);
@@ -30,6 +34,7 @@ export default function Test() {
     <>
       <H1>회원가입</H1>
       <JoinForm onSubmit={handleSubmit(onValid, InValid)}>
+        {errors.globalErrors?.message}
         <input
           {...register('userId', {
             required: '아이디가 필요합니다!!',
