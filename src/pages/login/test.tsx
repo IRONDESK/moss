@@ -1,38 +1,58 @@
 import styled from '@emotion/styled';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldErrors } from 'react-hook-form';
+
+interface JoinForm {
+  userId: string;
+  password: string;
+  username: string;
+  location: string;
+  email: string;
+}
 
 export default function Test() {
-  const { register, handleSubmit, watch } = useForm();
-  const onValid = () => {
-    console.log(`Create Account Succeed!!`);
+  const { register, handleSubmit, watch } = useForm<JoinForm>();
+
+  const onValid = (data: JoinForm) => {
+    console.log(`계정생성 성공!`);
   };
-  console.log(watch());
+  const InValid = (errors: FieldErrors) => {
+    console.log(errors);
+  };
+
+  // console.log(watch());
+
   return (
     <>
       <H1>회원가입</H1>
-      <JoinForm onSubmit={handleSubmit(onValid)}>
+      <JoinForm onSubmit={handleSubmit(onValid, InValid)}>
         <input
-          {...register('userId', { required: true })}
+          {...register('userId', { required: '아이디가 필요합니다!!' })}
           type="text"
           placeholder="아이디"
         />
         <input
-          {...register('password', { required: true })}
+          {...register('password', {
+            required: '비밀번호가 필요합니다!!',
+            minLength: {
+              message: "'비밀번호는 6자 이상 영문과 숫자의 조합이어야 합니다.'",
+              value: 6,
+            },
+          })}
           type="password"
           placeholder="비밀번호"
         />
         <input
-          {...register('name', { required: true })}
+          {...register('username', { required: '이름이 필요합니다!!' })}
           type="text"
           placeholder="이름"
         />
         <input
-          {...register('location', { required: true })}
+          {...register('location', { required: '거주지가 필요합니다!!' })}
           type="text"
           placeholder="거주지"
         />
         <input
-          {...register('email', { required: true })}
+          {...register('email', { required: '이메일이 필요합니다!!' })}
           type="text"
           placeholder="이메일"
         />
