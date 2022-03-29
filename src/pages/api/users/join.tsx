@@ -3,11 +3,11 @@ import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { userId, password, username, location, email } = req.body;
+  const { userId, password, username, location, email, phone } = req.body;
   let user;
-  if (userId && password && username && location && email) {
+  if (userId && password && username && location && email && phone) {
     user = await client.user.findFirst({
-      where: { userId, password, username, location, email },
+      where: { userId, password, username, location, email, phone: +phone },
     });
     //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
@@ -15,11 +15,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!user) {
       user = await client.user.create({
         data: {
+          email,
+          phone: +phone,
           userId,
           password,
           username,
           location,
-          email,
         },
       });
       console.log(`해당하는 유저가 없습니다. 입력한 정보로 유저를 생성합니다.`);

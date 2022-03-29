@@ -37,6 +37,20 @@ export default function Join() {
         <h1>회원가입</h1>
         <form onSubmit={handleSubmit(onValid)}>
           <input
+            {...register('email', { required: '이메일이 필요합니다!' })}
+            name="email"
+            type="email"
+            placeholder="이메일"
+          />
+          {errors.email?.message}
+          <input
+            {...register('phone', { required: '전화번호가 필요합니다!' })}
+            name="phone"
+            type="number"
+            placeholder="전화번호"
+          />
+          {errors.phone?.message}
+          <input
             {...register('userId', { required: '아이디가 필요합니다!' })}
             name="userId"
             type="text"
@@ -71,13 +85,7 @@ export default function Join() {
             placeholder="거주지"
           />
           {errors.location?.message}
-          <input
-            {...register('email', { required: '이메일이 필요합니다!' })}
-            name="email"
-            type="email"
-            placeholder="이메일"
-          />
-          {errors.email?.message}
+
           <input type="submit" value="회원가입" />
         </form>
       </Container>
