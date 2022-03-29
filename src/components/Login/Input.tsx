@@ -1,50 +1,50 @@
+import { UseFormRegisterReturn } from 'react-hook-form';
 import styled from '@emotion/styled';
 
 interface InputProps {
   label: string;
   name: string;
-  name2: string;
-  type: string;
-  type2: string;
-  placeholder: string;
-  placeholder2: string;
-  btnValue: string;
+  register: UseFormRegisterReturn;
+  register2?: UseFormRegisterReturn;
+  required: boolean;
+  [key: string]: any;
 }
 export default function Input({
-  label,
   name,
-  name2,
-  type,
-  type2,
-  placeholder,
-  placeholder2,
-  btnValue,
+  label,
+  method,
+  register,
+  register2,
+  btnTitle,
+  required,
+  ...rest
 }: InputProps) {
   return (
     <Container>
       <label htmlFor={name}>{label}</label>
-      {name === 'email' ? (
+      {method === 'email' ? (
         <InputContainer>
-          <input id={name} type={type} name={name} placeholder={placeholder} />
-          <input type="submit" value={btnValue} />
+          <input {...register} required={required} {...rest} />
+          <button type="submit">{btnTitle}</button>
         </InputContainer>
       ) : null}
-      {name === 'phone' ? (
+
+      {method === 'phone' ? (
         <InputContainer>
-          <input id={name} type={type} name={name} placeholder={placeholder} />
-          <input type="submit" value={btnValue} />
+          <input {...register} required={required} {...rest} />
+          <button type="submit">{btnTitle}</button>
         </InputContainer>
       ) : null}
-      {name === 'userId' ? (
+      {method === 'userId' ? (
         <InputContainer>
-          <input id={name} type={type} name={name} placeholder={placeholder} />
+          <input {...register} required={required} {...rest} />
           <input
-            id={name2}
-            type={type2}
-            name={name2}
-            placeholder={placeholder2}
+            {...register2}
+            type="password"
+            name="password"
+            placeholder="비밀번호를 입력하세요."
           />
-          <input type="submit" value={btnValue} />
+          <button type="submit">{btnTitle}</button>
         </InputContainer>
       ) : null}
     </Container>
@@ -65,5 +65,10 @@ const InputContainer = styled.div`
   gap: 5px;
   input {
     padding: 10px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: red;
   }
 `;
