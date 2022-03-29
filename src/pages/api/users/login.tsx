@@ -3,42 +3,36 @@ import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  //1. 프론트에서 받은 데이터 소환
+  //1. FE에서 받은 유저 데이터
   const { email, phone, userId, password } = req.body;
-  let user;
-  //2. 데이터 종류에 따른 핸들링
-  //2-1. 아이디와 비번으로 로그인 할 경우
+
+  //2-1. 아이디 비번으로 로그인시
   if (userId && password) {
-    user = await client.user.findFirst({
+    const user = await client.user.findFirst({
       where: { userId, password },
     });
     //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
-    //회원가입 페이지로 넘어간다.
+    //해당유저가 없다면? -> 회원가입 페이지로 넘어간다.
     if (!user) {
       console.log(`해당하는 유저가 없습니다.`);
     }
     console.log(user);
-  }
-
-  if (email) {
-    user = await client.user.upsert({
-      where: { email },
-      create: {
-        username: 'Anonymous',
-        email,
+  } else {
+    //2-2. 아이디 비번으로 로그인시
+    const user = await client.user.upsert({
+      where: {
+        ...(email ? { email } : {}),
+        ...(phone ? { phone: +phone } : {}),
       },
-      update: {}, //upsert를 쓸때 update는 required
-    });
-  } else if (phone) {
-    user = await client.user.upsert({
-      where: { phone: +phone },
       create: {
         username: 'Anonymous',
-        phone: +phone,
+        ...(email ? { email } : {}),
+        ...(phone ? { phone: +phone } : {}),
       },
       update: {},
     });
+    console.log(user);
   }
 
   /*
