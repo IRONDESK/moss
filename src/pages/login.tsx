@@ -23,9 +23,11 @@ export default function Login() {
     watch,
   } = useForm<LoginForm>({ mode: 'onBlur' });
 
-  const onValid = (data: LoginForm) => {
-    login(data);
+  const onValid = (validForm: LoginForm) => {
+    login(validForm);
   };
+
+  console.log(loading, data, error);
 
   const [method, setMethod] = useState('email');
   const onEmailClick = () => {
@@ -62,7 +64,7 @@ export default function Login() {
           <Input
             register={register('email', { required: '이메일을 입력하세요!' })}
             method="email"
-            label="Email Address 이메일 주소"
+            label="Email Address"
             name="email"
             type="text"
             placeholder="이메일을 입력하세요."

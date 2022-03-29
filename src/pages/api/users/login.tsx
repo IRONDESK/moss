@@ -9,5 +9,8 @@ export default async function handler(
     res.status(401).end(); // BAD REQUEST
   }
   console.log(req.body);
-  res.status(200).end();
+  res.json({
+    '프론트로부터 데이터를 잘받았나?':
+      'Yes, now this message is going to be shown in the front!',
+  });
 }
