@@ -11,8 +11,14 @@ interface LoginForm {
 }
 
 export default function Login() {
-  const { register, reset, handleSubmit, watch } = useForm<LoginForm>();
-  console.log(watch());
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<LoginForm>({ mode: 'onBlur' });
+
   const onValid = (data: LoginForm) => {
     console.log(data);
   };
@@ -30,7 +36,7 @@ export default function Login() {
     setMethod('userId');
     reset();
   };
-
+  console.log(watch());
   return (
     <Container>
       <h1>로그인</h1>
@@ -50,42 +56,46 @@ export default function Login() {
       <form onSubmit={handleSubmit(onValid)}>
         {method === 'email' ? (
           <Input
-            register={register('email', { required: true })}
+            register={register('email', { required: '이메일을 입력하세요!' })}
             method="email"
             label="Email Address 이메일 주소"
             name="email"
             type="text"
             placeholder="이메일을 입력하세요."
             btnTitle="로그인 링크 받기"
+            errorMsg={errors.email?.message}
           />
         ) : null}
 
         {method === 'phone' ? (
           <Input
             register={register('phone', {
-              required: true,
+              required: '휴대폰 번호를 입력하세요!',
             })}
             method="phone"
             label="Phone Number"
             name="phone"
             type="number"
-            placeholder="휴대포 번호를 입력하세요."
+            placeholder="휴대폰 번호를 입력하세요."
             btnTitle="one-time password 받기"
+            errorMsg={errors.phone?.message}
           />
         ) : null}
 
         {method === 'userId' ? (
           <Input
             method="userId"
-            register={register('userId', { required: true })}
+            register={register('userId', { required: '아이디를 입력하세요!' })}
             register2={register('password', {
-              required: true,
+              required: '비밀번호를 입력하세요!',
             })}
             label="User Id"
             name="userId"
             type="text"
             placeholder="아이디를 입력하세요."
             btnTitle="아이디로 로그인 하기"
+            errorMsg={errors.userId?.message}
+            errorMsg2={errors.password?.message}
           />
         ) : null}
       </form>

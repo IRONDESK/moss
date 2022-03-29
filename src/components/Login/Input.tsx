@@ -6,7 +6,7 @@ interface InputProps {
   name: string;
   register: UseFormRegisterReturn;
   register2?: UseFormRegisterReturn;
-  required: boolean;
+  required?: boolean;
   [key: string]: any;
 }
 export default function Input({
@@ -17,6 +17,8 @@ export default function Input({
   register2,
   btnTitle,
   required,
+  errorMsg,
+  errorMsg2,
   ...rest
 }: InputProps) {
   return (
@@ -26,6 +28,7 @@ export default function Input({
         <InputContainer>
           <input {...register} required={required} {...rest} />
           <button type="submit">{btnTitle}</button>
+          {errorMsg}
         </InputContainer>
       ) : null}
 
@@ -33,6 +36,7 @@ export default function Input({
         <InputContainer>
           <input {...register} required={required} {...rest} />
           <button type="submit">{btnTitle}</button>
+          {errorMsg}
         </InputContainer>
       ) : null}
       {method === 'userId' ? (
@@ -45,6 +49,8 @@ export default function Input({
             placeholder="비밀번호를 입력하세요."
           />
           <button type="submit">{btnTitle}</button>
+          {errorMsg}
+          {errorMsg2}
         </InputContainer>
       ) : null}
     </Container>
