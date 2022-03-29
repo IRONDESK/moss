@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import Input from '../components/Login/Input';
 
 export default function Login() {
   const [method, setMethod] = useState('email');
@@ -16,7 +17,7 @@ export default function Login() {
     <Container>
       <h1>로그인</h1>
 
-      <div>
+      <section>
         <button onClick={onEmailClick}>
           <p>Email</p>
         </button>
@@ -26,48 +27,40 @@ export default function Login() {
         <button onClick={onUserIdClick}>
           <p>User Id</p>
         </button>
-      </div>
+      </section>
 
       <form>
         {method === 'email' ? (
-          <>
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="text"
-              name="email"
-              placeholder="이메일을 입력하세요."
-            />
-            <input type="submit" value="로그인 링크 받기" />
-          </>
+          <Input
+            label="Email Address 이메일 주소"
+            name="email"
+            type="text"
+            placeholder="이메일을 입력하세요."
+            btnValue="로그인 링크 받기"
+          />
         ) : null}
 
         {method === 'phone' ? (
-          <>
-            <label htmlFor="phone">Phone Number</label>
-            <input
-              type="number"
-              name="phone"
-              placeholder="휴대포 번호를 입력하세요."
-            />
-            <input type="submit" value="one-time password 받기" />
-          </>
+          <Input
+            label="Phone Number"
+            name="phone"
+            type="number"
+            placeholder="휴대포 번호를 입력하세요."
+            btnValue="one-time password 받기"
+          />
         ) : null}
 
         {method === 'userId' ? (
-          <>
-            <label htmlFor="userId">User Id</label>
-            <input
-              type="text"
-              name="userId"
-              placeholder="아이디를 입력하세요."
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="비밀번호를 입력하세요."
-            />
-            <input type="submit" value="아이디로 로그인 하기" />
-          </>
+          <Input
+            label="User Id"
+            name="userId"
+            name2="userId"
+            type="text"
+            type2="password"
+            placeholder="아이디를 입력하세요."
+            placeholder2="비밀번호를 입력하세요."
+            btnValue="아이디로 로그인 하기"
+          />
         ) : null}
       </form>
     </Container>
@@ -79,10 +72,10 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  div {
+  width: 40%;
+  section {
     display: flex;
-    width: 50%;
+    width: 100%;
     button {
       width: 100%;
       margin: 10px 0;
@@ -92,12 +85,10 @@ const Container = styled.section`
     }
   }
   form {
-    margin-top: 15px;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    input {
-      padding: 10px;
-    }
+    border: 3px solid blue;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    padding: 10px;
   }
 `;
