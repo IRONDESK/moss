@@ -1,16 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import client from '../../../libs/server/client';
+import withHandler from '../../../libs/server/withHandler';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  if (req.method !== 'POST') {
-    res.status(401).end(); // BAD REQUEST
-  }
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(req.body);
-  res.json({
-    '프론트로부터 데이터를 잘받았나?':
-      'Yes, now this message is going to be shown in the front!',
+  // return res.status(200).end();
+  return res.json({
+    '백엔드와 프론트 연결성공?':
+      'YES, if it is succeed, it will be shown on the FRONT!',
   });
+  //prisma작업이 들어갈거임
 }
+
+//!!중요!!
+//NextJs에서 api route를 만들때는 항상 export default를 해줘야 함!
+export default withHandler('POST', handler);
