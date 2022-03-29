@@ -14,11 +14,11 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
+  username  String
   userId    String?   @unique
   password  String?
   email     String?   @unique
   phone     BigInt?   @unique
-  username  String
   avatar    String?
   location  String?
   createdAt DateTime @default(now())
