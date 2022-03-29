@@ -15,7 +15,6 @@ export default function Input({
   method,
   register,
   register2,
-  btnTitle,
   required,
   errorMsg,
   errorMsg2,
@@ -27,7 +26,6 @@ export default function Input({
       {method === 'email' ? (
         <InputContainer>
           <input {...register} required={required} {...rest} />
-          <button type="submit">{btnTitle}</button>
           {errorMsg}
         </InputContainer>
       ) : null}
@@ -35,7 +33,6 @@ export default function Input({
       {method === 'phone' ? (
         <InputContainer>
           <input {...register} required={required} {...rest} />
-          <button type="submit">{btnTitle}</button>
           {errorMsg}
         </InputContainer>
       ) : null}
@@ -48,7 +45,6 @@ export default function Input({
             name="password"
             placeholder="비밀번호를 입력하세요."
           />
-          <button type="submit">{btnTitle}</button>
           {errorMsg}
           {errorMsg2}
         </InputContainer>
@@ -71,10 +67,5 @@ const InputContainer = styled.div`
   gap: 5px;
   input {
     padding: 10px;
-  }
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: red;
   }
 `;

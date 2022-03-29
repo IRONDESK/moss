@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import Input from '../components/Login/Input';
-import { COLOR } from '../constants';
 
 interface LoginForm {
   email?: string;
@@ -12,7 +11,6 @@ interface LoginForm {
 }
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
   const {
     register,
     reset,
@@ -22,14 +20,7 @@ export default function Login() {
   } = useForm<LoginForm>({ mode: 'onBlur' });
 
   const onValid = (data: LoginForm) => {
-    setLoading(true);
-    fetch('/api/users/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(() => setLoading(false));
+    console.log(data);
   };
 
   const [method, setMethod] = useState('email');
@@ -45,7 +36,7 @@ export default function Login() {
     setMethod('userId');
     reset();
   };
-
+  console.log(watch());
   return (
     <Container>
       <h1>로그인</h1>
@@ -71,6 +62,7 @@ export default function Login() {
             name="email"
             type="text"
             placeholder="이메일을 입력하세요."
+            btnTitle="로그인 링크 받기"
             errorMsg={errors.email?.message}
           />
         ) : null}
@@ -85,6 +77,7 @@ export default function Login() {
             name="phone"
             type="number"
             placeholder="휴대폰 번호를 입력하세요."
+            btnTitle="one-time password 받기"
             errorMsg={errors.phone?.message}
           />
         ) : null}
@@ -100,19 +93,10 @@ export default function Login() {
             name="userId"
             type="text"
             placeholder="아이디를 입력하세요."
+            btnTitle="아이디로 로그인 하기"
             errorMsg={errors.userId?.message}
             errorMsg2={errors.password?.message}
           />
-        ) : null}
-
-        {method === 'email' ? (
-          <button>{loading ? '로딩중...' : '로그인 링크 받기'}</button>
-        ) : null}
-        {method === 'phone' ? (
-          <button>{loading ? '로딩중...' : 'One-time password 받기'}</button>
-        ) : null}
-        {method === 'userId' ? (
-          <button>{loading ? '로딩중...' : '로그인'}</button>
         ) : null}
       </form>
     </Container>
@@ -142,11 +126,5 @@ const Container = styled.section`
     height: 200px;
     text-align: center;
     padding: 10px;
-    button {
-      width: 100%;
-      padding: 10px 5px;
-      color: white;
-      background-color: ${COLOR.main};
-    }
   }
 `;
