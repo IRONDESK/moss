@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import Input from '../components/Login/Input';
 import { COLOR } from '../constants';
+import useMutation from '../libs/client/useMutation';
 
 interface LoginForm {
   email?: string;
@@ -12,7 +13,8 @@ interface LoginForm {
 }
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
+  const [login, { loading, data, error }] = useMutation('/api/users/login');
+
   const {
     register,
     reset,
@@ -22,14 +24,7 @@ export default function Login() {
   } = useForm<LoginForm>({ mode: 'onBlur' });
 
   const onValid = (data: LoginForm) => {
-    setLoading(true);
-    fetch('/api/users/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(() => setLoading(false));
+    login(data);
   };
 
   const [method, setMethod] = useState('email');
