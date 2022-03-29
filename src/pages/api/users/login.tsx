@@ -3,39 +3,66 @@ import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { email, phone, userId, password } = req.body; //1. fe에서 받은 데이터
+  //1. 프론트에서 받은 데이터 소환
+  const { email, phone, userId, password } = req.body;
   let user;
+  //2. 데이터 종류에 따른 핸들링
+  //2-1. 아이디와 비번으로 로그인 할 경우
   if (userId && password) {
-    //2. 아이디를 입력했다면 ->  정보와 일치하는 유저를 찾는다
     user = await client.user.findFirst({
       where: { userId, password },
     });
-    //2-1. 해당하는 유저가 있다면?
+    //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
-    //2-2. 해당하는 유저가 db에 없다면? -> 유저를 생성한다.
+    //회원가입 페이지로 넘어간다.
     if (!user) {
-      user = await client.user.create({
-        data: {
-          username: 'Anonymous',
-          userId,
-          password,
-        },
-      });
-      console.log(
-        `해당하는 유저가 없습니다. 입력한 아이디와 비번으로 유저를 생성합니다.`,
-      );
+      console.log(`해당하는 유저가 없습니다.`);
     }
     console.log(user);
   }
 
   if (email) {
-    //2. 이메일을 입력했다면 ->  그 이메일과 일치하는 유저를 찾는다
+    user = await client.user.upsert({
+      where: { email },
+      create: {
+        username: 'Anonymous',
+        email,
+      },
+      update: {}, //upsert를 쓸때 update는 required
+    });
+  } else if (phone) {
+    user = await client.user.upsert({
+      where: { phone: +phone },
+      create: {
+        username: 'Anonymous',
+        phone: +phone,
+      },
+      update: {},
+    });
+  }
+
+  /*
+  //2-1. 아이디와 비번으로 로그인 할 경우
+  if (userId && password) {
+    user = await client.user.findFirst({
+      where: { userId, password },
+    });
+    //해당하는 유저가 있다면?
+    if (user) console.log(`유저를 찾았습니다!`);
+    //회원가입 페이지로 넘어간다.
+    if (!user) {
+      console.log(`해당하는 유저가 없습니다.`);
+    }
+    console.log(user);
+  }
+  //2-2. 이메일로 로그인 할 경우
+  if (email) {
     user = await client.user.findUnique({
       where: { email },
     });
-    //2-1. 해당하는 유저가 있다면?
+    //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
-    //2-2. 해당하는 유저가 db에 없다면? -> 유저를 생성한다.
+    //해당하는 유저가 db에 없다면? -> 유저를 생성한다.
     if (!user) {
       user = await client.user.create({
         data: {
@@ -55,9 +82,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     user = await client.user.findUnique({
       where: { phone: +phone },
     });
-    //2-1. 해당하는 유저가 있다면?
+    //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
-    //2-2. 해당하는 유저가 db에 없다면? -> 유저를 생성한다.
+    //해당하는 유저가 db에 없다면? -> 유저를 생성한다.
     if (!user) {
       user = await client.user.create({
         data: {
@@ -71,6 +98,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     console.log(user);
   }
+  */
+
   return res.status(200).end();
 }
 
