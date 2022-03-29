@@ -5,15 +5,14 @@ import withHandler from 'src/libs/server/withHandler';
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //1. FE에서 받은 유저 데이터
   const { email, phone, userId, password } = req.body;
+  const payload = email ? { email } : { phone: +phone };
 
   //2-1. 아이디 비번으로 로그인시
   if (userId && password) {
     const user = await client.user.findFirst({
       where: { userId, password },
     });
-    //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
-    //해당유저가 없다면? -> 회원가입 페이지로 넘어간다.
     if (!user) {
       console.log(`해당하는 유저가 없습니다.`);
     }
@@ -22,13 +21,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //2-2. 아이디 비번으로 로그인시
     const user = await client.user.upsert({
       where: {
-        ...(email ? { email } : {}),
-        ...(phone ? { phone: +phone } : {}),
+        ...payload,
       },
       create: {
         username: 'Anonymous',
-        ...(email ? { email } : {}),
-        ...(phone ? { phone: +phone } : {}),
+        ...payload,
       },
       update: {},
     });
