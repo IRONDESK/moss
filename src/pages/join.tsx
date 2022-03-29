@@ -86,7 +86,7 @@ export default function Join() {
           />
           {errors.location?.message}
 
-          <input type="submit" value="회원가입" />
+          <button type="submit">{loading ? '로딩중...' : '회원가입'}</button>
         </form>
       </Container>
     </>
@@ -107,9 +107,13 @@ const Container = styled.section`
     justify-content: center;
     align-items: center;
     gap: 5px;
-    input {
+    input,
+    button {
       width: 30%;
       padding: 10px 20px;
+    }
+    button {
+      background-color: red;
     }
   }
 `;
