@@ -13,6 +13,7 @@ interface LoginForm {
 }
 
 export default function Login() {
+  //fecth를 위한 mutation Hook
   const [login, { loading, data, error }] = useMutation('/api/users/login');
 
   //useForm
@@ -27,8 +28,6 @@ export default function Login() {
   const onValid = (validForm: LoginForm) => {
     login(validForm);
   };
-
-  console.log(loading, data, error);
 
   const [method, setMethod] = useState('email');
   const onEmailClick = () => {
