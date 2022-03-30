@@ -21,6 +21,18 @@ model User {
   phone     BigInt?   @unique
   avatar    String?
   location  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Token     Token[]
+}
+
+//payload는 랜덤한 숫자가 될거임!
+
+model Token {
+  id             Int       @id @default(autoincrement())
+  payload        String    @unique
+  user           User      @relation(fields: [UserModelId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  UserModelId    Int
 }

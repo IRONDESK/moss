@@ -29,9 +29,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
       update: {},
     });
-    console.log(user);
+    console.log('유저생성!', user);
+    //3. 토큰 생성
+    const token = await client.token.create({
+      data: {
+        payload: '1234',
+        user: {
+          connect: {
+            id: user.id, //token, user를 연결!
+          },
+        },
+      },
+    });
+    console.log('토큰생성!', token);
   }
-
   return res.status(200).end();
 }
 
