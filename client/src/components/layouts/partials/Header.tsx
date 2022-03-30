@@ -1,26 +1,36 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { COLOR } from '../../../constants';
 
 export const Header = () => {
   return (
-    <HeaderCont>
-      <LeftHeader>
-        <button>
-          <Link href="/">
-            <Logo src="/images/header_logo.svg" alt="헤더로고" />
-          </Link>
-        </button>
-        <h1>모여라 스터디</h1>
-      </LeftHeader>
-      <RightHeader>
-        <Link href="/join">
-          <button>회원가입</button>
+    <HeaderCont className="max-width">
+      <div className="left">
+        <Link href="/">
+          <a>
+            <h1>
+              <img src="/images/header_logo.svg" alt="MOSS" />
+              <strong>모여라 스터디</strong>
+            </h1>
+          </a>
         </Link>
-        <Link href="/login">
-          <button>로그인</button>
+      </div>
+      <div className="right">
+        <Link href="/join" passHref>
+          <a className="join">회원가입</a>
         </Link>
-      </RightHeader>
-      <Link href="/join">
+        <Link href="/login" passHref>
+          <a className="login">로그인</a>
+        </Link>
+        {/* 로그인시에만  */}
+        {/* <Link href="/my-page" passHref>
+          <a className="mypage">마이페이지</a>
+        </Link>
+        <Link href="/" passHref>
+          <a className="logout">로그아웃</a>
+        </Link> */}
+      </div>
+      <Link href="/join" passHref>
         <Mypage src="images/login.svg" alt="로그인 아이콘" />
       </Link>
     </HeaderCont>
@@ -28,59 +38,151 @@ export const Header = () => {
 };
 const HeaderCont = styled.header`
   display: flex;
-  padding: 0 2.5rem;
   height: 100px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media (max-width: 440px) {
+
+  @media (max-width: 640px) {
     height: 60px;
-    padding: 0 1rem;
-  } ;
-`;
-
-const LeftHeader = styled.article`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  h1 {
-    font-weight: 400;
   }
-  @media (max-width: 440px) {
+
+  .left {
     h1 {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      clip: rect(0 0 0 0);
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      strong {
+        font-weight: 400;
+      }
     }
-  }
-`;
 
-const RightHeader = styled.article`
-  display: flex;
-  gap: 8px;
-  button {
-    border: 1px solid #e7e6e2;
-    padding: 9px 20px;
-    width: 100px;
-    font-size: 14px;
-    line-height: 14px;
-    &:nth-child(1) {
-      border: 1px solid #34c88a;
-      color: #34c88a;
+    @media (max-width: 640px) {
+      img {
+        height: 30px;
+      }
+      strong {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        clip: rect(0 0 0 0);
+        overflow: hidden;
+      }
     }
   }
-  @media (max-width: 440px) {
-    display: none;
-  }
-`;
-const Logo = styled.img`
-  width: 10rem;
-  height: 32px;
-  @media (max-width: 440px) {
-    width: 6rem;
+  .right {
+    display: flex;
+    gap: 8px;
+    a {
+      border: 1px solid #e7e6e2;
+      padding: 9px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 14px;
+      line-height: 14px;
+      transition: all 0.2s;
+      &:hover {
+        background: #eee;
+      }
+      &:not(.join) {
+        &::before {
+          content: '';
+          width: 24px;
+          height: 24px;
+          transition: all 0.2s;
+        }
+      }
+      &.login,
+      &.mypage {
+        border: 1px solid ${COLOR.main};
+        color: ${COLOR.main};
+        &:hover {
+          background: ${COLOR.main};
+          color: #fff;
+        }
+      }
+      &.login {
+        &::before {
+          background: url(../../images/login.svg) no-repeat 50% 50% / 20px;
+        }
+        &:hover {
+          &::before {
+            background: url(../../images/login_white.svg) no-repeat 50% 50% /
+              20px;
+          }
+        }
+      }
+      &.logout::before {
+        background: url(../../images/icons/logout.svg) no-repeat 50% 50% / 20px;
+      }
+      &.mypage {
+        &::before {
+          background: url(../../images/icons/mypage.svg) no-repeat 50% 50% /
+            22px;
+        }
+        &:hover {
+          &::before {
+            background: url(../../images/mypage_white.svg) no-repeat 50% 50% /
+              22px;
+          }
+        }
+      }
+      @media (max-width: 640px) {
+        &.join {
+          display: none;
+        }
+        &:not(.join) {
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          font-size: 10px;
+          position: relative;
+          border: none;
+        }
+        &:not(.join) {
+          &::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+          }
+        }
+        &.login {
+          &::before {
+            background: #fff url(../../images/login.svg) no-repeat 50% 50% /
+              24px;
+          }
+          &:hover::before {
+            background: ${COLOR.main} url(../../images/login_white.svg)
+              no-repeat 50% 50% / 24px;
+          }
+        }
+
+        &.mypage {
+          &::before {
+            background: #fff url(../../images/icons/mypage_color.svg) no-repeat
+              50% 50% / 28px;
+          }
+          &:hover::before {
+            background: ${COLOR.main} url(../../images/mypage_white.svg)
+              no-repeat 50% 50% / 28px;
+          }
+        }
+        &.logout {
+          &::before {
+            background: #fff url(../../images/icons/logout.svg) no-repeat 50%
+              50% / 24px;
+          }
+          &:hover::before {
+            background-color: #eee;
+          }
+        }
+      }
+    }
   }
 `;
 
