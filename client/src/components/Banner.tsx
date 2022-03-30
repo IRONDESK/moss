@@ -24,7 +24,7 @@ const BannerPage = styled.section`
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 70px 0;
+  padding: 100px 0;
   h2 {
     margin-bottom: 24px;
     color: ${COLOR.main};
