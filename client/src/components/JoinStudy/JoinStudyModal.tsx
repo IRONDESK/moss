@@ -35,7 +35,7 @@ export const JoinStudyModal = ({ modal, setModal }: IModal) => {
         <animated.div style={animation}>
           <Container>
             <Button onClick={() => setModal((prev: boolean) => !prev)}>
-              <Img src="./images/icons/close.png"></Img>
+              <Img src="/images/icons/close.png"></Img>
             </Button>
             <h1>
               <div>스터디 신청</div>
