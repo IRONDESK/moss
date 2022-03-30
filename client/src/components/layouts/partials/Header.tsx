@@ -1,8 +1,20 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { COLOR } from '../../../constants';
 
 export const Header = () => {
+  const [token, setToken] = useState(false);
+  useEffect(() => {
+    const Token = localStorage.getItem('Token');
+    if (Token) {
+      getToken(`${Token}`);
+    }
+  });
+  const getToken = (Token: string) => {
+    setToken(true);
+    console.log(Token);
+  };
   return (
     <HeaderCont className="max-width">
       <div className="left">
@@ -16,19 +28,26 @@ export const Header = () => {
         </Link>
       </div>
       <div className="right">
-        <Link href="/join" passHref>
-          <a className="join">회원가입</a>
-        </Link>
-        <Link href="/login" passHref>
-          <a className="login">로그인</a>
-        </Link>
-        {/* 로그인시에만  */}
-        {/* <Link href="/my-page" passHref>
-          <a className="mypage">마이페이지</a>
-        </Link>
-        <Link href="/" passHref>
-          <a className="logout">로그아웃</a>
-        </Link> */}
+        {token ? (
+          <>
+            <Link href="/my-page" passHref>
+              <a className="mypage">마이페이지</a>
+            </Link>
+            <Link href="/" passHref>
+              <a className="logout">로그아웃</a>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href="/join" passHref>
+              <a className="join">회원가입</a>
+            </Link>
+
+            <Link href="/login" passHref>
+              <a className="login">로그인</a>
+            </Link>
+          </>
+        )}
       </div>
       <Link href="/join" passHref>
         <Mypage src="images/login.svg" alt="로그인 아이콘" />
