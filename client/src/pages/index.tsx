@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 const Home: NextPage = () => {
   return (
     <>
+      <Backgroud />
       <Banner />
       <TitleSearch />
       <StudyList>
@@ -62,9 +63,37 @@ const StudyList = styled.section`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  @media (max-width: 440px) {
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 0 20px;
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 0 20px;
+  }
+  @media (max-width: 640px) {
     grid-template-columns: repeat(1, 1fr);
     margin: 0 0 20px;
+  }
+`;
+
+const Backgroud = styled.div`
+  background: #f0efed;
+  width: 100%;
+  height: 600px;
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  &::before {
+    content: '';
+    display: block;
+    width: 500px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    position: absolute;
+    top: -30%;
+    left: 60%;
   }
 `;
 
