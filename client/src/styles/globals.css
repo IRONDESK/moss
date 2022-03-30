@@ -81,14 +81,8 @@ button {
 /* 반응형 가로폭 */
 .max-width {
   width: 1224px;
-  max-width: calc(100% - 60px);
+  max-width: calc(100% - 40px);
   margin: 0 auto;
-}
-@media (max-width: 440px) {
-  .max-width {
-    width: 100%;
-    scrollbar-width: none;
-  }
 }
 
 /* 접근성을 위한 텍스트 숨김 */
