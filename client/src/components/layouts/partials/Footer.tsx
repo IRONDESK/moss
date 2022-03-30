@@ -3,7 +3,7 @@ import { COLOR } from '../../../constants';
 
 export const Footer = () => {
   return (
-    <FooterCont>
+    <FooterCont className="max-width">
       <section>
         <FooterLogo>
           <img src="/images/footer_logo.svg" alt="푸터로고" />
@@ -41,7 +41,7 @@ export const Footer = () => {
 
 const FooterCont = styled.footer`
   height: 100px;
-  padding: 0 100px;
+
   margin-top: 10vh;
   section {
     padding: 16px 0;
@@ -104,7 +104,7 @@ const MemberList = styled.ul`
     color: #666666;
     font-size: 14px;
   }
-  @media (max-width: 440px) {
+  @media (max-width: 640px) {
     display: grid;
     grid: repeat(2, 20px) / auto-flow 45px;
     width: calc(100% / 2.3);

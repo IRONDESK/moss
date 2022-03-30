@@ -8,19 +8,8 @@ export const Layout: React.FC = ({ children }) => {
     <>
       <Title title="모여라 스터디" />
       <Header />
-      <Container>{children}</Container>
+      <section className="max-width">{children}</section>
       <Footer />
     </>
   );
 };
-
-const Container = styled.section`
-  width: 1224px;
-  max-width: calc(100% - 60px);
-  margin: 0 auto 80px auto;
-
-  @media (max-width: 440px) {
-    width: 100%;
-    scrollbar-width: none;
-  }
-`;
