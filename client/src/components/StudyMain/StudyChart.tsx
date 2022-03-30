@@ -36,8 +36,8 @@ export const StudyChart = ({width, height, data}: ChartProps) => {
     return (
         <>
         <ChartWrap>
-            <ChartSvg width={width} height={height}>
-                <g transform={`translate(${width / 2}, ${height})`}>
+            <ChartSvg>
+                <g >
                     <ChartBgPath key={1} d={bgArc ? bgArc : undefined} />
                     {data <= 0 ? null : <ChartStudyPath key={2} d={studyArc ? studyArc : undefined} />}
                     {data >= 100 ? null : <ChartLeftPath key={3} d={leftArc ? leftArc : undefined} /> }
@@ -57,9 +57,30 @@ export const StudyChart = ({width, height, data}: ChartProps) => {
 
 const ChartWrap = styled.div`
     position: relative;
+    @media (max-width: 1024px) {
+        transform: scale(0.8);
+        transition: all 0.3s;
+    };
+    @media (max-width: 640px) {
+        transform: scale(0.8);
+        transition: all 0.3s;
+    };
+    @media (max-width: 440px) {
+        padding-top: 200px;
+    };
 `;
 const ChartSvg = styled.svg`
-    display: inline-block;
+    margin: 0 auto;
+    width: 400px;
+    height: 200px;
+    g {
+        transform: translate(200px, 200px);
+    }
+    @media (max-width: 440px) {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -200px);
+    };
 `;
 
 const ChartStudyPath = styled.path`

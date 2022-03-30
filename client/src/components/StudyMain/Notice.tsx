@@ -67,8 +67,6 @@ export const Notice = () => {
 const Container = styled.section`
   position: relative;
   padding: 48px 24px 16px;
-  margin: 16px 0;
-  width: 496px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
     content: '';
@@ -78,7 +76,7 @@ const Container = styled.section`
     width: 40px;
     height: 48px;
     background: ${COLOR.point} url('/images/notice.svg') no-repeat 50% 70%;
-  }
+  };
 `;
 
 const Title = styled.h2`

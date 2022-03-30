@@ -33,13 +33,15 @@ export const Member = () => {
 };
 
 const Container = styled.section`
-  width: 700px;
-  height: 268px;
+  position: relative;
+  width: 100%;
+  min-height: 268px;
   border: 1px solid #dddd;
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: relative;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  };
 `;
 
 const MemberInfo = styled.section`
@@ -64,6 +66,7 @@ const MemberInfo = styled.section`
     background-size: cover;
     width: 17px;
     height: 19px;
+  }
   }
 `;
 

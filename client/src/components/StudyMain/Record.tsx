@@ -58,17 +58,15 @@ export const Record = () => {
 const Container = styled.section`
     position: relative;
     padding: 48px 24px 16px;
-    margin: 16px 0;
-    width: 496px;
     border: 1px solid ${COLOR.boxBorder};
     &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 32px;
-    width: 40px;
-    height: 48px;
-    background: ${COLOR.main} url('/images/notice.svg') no-repeat 50% 70%;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 32px;
+        width: 40px;
+        height: 48px;
+        background: ${COLOR.main} url('/images/notice.svg') no-repeat 50% 70%;
     }
 `;
 
