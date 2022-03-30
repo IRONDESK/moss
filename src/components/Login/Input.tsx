@@ -58,7 +58,10 @@ const Container = styled.div`
   padding: 10px;
   label {
     display: block;
-    margin-bottom: 10px;
+    text-align: center;
+    margin: 5%;
+    font-size: 1.2rem;
+    color: ${COLOR.point};
   }
 `;
 const InputContainer = styled.div`

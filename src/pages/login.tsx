@@ -50,13 +50,22 @@ export default function Login() {
       </h1>
 
       <section>
-        <button onClick={onEmailClick}>
+        <button
+          onClick={onEmailClick}
+          className={method === 'email' ? 'chosen' : 'unchosen'}
+        >
           <p>이메일</p>
         </button>
-        <button onClick={onPhoneClick}>
+        <button
+          onClick={onPhoneClick}
+          className={method === 'phone' ? 'chosen' : 'unchosen'}
+        >
           <p>휴대폰</p>
         </button>
-        <button onClick={onUserIdClick}>
+        <button
+          onClick={onUserIdClick}
+          className={method === 'userId' ? 'chosen' : 'unchosen'}
+        >
           <p>아이디 / 비밀번호</p>
         </button>
       </section>
@@ -66,7 +75,7 @@ export default function Login() {
           <Input
             register={register('email', { required: '이메일을 입력하세요!' })}
             method="email"
-            label="이메일 주소 (Email Address)"
+            label="이메일 주소로 로그인 (Email Address)"
             name="email"
             type="text"
             placeholder="이메일을 입력하세요."
@@ -80,7 +89,7 @@ export default function Login() {
               required: '휴대폰 번호를 입력하세요!',
             })}
             method="phone"
-            label="휴대폰 번호 (Phone Number)"
+            label="휴대폰 로그인 (Phone Number)"
             name="phone"
             type="number"
             placeholder="휴대폰 번호를 입력하세요."
@@ -95,7 +104,7 @@ export default function Login() {
             register2={register('password', {
               required: '비밀번호를 입력하세요!',
             })}
-            label="아이디 & 비밀번호 (Id & Password)"
+            label="아이디 | 비밀번호 로그인 (Id | Password)"
             name="userId"
             type="text"
             placeholder="아이디를 입력하세요."
@@ -124,8 +133,7 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 75%;
-  border: 3px solid blue;
+  width: 60%;
   h1 {
     display: flex;
     justify-content: center;
@@ -144,25 +152,21 @@ const Container = styled.section`
   section {
     display: flex;
     justify-content: space-around;
-    width: 100%;
-    margin: 50px 0 30px;
+    width: 80%;
+    margin-top: 5%;
     button {
       font-size: 1.2rem;
-      border-bottom: 4px solid ${COLOR.main};
       padding: 10px 20px;
-      width: 20%;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      p {
-        position: absolute;
-        bottom: 10px;
-        width: 200px;
+      width: 100%;
+      &.chosen {
+        border-bottom: 4px solid ${COLOR.main};
+      }
+      &.unchosen {
+        border-bottom: 4px solid ${COLOR.gray};
       }
     }
   }
   form {
-    border: 3px solid blue;
     width: 90%;
     button {
       width: 100%;
