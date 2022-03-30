@@ -16,7 +16,7 @@ export const Header = () => {
     console.log(Token);
   };
   return (
-    <HeaderCont className="max-width">
+    <HeaderCont className="max-width" id="header">
       <div className="left">
         <Link href="/">
           <a>
@@ -49,9 +49,6 @@ export const Header = () => {
           </>
         )}
       </div>
-      <Link href="/join" passHref>
-        <Mypage src="images/login.svg" alt="로그인 아이콘" />
-      </Link>
     </HeaderCont>
   );
 };
@@ -160,6 +157,8 @@ const HeaderCont = styled.header`
           font-size: 10px;
           position: relative;
           border: none;
+          border-radius: 50%;
+          overflow: hidden;
         }
         &:not(.join) {
           &::before {

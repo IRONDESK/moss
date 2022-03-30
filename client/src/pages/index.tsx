@@ -84,6 +84,7 @@ const Backgroud = styled.div`
   position: absolute;
   left: 0;
   z-index: -1;
+  overflow: hidden;
   &::before {
     content: '';
     display: block;
