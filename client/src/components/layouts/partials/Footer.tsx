@@ -40,8 +40,8 @@ export const Footer = () => {
 // const mq = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
 
 const FooterCont = styled.footer`
+  width: 100vw;
   height: 100px;
-
   margin-top: 10vh;
   section {
     padding: 16px 0;
