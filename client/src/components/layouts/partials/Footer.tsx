@@ -47,6 +47,7 @@ const FooterCont = styled.footer`
   position: relative;
   margin-top: 100px;
   border-top: 1px solid #ddd;
+
   section {
     display: flex;
     align-items: center;

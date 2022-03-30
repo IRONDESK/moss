@@ -5,6 +5,7 @@ import { Notice } from '../../components/StudyMain/Notice';
 import { Record } from '../../components/StudyMain/Record';
 import { TodoList } from '../../components/StudyMain/Todo';
 import { StudyComponents } from '../../components/StudyMain/Container';
+import { useState } from 'react';
 
 export default function StudyPage() {
   return (

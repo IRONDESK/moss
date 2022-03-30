@@ -42,6 +42,7 @@ const Banner = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  position: relative;
   background: url('/images/background.png');
   background-size: cover;
   padding: 24px 0 24px 24px;
@@ -133,6 +134,8 @@ const StudyBtn = styled.a`
 const Hashtag = styled.div`
   margin-right: 32px;
   padding: 3px 10px;
+  position: absolute;
+  right: 0;
   background-color: #fff;
   color: #767676;
   font-size: 14px;
