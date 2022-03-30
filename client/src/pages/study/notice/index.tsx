@@ -5,6 +5,7 @@ import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
 import { Button } from '../../../components/Notice/Button';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { COLOR } from '../../../constants';
+import { NoticeList } from '../../../components/Notice/NoticeList';
 
 export default function NoticePage(): JSX.Element {
   return (
@@ -27,39 +28,43 @@ export default function NoticePage(): JSX.Element {
         </caption>
         <colgroup>
           <col className="col-num" />
-          <col className="col-category " />
+          <col className="col-category" />
           <col />
           <col className="col-writer" />
           <col className="col-date" />
         </colgroup>
         <thead>
           <tr>
-            <th scope="col">번호</th>
-            <th scope="col">말머리</th>
+            <th scope="col" className="col-num">
+              번호
+            </th>
+            <th scope="col" className="col-category">
+              말머리
+            </th>
             <th scope="col">제목</th>
-            <th scope="col">작성일</th>
-            <th scope="col">등록일시</th>
+            <th scope="col" className="col-writer">
+              작성자
+            </th>
+            <th scope="col" className="col-date">
+              등록일시
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>2</td>
-            <td>장소</td>
-            <td className="notice-title">
-              <Link href="/notice/view">스터디 공지사항입니다</Link>
-            </td>
-            <td>손수철</td>
-            <td>2021.11.30 00:00</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>장소</td>
-            <td className="notice-title">
-              <Link href="/notice/view">스터디 공지사항입니다</Link>
-            </td>
-            <td>손수철</td>
-            <td>2021.11.30 00:00</td>
-          </tr>
+          <NoticeList
+            num={2}
+            category="장소"
+            title="공지사항입니다"
+            writer="손수철"
+            date="2022.04.02 00:00"
+          />
+          <NoticeList
+            num={1}
+            category="일반공지"
+            title="알려드립니다"
+            writer="박유진"
+            date="2022.04.02 00:00"
+          />
         </tbody>
       </Table>
       <Page>
@@ -111,11 +116,15 @@ const Table = styled.table`
     width: 15%;
   }
   @media (max-width: 640px) {
+    .col-num,
+    .col-date {
+      display: none;
+    }
     .col-num {
-      width: 40px;
+      width: 60px;
     }
     .col-category {
-      width: 60px;
+      width: 80px;
     }
     .col-writer {
       width: 80px;
