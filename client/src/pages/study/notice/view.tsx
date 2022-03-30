@@ -8,7 +8,7 @@ export default function NoticePage(): JSX.Element {
   return (
     <>
       <StudyBanner
-        logo="../images/StudyLogo.png"
+        logo="../../images/StudyLogo.png"
         category="카테고리"
         title="React 스터디"
         des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
@@ -28,7 +28,7 @@ export default function NoticePage(): JSX.Element {
           <p>매주 월,목 13:00 프로젝트 회의를 진행합니다.</p>
         </div>
         <div className="btn-group">
-          <Button href="/notice" text="목록" className="list" />
+          <Button href="/study/notice" text="목록" className="list" />
           <Button href="#" text="수정" className="modify" />
           <Button href="#" text="삭제" className="delete" />
         </div>

@@ -4,15 +4,18 @@ import { COLOR } from '../../../constants';
 import dynamic from 'next/dynamic';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { Button } from '../../../components/Notice/Button';
-const PostEditor = dynamic(() => import('../../../components/Notice/PostEditor'), {
-  ssr: false,
-});
+const PostEditor = dynamic(
+  () => import('../../../components/Notice/PostEditor'),
+  {
+    ssr: false,
+  },
+);
 
 export default function NoticePage(): JSX.Element {
   return (
     <>
       <StudyBanner
-        logo="../images/StudyLogo.png"
+        logo="../../images/StudyLogo.png"
         category="카테고리"
         title="React 스터디"
         des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
@@ -46,8 +49,8 @@ export default function NoticePage(): JSX.Element {
         </div>
 
         <BtnGroup>
-          <Button text="글게시" href="/notice/view" className="write" />
-          <Button text="취소" href="/notice/view" className="cancel" />
+          <Button text="글게시" href="/study/notice/view" className="write" />
+          <Button text="취소" href="/study/notice/view" className="cancel" />
         </BtnGroup>
       </NoticeForm>
     </>

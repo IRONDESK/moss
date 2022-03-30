@@ -10,7 +10,8 @@ const H2Title = styled.h3`
   margin-top: 3rem;
   padding: 8px 40px;
   box-sizing: border-box;
-  background: ${COLOR.main} url(../images/notice.svg) no-repeat 12px 10px / 24px;
+  background: ${COLOR.main} url(../../images/notice.svg) no-repeat 12px 10px /
+    24px;
   color: #fff;
   line-height: 30px;
   font-size: 20px;

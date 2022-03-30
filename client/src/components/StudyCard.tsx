@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { COLOR } from "../constants";
+import { COLOR } from '../constants';
 
 interface CardProps {
   category: string;
@@ -25,7 +25,9 @@ export const StudyCard = ({
         <Header>
           <StudyTag>
             <Category>{category}</Category>
-            <LeaderTag default={leader}><img src='/images/crown.svg' alt='스터디장' /></LeaderTag>
+            <LeaderTag default={leader}>
+              <img src="/images/crown.svg" alt="스터디장" />
+            </LeaderTag>
           </StudyTag>
           <Title>{title}</Title>
           <Hashtag>{hashtag}</Hashtag>
@@ -33,7 +35,7 @@ export const StudyCard = ({
       </Thumbnail>
       <Join>
         <Detail>
-          <MemberIcon src='/images/login.svg' />
+          <MemberIcon src="/images/login.svg" />
           <Member>{member}/10</Member>
         </Detail>
 
@@ -48,9 +50,11 @@ export const StudyCard = ({
 };
 
 const CardWrap = styled.article`
+  background: #fff;
   padding: 16px;
-  border: 2px solid #eeeeee;
+  border: 1px solid #eeeeee;
   box-sizing: border-box;
+  box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.05);
 `;
 
 const Thumbnail = styled.div`
@@ -86,8 +90,8 @@ const Category = styled.span`
   box-sizing: border-box;
   z-index: 1;
 `;
-const LeaderTag = styled.div<{default: boolean}>`
-  display: ${props => props.default ? 'flex' : 'none'};
+const LeaderTag = styled.div<{ default: boolean }>`
+  display: ${(props) => (props.default ? 'flex' : 'none')};
   justify-content: center;
   background-color: ${COLOR.main};
   width: 31px;

@@ -25,27 +25,27 @@ const Btn = styled.a`
   padding: 0 20px 0 40px;
 
   &.delete {
-    background: url(../images/notice_delete.svg) no-repeat 12px 50% / 20px;
+    background: url(../../images/notice_delete.svg) no-repeat 12px 50% / 20px;
     color: #ff6347;
     border: 1px solid rgba(255, 99, 71, 0.2);
     transition: all 0.3s;
     &:hover {
-      background: #ff6347 url(../images/notice_delete_white.svg) no-repeat 12px
-        50% / 20px;
+      background: #ff6347 url(../../images/notice_delete_white.svg) no-repeat
+        12px 50% / 20px;
       color: #fff;
       border-color: #ff6347;
     }
   }
 
   &.cancel {
-    background: url(../images/notice_close.svg) no-repeat 12px 50% / 20px;
+    background: url(../../images/notice_close.svg) no-repeat 12px 50% / 20px;
     color: #ff6347;
     border: 1px solid rgba(255, 99, 71, 0.2);
     transition: all 0.3s;
 
     &:hover {
-      background: #ff6347 url(../images/notice_close_white.svg) no-repeat 12px
-        50% / 20px;
+      background: #ff6347 url(../../images/notice_close_white.svg) no-repeat
+        12px 50% / 20px;
       color: #fff;
       border-color: #ff6347;
     }
@@ -53,13 +53,13 @@ const Btn = styled.a`
 
   &.write,
   &.modify {
-    background: url(../images/notice_edit.svg) no-repeat 12px 50% / 20px;
+    background: url(../../images/notice_edit.svg) no-repeat 12px 50% / 20px;
     color: #333;
     border: 1px solid rgba(51, 51, 51, 0.2);
     transition: all 0.3s;
 
     &:hover {
-      background: #34c88a url(../images/notice_edit_white.svg) no-repeat 12px
+      background: #34c88a url(../../images/notice_edit_white.svg) no-repeat 12px
         50% / 20px;
       color: #fff;
       border-color: #34c88a;
@@ -67,13 +67,13 @@ const Btn = styled.a`
   }
 
   &.list {
-    background: url(../images/notice_list.svg) no-repeat 12px 50% / 20px;
+    background: url(../../images/notice_list.svg) no-repeat 12px 50% / 20px;
     color: #333;
     border: 1px solid rgba(51, 51, 51, 0.2);
     transition: all 0.3s;
 
     &:hover {
-      background: #34c88a url(../images/notice_list_white.svg) no-repeat 12px
+      background: #34c88a url(../../images/notice_list_white.svg) no-repeat 12px
         50% / 20px;
       color: #fff;
       border-color: #34c88a;
