@@ -5,7 +5,7 @@ import withHandler from 'src/libs/server/withHandler';
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   //1. FE에서 받은 유저 데이터
   const { email, phone, userId, password } = req.body;
-  const payload = email ? { email } : { phone: +phone };
+  const user = email ? { email } : { phone: +phone };
 
   //2-1. 아이디 비번으로 로그인시
   if (userId && password) {
@@ -18,25 +18,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     console.log(user);
   } else {
-    //2-2. 아이디 비번으로 로그인시
-    const user = await client.user.upsert({
-      where: {
-        ...payload,
-      },
-      create: {
-        username: 'Anonymous',
-        ...payload,
-      },
-      update: {},
-    });
-    console.log('유저생성!', user);
-    //3. 토큰 생성
+    const payload = Math.floor(100000 + Math.random() * 900000) + ''; //6자리 랜덤숫자 string
     const token = await client.token.create({
       data: {
-        payload: '1234',
+        payload,
+        //3-1. 토큰 생성 -> 유저와 연결 // 유저가 없다면? -> 유저를 생성 (토큰과 연결됨)
         user: {
-          connect: {
-            id: user.id, //token, user를 연결!
+          connectOrCreate: {
+            where: {
+              ...user,
+            },
+            create: {
+              username: 'Anonymous',
+              ...user,
+            },
           },
         },
       },
