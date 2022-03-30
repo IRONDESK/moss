@@ -14,9 +14,12 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  username  String
-  userId    String?   @unique
+  username  String  
+
+  userId    String?  @unique
   password  String?   
+  @@unique(fields: [userId, password], name: "userId_password")
+  
   email     String?   @unique
   phone     BigInt?   @unique
   avatar    String?
@@ -25,14 +28,14 @@ model User {
   updatedAt DateTime  @updatedAt
   Token     Token[]
 }
-
-//payload는 랜덤한 숫자가 될거임!
+//User model에서 username은 required! (빠지면 error발생)
 
 model Token {
   id             Int       @id @default(autoincrement())
   payload        String    @unique
-  user           User      @relation(fields: [UserModelId], references: [id])
+  user           User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   UserModelId    Int
 }
+//Token모델에서 payload와 users가 required!
