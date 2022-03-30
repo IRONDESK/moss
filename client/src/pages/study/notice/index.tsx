@@ -10,7 +10,7 @@ export default function NoticePage(): JSX.Element {
   return (
     <>
       <StudyBanner
-        logo="./images/StudyLogo.png"
+        logo="../images/StudyLogo.png"
         category="카테고리"
         title="React 스터디"
         des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
@@ -78,7 +78,7 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        <Button text="글작성" href="/notice/write" className="write" />
+        <Button text="글작성" href="/study/notice/write" className="write" />
       </BtnGroup>
     </>
   );
@@ -99,21 +99,36 @@ const Table = styled.table`
     padding: 0;
   }
   .col-num {
-    width: 10rem;
+    width: 10%;
   }
   .col-category {
-    width: 10rem;
+    width: 10%;
   }
   .col-writer {
+    width: 10%;
   }
   .col-date {
-    width: 12rem;
+    width: 15%;
+  }
+  @media (max-width: 640px) {
+    .col-num {
+      width: 40px;
+    }
+    .col-category {
+      width: 60px;
+    }
+    .col-writer {
+      width: 80px;
+    }
+    .col-date {
+      width: 80px;
+    }
   }
 
   th {
     color: ${COLOR.main};
     border-bottom: 1px solid ${COLOR.main};
-    padding: 1rem;
+    padding: 1rem 0;
     font-weight: bold;
     font-size: 14px;
   }
@@ -127,6 +142,7 @@ const Table = styled.table`
     border-bottom: 1px solid #ddd;
     padding: 0.4rem;
     text-align: center;
+    vertical-align: middle;
     &.notice-title {
       text-align: left;
       a {
