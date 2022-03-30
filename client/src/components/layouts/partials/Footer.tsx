@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import { COLOR } from '../../../constants';
 
 export const Footer = () => {
   return (
-    <FooterCont className="max-width">
-      <section>
+    <FooterCont>
+      <section className="max-width">
         <FooterLogo>
           <img src="/images/footer_logo.svg" alt="푸터로고" />
           <h1>모여라 스터디</h1>
@@ -29,6 +30,9 @@ export const Footer = () => {
             <small>최성이</small>
           </li>
         </MemberList>
+        <Link href="#header" passHref>
+          <Top>Top</Top>
+        </Link>
       </section>
     </FooterCont>
   );
@@ -40,59 +44,25 @@ export const Footer = () => {
 // const mq = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
 
 const FooterCont = styled.footer`
-  height: 100px;
-
-  margin-top: 10vh;
+  position: relative;
+  margin-top: 100px;
+  border-top: 1px solid #ddd;
   section {
-    padding: 16px 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #c4c4c4;
+    justify-content: space-between;
+    padding: 24px 0;
   }
-  @media (max-width: 440px) {
-    position: relative;
-    margin-top: 0;
-    height: fit-content;
-    padding: 0;
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -28px;
-      right: 28px;
-      width: 48px;
-      height: 48px;
-      border: 1px solid ${COLOR.point};
-      border-radius: 50%;
-      background: ${COLOR.white};
-    }
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -7px;
-      right: 46px;
-      border: 1px solid ${COLOR.black};
-      border-width: 0 0 2px 2px;
-      width: 10px;
-      height: 10px;
-      transform: rotate(135deg);
-    }
-    section {
-      padding: 1.5rem 1.5rem;
-    }
-  } ;
 `;
 
 const FooterLogo = styled.div`
   img {
     height: 30px;
     width: 73px;
+    vertical-align: -10px;
   }
   h1 {
     font-size: 12px;
-    line-height: 1px;
     font-weight: 400;
   }
 `;
@@ -108,5 +78,54 @@ const MemberList = styled.ul`
     display: grid;
     grid: repeat(2, 20px) / auto-flow 45px;
     width: calc(100% / 2.3);
+  }
+`;
+
+const Top = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid ${COLOR.point};
+  border-radius: 50%;
+  background: ${COLOR.white};
+  font-size: 10px;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(135deg);
+    transition: all 0.2s;
+  }
+  &::before {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    top: 50%;
+  }
+  &::after {
+    border: 1px solid ${COLOR.black};
+    border-width: 0 0 2px 2px;
+    width: 10px;
+    height: 10px;
+    top: 55%;
+  }
+
+  &:hover {
+    &::before {
+      background: ${COLOR.point};
+    }
+    &::after {
+      border-color: #fff;
+    }
   }
 `;
