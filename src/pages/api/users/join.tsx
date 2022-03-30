@@ -3,7 +3,9 @@ import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { userId, password, username, location, email, phone } = req.body;
+  const { userId, password, username, location, email, phone, avatar } =
+    req.body;
+
   let user;
   if (userId && password && username && location && email && phone) {
     user = await client.user.findFirst({

@@ -14,6 +14,7 @@ export default function useMutation(url: string): UseMutationResult {
 
   //백엔드와 통신하는 함수
   function mutation(data: any) {
+    //로딩 UI
     setLoading(true);
     //front에서 받은 데이터를 -> back으로 post하고
     fetch(url, {
