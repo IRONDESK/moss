@@ -1,5 +1,6 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
 import styled from '@emotion/styled';
+import { COLOR } from 'src/constants';
 
 interface InputProps {
   label: string;
@@ -26,14 +27,14 @@ export default function Input({
       {method === 'email' ? (
         <InputContainer>
           <input {...register} required={required} {...rest} />
-          {errorMsg}
+          <span>{errorMsg}</span>
         </InputContainer>
       ) : null}
 
       {method === 'phone' ? (
         <InputContainer>
           <input {...register} required={required} {...rest} />
-          {errorMsg}
+          <span>{errorMsg}</span>
         </InputContainer>
       ) : null}
       {method === 'userId' ? (
@@ -45,19 +46,19 @@ export default function Input({
             name="password"
             placeholder="비밀번호를 입력하세요."
           />
-          {errorMsg}
-          {errorMsg2}
+          <span>
+            {errorMsg} {errorMsg2}
+          </span>
         </InputContainer>
       ) : null}
     </Container>
   );
 }
 const Container = styled.div`
-  /* background-color: red; */
   padding: 10px;
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 `;
 const InputContainer = styled.div`
@@ -66,6 +67,22 @@ const InputContainer = styled.div`
   flex-direction: column;
   gap: 5px;
   input {
-    padding: 10px;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin-bottom: 10px;
+    &::placeholder {
+      color: ${COLOR.grayText};
+      font-size: 20px;
+    }
+    &:focus {
+      outline: 3px solid ${COLOR.main};
+    }
+    border: 1px solid ${COLOR.gray};
+    font-size: 20px;
+  }
+  span {
+    text-align: center;
+    color: ${COLOR.error};
   }
 `;

@@ -45,17 +45,19 @@ export default function Login() {
 
   return (
     <Container>
-      <h1>로그인</h1>
+      <h1>
+        <span>로그인</span>
+      </h1>
 
       <section>
         <button onClick={onEmailClick}>
-          <p>Email</p>
+          <p>이메일</p>
         </button>
         <button onClick={onPhoneClick}>
-          <p>Phone</p>
+          <p>휴대폰</p>
         </button>
         <button onClick={onUserIdClick}>
-          <p>User Id</p>
+          <p>아이디 / 비밀번호</p>
         </button>
       </section>
 
@@ -64,7 +66,7 @@ export default function Login() {
           <Input
             register={register('email', { required: '이메일을 입력하세요!' })}
             method="email"
-            label="Email Address"
+            label="이메일 주소 (Email Address)"
             name="email"
             type="text"
             placeholder="이메일을 입력하세요."
@@ -78,7 +80,7 @@ export default function Login() {
               required: '휴대폰 번호를 입력하세요!',
             })}
             method="phone"
-            label="Phone Number"
+            label="휴대폰 번호 (Phone Number)"
             name="phone"
             type="number"
             placeholder="휴대폰 번호를 입력하세요."
@@ -93,7 +95,7 @@ export default function Login() {
             register2={register('password', {
               required: '비밀번호를 입력하세요!',
             })}
-            label="User Id"
+            label="아이디 & 비밀번호 (Id & Password)"
             name="userId"
             type="text"
             placeholder="아이디를 입력하세요."
@@ -116,34 +118,61 @@ export default function Login() {
   );
 }
 const Container = styled.section`
+  padding: 140px 0px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 75%;
+  border: 3px solid blue;
+  h1 {
+    display: flex;
+    justify-content: center;
+    width: 60px;
+    font-size: 30px;
+    margin: 10px auto;
+    border-bottom: 4px solid ${COLOR.main};
+    position: relative;
+    span {
+      width: 200px;
+      position: absolute;
+      bottom: 16px;
+      text-align: center;
+    }
+  }
   section {
     display: flex;
+    justify-content: space-around;
     width: 100%;
+    margin: 50px 0 30px;
     button {
-      width: 100%;
-      margin: 10px 0;
-      border: 3px solid blue;
-      border-radius: 5px;
+      font-size: 1.2rem;
+      border-bottom: 4px solid ${COLOR.main};
       padding: 10px 20px;
+      width: 20%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      p {
+        position: absolute;
+        bottom: 10px;
+        width: 200px;
+      }
     }
   }
   form {
     border: 3px solid blue;
-    width: 100%;
-    height: 200px;
-    text-align: center;
-    padding: 10px;
+    width: 90%;
     button {
       width: 100%;
       padding: 10px 5px;
       color: white;
       background-color: ${COLOR.main};
+      padding: 20px 30px;
+      border-radius: 5px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      font-size: 20px;
     }
   }
 `;
