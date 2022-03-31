@@ -48,7 +48,7 @@ export const Notice = () => {
                 <NoticeTitle>
                   <Tag>{notice.tag}</Tag>
                   <Link href={`/study/notice/${notice.id}`}>
-                    <a>{notice.title}</a>  
+                    {notice.title}
                   </Link>
                 </NoticeTitle>
                 <CreatedDate>{notice.createddate}</CreatedDate>
@@ -67,8 +67,6 @@ export const Notice = () => {
 const Container = styled.section`
   position: relative;
   padding: 48px 24px 16px;
-  margin: 16px 0;
-  width: 496px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
     content: '';
@@ -78,7 +76,7 @@ const Container = styled.section`
     width: 40px;
     height: 48px;
     background: ${COLOR.point} url('/images/notice.svg') no-repeat 50% 70%;
-  }
+  };
 `;
 
 const Title = styled.h2`
@@ -93,12 +91,13 @@ const SubTitle = styled.span`
   color: ${COLOR.grayText};
   font-size: 16px;
   line-height: 24px;
-`
+`;
 
 const NoticeList = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 3px;
   padding: 12px 8px;
   border-bottom: 1px solid ${COLOR.ListBorder};
   font-family: 'Noto Sans KR';
@@ -106,24 +105,31 @@ const NoticeList = styled.li`
   &:last-child {
     border: none;
   }
-`
+`;
 
 const NoticeTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`
+  overflow: hidden;
+  white-space: nowrap;
+  a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
 
 const Tag = styled.span`
-  padding: 4px 12px;
+  padding: 4px 10px;
   border: 1px solid ${COLOR.gray};
   border-radius: 50px;
   color: ${COLOR.black};
-`
+`;
 
 const CreatedDate = styled.span`
   color: ${COLOR.deepGray};
-`
+`;
 
 const Button = styled.a`
   position: absolute;

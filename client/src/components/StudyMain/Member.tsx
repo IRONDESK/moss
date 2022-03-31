@@ -13,79 +13,100 @@ export const Member = () => {
   ];
   return (
     <Container>
-      <MemberInfo>
-        <Title>스터디원</Title>
-        <p className="etitle">People</p>
-        <p className="member-length">{MemberData.length}/10</p>
-      </MemberInfo>
-      <MemberDetail>
-        {MemberData.map((member) => {
-          return (
-            <MemberList key={member.id}>
-              <Img src={member.image} alt="스터디원 이미지" />
-              <p>{member.name}</p>
-            </MemberList>
-          );
-        })}
-      </MemberDetail>
+      <Title>스터디원</Title>
+      <SubTitle>People</SubTitle>
+      <Contents>
+        <MemberLength><strong>{MemberData.length}</strong>/10</MemberLength>
+        <MemberDetail>
+          {MemberData.map((member) => {
+            return (
+              <MemberList key={member.id}>
+                <Img src={member.image} alt="스터디원 이미지" />
+                <p>{member.name}</p>
+              </MemberList>
+            );
+          })}
+        </MemberDetail>
+      </Contents>
     </Container>
   );
 };
 
 const Container = styled.section`
-  width: 700px;
-  height: 268px;
-  border: 1px solid #dddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
-`;
-
-const MemberInfo = styled.section`
-  display: flex;
-  flex-direction: column;
-  margin: 0 30px;
-  gap: 12px;
-  .etitle {
-    color: ${COLOR.grayText};
-  }
-  .member-length {
-    display:flex;
-    position: relative;
-    margin: 10px 0 0 20px;
-    &::before {
+  padding: 48px 24px 16px;
+  border: 1px solid ${COLOR.boxBorder};
+  &::after {
     content: '';
-    display: block;
     position: absolute;
-    left:-20px;
-    top: -5px;
-    background: url('/images/icons/memberShape.png');
-    background-size: cover;
-    width: 17px;
-    height: 19px;
+    top: 0;
+    left: 32px;
+    width: 40px;
+    height: 48px;
+    background: #5885F8 url('/images/members.svg') no-repeat 50% 70%;
   }
 `;
 
 const Title = styled.h2`
-  width: 150px;
+  margin: 16px 8px 0;
+  color: ${COLOR.black};
   font-size: 24px;
-  &::before {
+`;
+
+const SubTitle = styled.span`
+  margin: 0 8px;
+  color: ${COLOR.grayText};
+  font-size: 16px;
+  line-height: 24px;
+`;
+
+const Contents = styled.article`
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 48px 24px 16px;
+  display: flex;
+  gap: 60px;
+  @media (max-width: 1024px) {
+    position: inherit;
+    padding: 0;
+    flex-direction: column;
+    gap: 3px;
+  };
+`;
+
+const MemberLength = styled.p`
+    position: relative;
+    width: 100px;
+    margin: 77px 8px;
+    padding-left: 29px;
+    line-height: 31px;
+    &::before {
     content: '';
-    display: block;
     position: absolute;
-    top: 0px;
-    background: url('/images/icons/memberBar.png');
+    left: 0;
+    width: 27px;
+    height: 29px;
+    background: url('/images/login.svg');
     background-size: cover;
-    width: 40px;
-    height: 48px;
+    background-position-x: -3px;
   }
+  strong {
+    font-weight: 700;
+    font-size: 1.3rem;
+  }
+  @media (max-width: 1024px) {
+    margin: 5px 8px;
+  };
 `;
 
 const MemberDetail = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 32px;
+  @media (max-width: 1024px) {
+    justify-content: space-evenly;
+  };
 `;
 
 const MemberList = styled.li`

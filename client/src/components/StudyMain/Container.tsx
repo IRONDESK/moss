@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { Member } from './Member';
-import { Notice } from './Notice';
 import { Record } from './Record';
 import { TodoList } from './Todo';
+import { Notice } from './Notice';
+import { Member } from './Member';
 
 export const StudyComponents = () => {
-  const [token, setToken] = useState(false);
+  const [token, setToken] = useState(true);
   useEffect(() => {
     const Token = localStorage.getItem('Token');
     if (Token) {
@@ -50,9 +50,14 @@ export const StudyComponents = () => {
 };
 
 const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  margin: 16px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  @media (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+  };
 `;
 
 const Blur = styled.div`

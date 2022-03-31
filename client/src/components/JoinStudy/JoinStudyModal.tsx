@@ -19,7 +19,7 @@ export const JoinStudyModal = ({ modal, setModal }: IModal) => {
   const [goal, setGoal] = useState('');
   const [reason, setReason] = useState('');
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> ) => {
     const {
       target: { name, value },
     } = e;
@@ -134,7 +134,7 @@ const Container = styled.section`
         width: 100%;
         padding: 16px 12px;
         font-size: 14px;
-        font-family: Gmarket Sans;
+        font-family: 'Gmarket Sans';
         &::placeholder {
           font-size: 14px;
           color: ${COLOR.grayText};
@@ -156,6 +156,10 @@ const Container = styled.section`
       background-color: ${COLOR.gray};
       color: ${COLOR.grayText};
     }
+  }
+  @media (max-width: 640px) {
+    width: 95%;
+    padding: 90px 30px;
   }
 `;
 

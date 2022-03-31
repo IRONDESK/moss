@@ -82,8 +82,6 @@ export const TodoList = () => {
 const Container = styled.section`
   position: relative;
   padding: 48px 24px 16px;
-  margin: 16px 0;
-  width: 704px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
     content: '';
@@ -108,34 +106,43 @@ const SubTitle = styled.span`
   color: ${COLOR.grayText};
   font-size: 16px;
   line-height: 24px;
-`
+`;
 
 const Form = styled.form`
   display: flex;
   gap: 8px;
   margin: 16px 0;
-`
+  label {
+    flex: 4;
+  }
+  button {
+    flex: 1;
+  }
+`;
 
 const ItemList = styled.article<{todoList: TodoData[]}>`
-  width: 640px;
+  padding-right: 10px;
   height: 200px;
   overflow-y: scroll;
   margin: 10px 0 0;
   &::-webkit-scrollbar {
     width: 6px;
-  }
+  };
   &::-webkit-scrollbar-thumb {
     background: ${COLOR.grayText};
     border-radius: 6px;
-  }
+  };
   &::-webkit-scrollbar-track {
     background: ${props => props.todoList.length > 3 && COLOR.gray};
     border-radius: 6px;
+  };
+  ul li {
+    width: 100%
   }
-`
+`;
 
 const Input = styled.input`
-  width: 512px;
+  width: 100%;
   height: 48px;
   border: 1px solid ${COLOR.gray};
   padding: 0 12px;
@@ -147,7 +154,7 @@ const Input = styled.input`
   &::placeholder {
     color: ${COLOR.placeHolderText};
   }
-`
+`;
 
 const Btn = styled.button`
   width: 120px;
@@ -161,4 +168,4 @@ const Btn = styled.button`
   &:focus-visible {
     outline: 1px solid #0085FF;
   }
-`
+`;
