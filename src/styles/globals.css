@@ -77,3 +77,22 @@ a,
 button {
   cursor: pointer;
 }
+
+/* 반응형 가로폭 */
+.max-width {
+  width: 1224px;
+  max-width: calc(100% - 40px);
+  margin: 0 auto;
+}
+
+/* 접근성을 위한 텍스트 숨김 */
+.a11y-hidden {
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+}

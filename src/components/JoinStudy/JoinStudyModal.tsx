@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import { useSpring, animated } from 'react-spring';
+import { useState } from 'react';
 
 interface IModal {
   modal: boolean;
@@ -15,27 +16,53 @@ export const JoinStudyModal = ({ modal, setModal }: IModal) => {
     opacity: modal ? 1 : 0,
     transfrom: modal ? `translateY(0%)` : `translateY(-100%)`,
   });
+  const [goal, setGoal] = useState('');
+  const [reason, setReason] = useState('');
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> ) => {
+    const {
+      target: { name, value },
+    } = e;
+    if (name === 'goal') {
+      setGoal(e.target.value);
+    } else if (name === 'reason') {
+      setReason(e.target.value);
+    }
+  };
   return (
     <>
       {modal ? (
         <animated.div style={animation}>
           <Container>
-            <button onClick={() => setModal((prev: boolean) => !prev)}>
-              ❌
-            </button>
+            <Button onClick={() => setModal((prev: boolean) => !prev)}>
+              <Img src="/images/icons/close.png"></Img>
+            </Button>
             <h1>
-              <div>로그인</div>
+              <div>스터디 신청</div>
             </h1>
             <form action="">
               <div>
                 <label htmlFor="goal">각오한마디</label>
-                <input id="goal" type="text" placeholder="placeholder" />
+                <input
+                  name="goal"
+                  id="goal"
+                  type="text"
+                  onChange={onChange}
+                  placeholder="placeholder"
+                />
               </div>
               <div>
                 <label htmlFor="reason">참여목적</label>
-                <textarea id="reason" type="text" placeholder="placeholder" />
+                <textarea
+                  name="reason"
+                  id="reason"
+                  onChange={onChange}
+                  placeholder="placeholder"
+                />
               </div>
-              <button>스터디 신청</button>
+              <button className="apply-btn" disabled={!(goal && reason)}>
+                스터디 신청
+              </button>
             </form>
           </Container>
         </animated.div>
@@ -58,14 +85,6 @@ const Container = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  button {
-    &:nth-child(1) {
-      border: none;
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-  }
   h1 {
     width: 60px;
     border-bottom: 4px solid #34c88a;
@@ -115,7 +134,7 @@ const Container = styled.section`
         width: 100%;
         padding: 16px 12px;
         font-size: 14px;
-        font-family: Gmarket Sans;
+        font-family: 'Gmarket Sans';
         &::placeholder {
           font-size: 14px;
           color: ${COLOR.grayText};
@@ -125,13 +144,29 @@ const Container = styled.section`
         }
       }
     }
-    button {
+    .apply-btn {
       margin-top: 12px;
-      background-color: ${COLOR.gray};
-      color: ${COLOR.grayText};
+      background-color: ${COLOR.main};
+      color: #fff;
       font-size: 16px;
       width: 100%;
       padding: 17px 0;
     }
+    &:disabled {
+      background-color: ${COLOR.gray};
+      color: ${COLOR.grayText};
+    }
+  }
+  @media (max-width: 640px) {
+    width: 95%;
+    padding: 90px 30px;
   }
 `;
+
+const Button = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
+const Img = styled.img``;

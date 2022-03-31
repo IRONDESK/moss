@@ -20,7 +20,10 @@ export const StudyBanner = (props: {
         <StudyImg src={props.logo} alt="study-logo" />
         <StudyDescription>
           <StudyDetail>
-            <Category>{props.category}</Category>
+            <TagWrap>
+              <Category>{props.category}</Category>
+              <Hashtag>{props.hashtag}</Hashtag>
+            </TagWrap>
             <Title>{props.title}</Title>
             <Des>{props.des}</Des>
           </StudyDetail>
@@ -32,19 +35,22 @@ export const StudyBanner = (props: {
           </Join>
         </StudyDescription>
       </StudyIntro>
-      <Hashtag>{props.hashtag}</Hashtag>
       <JoinStudyModal modal={modal} setModal={setModal} />
     </Banner>
   );
 };
 
 const Banner = styled.section`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   background: url('/images/background.png');
   background-size: cover;
-  padding: 24px 0 24px 24px;
+  padding: 24px;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  };
 `;
 
 const StudyIntro = styled.section`
@@ -56,12 +62,21 @@ const StudyIntro = styled.section`
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
+  @media (max-width: 1024px) {
+    width: 100%;
+    height: auto;
+    padding: 18px;
+    flex-direction: column;
+  };
 `;
 
 const StudyImg = styled.img`
   width: 102px;
   height: 102px;
   margin: 40px 48px 130px 0;
+  @media (max-width: 1024px) {
+    margin: 0;
+  };
 `;
 const StudyDescription = styled.article`
   width: 100%;
@@ -71,29 +86,67 @@ const StudyDetail = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 26px;
+  @media (max-width: 1024px) {
+    margin: 19px 0;
+    align-items: center;
+  };
 `;
 
+const TagWrap = styled.div`
+  @media (max-width: 1024px) {
+    display: flex;
+    gap: 8px;
+  };
+`;
 const Category = styled.div`
-  width: 72px;
+  width: 81px;
   height: 22px;
   padding: 6px 12px;
   margin-bottom: 11px;
   background-color: rgba(0, 0, 0, 0.2);
-  font-family: 'Noto Sans KR';
-  font-size: 12px;
   color: #fff;
+  font-size: 14px;
+  text-align: center;
   border-radius: 40px;
+`;
+const Hashtag = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 22px;
+  margin: 24px;
+  padding: 6px 12px;
+  background-color: #fff;
+  color: #767676;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 40px;
+  @media (max-width: 1024px) {
+    margin: 0;
+    position: static;
+  };
 `;
 const Title = styled.h2`
   margin-bottom: 16px;
   font-size: 40px;
   line-height: 50px;
   font-weight: 700;
+  @media (max-width: 1024px) {
+    margin: 0;
+    font-size: 33px;
+    word-break: keep-all;
+  };
 `;
 
 const Des = styled.div`
   font-family: 'Noto Sans KR';
   width: 246px;
+  @media (max-width: 1024px) {
+    width: 100%;
+    text-align: center;
+    line-height: 1.2rem;
+    word-break: keep-all;
+  };
 `;
 
 const Join = styled.div`
@@ -102,6 +155,11 @@ const Join = styled.div`
   align-items: center;
   width: 100%;
   margin-top: 9px;
+  @media (max-width: 1024px) {
+    margin: 0;
+    flex-direction: column;
+    gap: 9px;
+  };
 `;
 
 const Member = styled.span`
@@ -129,12 +187,4 @@ const StudyBtn = styled.a`
   text-align: center;
   padding-top: 16px;
   box-sizing: border-box;
-`;
-const Hashtag = styled.div`
-  margin-right: 32px;
-  padding: 3px 10px;
-  background-color: #fff;
-  color: #767676;
-  font-size: 14px;
-  border-radius: 10px;
 `;
