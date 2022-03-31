@@ -1,11 +1,5 @@
-import type { NextPage } from 'next';
-import styled from '@emotion/styled';
-import { StudyBanner } from '../../components/StudyMain/StudyBanner';
-import { Notice } from '../../components/StudyMain/Notice';
-import { Record } from '../../components/StudyMain/Record';
-import { TodoList } from '../../components/StudyMain/Todo';
-import { StudyComponents } from '../../components/StudyMain/Container';
-import { useState } from 'react';
+import { StudyComponents } from 'src/components/StudyMain/Container';
+import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
 
 export default function StudyPage() {
   return (

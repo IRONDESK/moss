@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
 import { COLOR } from '../../constants/index';
 import { UserInfo } from './UserInfo';
 import { MyStudyChart } from './MyStudyChart';
