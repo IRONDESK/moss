@@ -341,6 +341,29 @@
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz"
   "version" "1.1.0"
 
+"@sendgrid/client@^7.6.2":
+  "integrity" "sha512-Yw3i3vPBBwfiIi+4i7+1f1rwQoLlLsu3qW16d1UuRp6RgX6H6yHYb2/PfqwNyCC0qzqIWGUKPWwYe5ggcr5Guw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/client/-/client-7.6.2.tgz"
+  "version" "7.6.2"
+  dependencies:
+    "@sendgrid/helpers" "^7.6.2"
+    "axios" "^0.26.0"
+
+"@sendgrid/helpers@^7.6.2":
+  "integrity" "sha512-kGW0kM2AOHfXjcvB6Lgwa/nMv8IALu0KyNY9X4HSa3MtLohymuhbG9HgjrOh66+BkbsfA03H3bcT0+sPVJ0GKQ=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/helpers/-/helpers-7.6.2.tgz"
+  "version" "7.6.2"
+  dependencies:
+    "deepmerge" "^4.2.2"
+
+"@sendgrid/mail@^7.6.2":
+  "integrity" "sha512-IHHZFvgU95aqb11AevQvAfautj2pb8iW8UCiUJ2ae9pRF37e6EkBmU9NgdFjbQ/8Xhhm+KDVDzn/JLxDN/GiBw=="
+  "resolved" "https://registry.npmjs.org/@sendgrid/mail/-/mail-7.6.2.tgz"
+  "version" "7.6.2"
+  dependencies:
+    "@sendgrid/client" "^7.6.2"
+    "@sendgrid/helpers" "^7.6.2"
+
 "@sindresorhus/is@^0.14.0":
   "integrity" "sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ=="
   "resolved" "https://registry.npmjs.org/@sindresorhus/is/-/is-0.14.0.tgz"
@@ -795,7 +818,7 @@
   "resolved" "https://registry.npmjs.org/axe-core/-/axe-core-4.4.1.tgz"
   "version" "4.4.1"
 
-"axios@^0.26.1":
+"axios@^0.26.0", "axios@^0.26.1":
   "integrity" "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA=="
   "resolved" "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz"
   "version" "0.26.1"
@@ -1324,6 +1347,11 @@
   "integrity" "sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ=="
   "resolved" "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz"
   "version" "0.1.4"
+
+"deepmerge@^4.2.2":
+  "integrity" "sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg=="
+  "resolved" "https://registry.npmjs.org/deepmerge/-/deepmerge-4.2.2.tgz"
+  "version" "4.2.2"
 
 "defer-to-connect@^1.0.1":
   "integrity" "sha512-0ISdNousHvZT2EiFlZeZAHBUvSxmKswVCEf8hW7KWgG4a8MVEu/3Vb6uWYozkjylyCxe0JBIiRB1jV45S70WVQ=="
