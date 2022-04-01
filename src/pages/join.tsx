@@ -20,6 +20,7 @@ interface joinForm {
 export default function Join() {
   //fecth를 위한 mutation Hook // 데이터 -> 백엔드(url)로 전송
   const [join, { loading, data, error }] = useMutation('/api/users/join');
+
   console.log(loading, data, error); //백엔드 데이터 확인!
 
   //useForm
