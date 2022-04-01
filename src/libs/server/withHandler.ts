@@ -2,6 +2,11 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
+export interface ResponseType {
+  ok: boolean;
+  [key: string]: any;
+}
+
 //nextJs가 실행할 function이 실행할 function을 만들어주는것
 export default function withHandler(
   method: 'GET' | 'POST' | 'DELETE',

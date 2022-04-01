@@ -24,6 +24,13 @@ export default function Input({
   return (
     <Container>
       <label htmlFor={name}>{label}</label>
+      {method === 'token' ? (
+        <InputContainer>
+          <input {...register} required={required} {...rest} />
+          <span>{errorMsg}</span>
+        </InputContainer>
+      ) : null}
+
       {method === 'email' ? (
         <InputContainer>
           <input {...register} required={required} {...rest} />

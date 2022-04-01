@@ -14,19 +14,17 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  username  String  
-
+  Token     Token[]
+  username  String
   userId    String?  @unique
   password  String?   
-  @@unique(fields: [userId, password], name: "userId_password")
-  
+  @@unique(fields: [userId, password], name: "userId_password")  
   email     String?   @unique
   phone     BigInt?   @unique
   avatar    String?
   location  String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Token     Token[]
 }
 //User model에서 username은 required! (빠지면 error발생)
 
@@ -38,4 +36,4 @@ model Token {
   updatedAt      DateTime  @updatedAt
   UserModelId    Int
 }
-//Token모델에서 payload와 users가 required!
+//Token모델에서 payload와 users가 required! onDelete:Cascade는 토큰이 지워질때 유저도 같이 지워지게함
