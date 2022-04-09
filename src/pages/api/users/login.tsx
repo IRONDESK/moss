@@ -32,7 +32,7 @@ async function handler(
       ? { email }
       : { phone: +phone };
 
-  const payload = Math.floor(100000 + Math.random() * 900000) + ''; //6자리 랜덤숫자 string
+  const payload = Math.floor(100000 + Math.random() * 900000) + ''; //6자리 랜덤숫자 string //토큰번호
 
   //2. 토큰 생성 -> 유저가 존재? -> 유저를 연결 // 유저가 없으면? -> 유저를 생성하고 연결
   const token = await client.token.create({

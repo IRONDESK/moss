@@ -24,6 +24,7 @@ export default function Login() {
   //일반 로그인
   const [login, { loading, data, error }] =
     useMutation<MutationResult>('/api/users/login');
+  console.log(loading, data, error);
 
   const onValid = (validForm: LoginForm) => {
     login(validForm);
@@ -84,7 +85,7 @@ export default function Login() {
             placeholder="6자리 숫자 토큰을 입력하세요."
             errorMsg={tokenErrors.token?.message}
           />
-          <button>{tokenLoading ? '로딩중...' : '로그인 토큰 받기'}</button>
+          <button>{tokenLoading ? '로딩중...' : '토큰으로 로그인'}</button>
         </form>
       ) : (
         <>
