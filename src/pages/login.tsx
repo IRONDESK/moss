@@ -24,7 +24,6 @@ export default function Login() {
   //일반 로그인
   const [login, { loading, data, error }] =
     useMutation<MutationResult>('/api/users/login');
-  console.log(loading, data, error);
 
   const onValid = (validForm: LoginForm) => {
     login(validForm);

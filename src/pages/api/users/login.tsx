@@ -72,7 +72,6 @@ async function handler(
   }
 
   //확인
-  console.log(token);
   return res.json({ ok: true });
 }
 
