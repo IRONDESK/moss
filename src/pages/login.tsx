@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '../components/Login/Input';
 import { COLOR } from '../constants';
 import useMutation from '../libs/client/useMutation';
+import { useRouter } from 'next/router';
 
 interface LoginForm {
   email?: string;
@@ -65,6 +66,14 @@ export default function Login() {
     setMethod('userId');
     reset();
   };
+
+  //토큰로그인 finish point
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push('/');
+    }
+  }, [tokenData, router]);
 
   return (
     <Container>

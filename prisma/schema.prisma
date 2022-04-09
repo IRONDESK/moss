@@ -20,7 +20,7 @@ model User {
   password  String?   
   @@unique(fields: [userId, password], name: "userId_password")  
   email     String?   @unique
-  phone     BigInt?   @unique
+  phone     String?   @unique
   avatar    String?
   location  String?
   createdAt DateTime  @default(now())
