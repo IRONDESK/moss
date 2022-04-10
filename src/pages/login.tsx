@@ -18,6 +18,7 @@ interface TokenForm {
 
 interface MutationResult {
   ok: boolean;
+  idpw_confirm: boolean;
 }
 
 export default function Login() {
@@ -25,7 +26,7 @@ export default function Login() {
   //일반 로그인
   const [login, { loading, data, error }] =
     useMutation<MutationResult>('/api/users/login');
-
+  console.log(data);
   const onValid = (validForm: LoginForm) => {
     login(validForm);
   };
@@ -67,13 +68,15 @@ export default function Login() {
     reset();
   };
 
-  //토큰로그인 finish point
+  //페이지이동
   const router = useRouter();
   useEffect(() => {
-    if (tokenData?.ok) {
+    if (data?.idpw_confirm) {
+      router.push('/my-page');
+    } else if (tokenData?.ok) {
       router.push('/');
     }
-  }, [tokenData, router]);
+  }, [data, tokenData, router]);
 
   return (
     <Container>

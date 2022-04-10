@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import client from 'src/libs/server/client';
 import withHandler, { ResponseType } from 'src/libs/server/withHandler';
 import { withApiSession } from 'src/libs/server/withSession';
 
