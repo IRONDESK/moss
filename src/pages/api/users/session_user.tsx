@@ -14,8 +14,7 @@ async function handler(
 
   //쿠키로 받은 session(쿠키) 확인!
   res.json({ ok: true, profile });
-
   //
 }
 
-export default withApiSession(withHandler('GET', handler));
+export default withApiSession(withHandler({ method: 'GET', handler }));

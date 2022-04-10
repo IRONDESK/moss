@@ -7,6 +7,13 @@ import withHandler, { ResponseType } from 'src/libs/server/withHandler';
 mail.setApiKey(process.env.SENDGRID_KEY!);
 const twilioClient = twilio(process.env.TWILIO_ACCT, process.env.TWILIO_TOKEN);
 
+interface Iuser {
+  email?: string;
+  phone?: number;
+  userId?: string;
+  password?: string;
+}
+
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
@@ -75,4 +82,4 @@ async function handler(
   return res.json({ ok: true });
 }
 
-export default withHandler('POST', handler);
+export default withHandler({ method: 'POST', handler, isPrivate: false });
