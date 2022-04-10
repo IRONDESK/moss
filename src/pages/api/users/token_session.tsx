@@ -32,7 +32,7 @@ async function handler(
     where: { UserModelId: confirmedToken.UserModelId },
   });
 
-  //로그인 됬음을 FrontEnd에 전달!
+  //로그인 됬음을 FrontEnd에 전달! -> login page
   return res.json({ ok: true });
 }
 

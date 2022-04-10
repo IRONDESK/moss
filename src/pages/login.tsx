@@ -31,7 +31,7 @@ export default function Login() {
   };
   //토큰 로그인
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
-    useMutation<MutationResult>('/api/users/tokenConfirm');
+    useMutation<MutationResult>('/api/users/token_session');
 
   const onTokenValid = (validForm: TokenForm) => {
     if (tokenLoading) return;

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import client from '../server/client';
 
 interface UseMutationState<Type> {
   loading: boolean;

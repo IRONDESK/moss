@@ -7,12 +7,12 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
 ) {
-  // session의 id와 일치하는 유저를 찾는다.
+  // 세션에 저장된 유저와 아이디가 일치하는 유저를 db에서 찾는다.
   const profile = await client.user.findUnique({
     where: { id: req.session.user?.id },
   });
 
-  //쿠키로 받은 session(쿠키) 확인!
+  //확인메시지 -> frontEnd -> useUser
   res.json({ ok: true, profile });
   //
 }

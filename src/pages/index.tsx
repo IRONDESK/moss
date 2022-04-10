@@ -4,8 +4,11 @@ import { Banner } from '../components/Banner';
 import { TitleSearch } from '../components/TitleSearch';
 import { StudyCard } from '../components/StudyCard';
 import { Scroll } from '../components/Scroll/Scroll';
+import useUser from 'src/libs/client/useUser';
 
 const Home: NextPage = () => {
+  const user = useUser();
+  console.log(user);
   return (
     <>
       <Backgroud />
