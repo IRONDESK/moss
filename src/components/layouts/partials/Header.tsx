@@ -1,20 +1,12 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import useLoggedIn from 'src/libs/client/useLoggedIn';
 import { COLOR } from '../../../constants';
 
 export const Header = () => {
-  const [token, setToken] = useState(false);
-  useEffect(() => {
-    const Token = localStorage.getItem('Token');
-    if (Token) {
-      getToken(`${Token}`);
-    }
-  });
-  const getToken = (Token: string) => {
-    setToken(true);
-    console.log(Token);
-  };
+  const { loading, user } = useLoggedIn();
+
   return (
     <HeaderCont className="max-width" id="header">
       <div className="left">
@@ -28,16 +20,7 @@ export const Header = () => {
         </Link>
       </div>
       <div className="right">
-        {token ? (
-          <>
-            <Link href="/my-page" passHref>
-              <a className="mypage">마이페이지</a>
-            </Link>
-            <Link href="/" passHref>
-              <a className="logout">로그아웃</a>
-            </Link>
-          </>
-        ) : (
+        {loading ? (
           <>
             <Link href="/join" passHref>
               <a className="join">회원가입</a>
@@ -45,6 +28,15 @@ export const Header = () => {
 
             <Link href="/login" passHref>
               <a className="login">로그인</a>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link href="/my-page" passHref>
+              <a className="mypage">{user?.username}님의 마이페이지</a>
+            </Link>
+            <Link href="/" passHref>
+              <a className="logout">로그아웃</a>
             </Link>
           </>
         )}
