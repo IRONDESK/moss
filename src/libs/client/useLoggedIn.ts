@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 interface IUser {
   loading?: boolean;
-  user: {
+  user?: {
     id: 56;
     username: string;
     userId: boolean;

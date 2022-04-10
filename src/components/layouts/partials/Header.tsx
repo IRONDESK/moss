@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import useLoggedIn from 'src/libs/client/useLoggedIn';
 import { COLOR } from '../../../constants';
 
