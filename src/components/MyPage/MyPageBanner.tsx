@@ -5,8 +5,7 @@ import { MyStudyChart } from './MyStudyChart';
 import useLoggedIn from 'src/libs/client/useLoggedIn';
 
 export const MyPageBanner = () => {
-  const data = useLoggedIn();
-  const username = data?.profile.username;
+  const { username } = useLoggedIn();
 
   return (
     <MyPageBanners>

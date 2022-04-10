@@ -7,8 +7,6 @@ import { Scroll } from '../components/Scroll/Scroll';
 import useLoggedIn from 'src/libs/client/useLoggedIn';
 
 const Home: NextPage = () => {
-  const data = useLoggedIn();
-  console.log(data);
   return (
     <>
       <Backgroud />
