@@ -34,7 +34,7 @@ export const Header = () => {
             <Link href="/my-page" passHref>
               <a className="mypage">{username}님의 마이페이지</a>
             </Link>
-            <Link href="/" passHref>
+            <Link href="/api/users/log-out" passHref>
               <a className="logout">로그아웃</a>
             </Link>
           </>
