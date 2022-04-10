@@ -1,9 +1,8 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 interface IUser {
-  loading?: boolean;
-  user?: {
+  ok?: boolean;
+  profile: {
     id: 56;
     username: string;
     userId: boolean;
@@ -18,25 +17,9 @@ interface IUser {
   error?: object;
 }
 
-export default function useLoggedIn(): IUser {
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState();
-  const [error, setError] = useState();
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-  useEffect(() => {
-    fetch('/api/users/profile')
-      .then((res) => res.json().catch(() => {}))
-      .then((data) => {
-        if (!data.ok) {
-          //로그아웃인 경우
-          setLoading(true);
-        }
-        //로그인된 경우
-        setUser(data.profile);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, []);
-  //
-  return { loading, user, error };
+export default function useLoggedIn(): IUser {
+  const { data, error } = useSWR('/api/users/profile', fetcher);
+  return data;
 }

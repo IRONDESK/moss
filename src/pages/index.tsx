@@ -4,8 +4,11 @@ import { Banner } from '../components/Banner';
 import { TitleSearch } from '../components/TitleSearch';
 import { StudyCard } from '../components/StudyCard';
 import { Scroll } from '../components/Scroll/Scroll';
+import useLoggedIn from 'src/libs/client/useLoggedIn';
 
 const Home: NextPage = () => {
+  const data = useLoggedIn();
+  console.log(data);
   return (
     <>
       <Backgroud />

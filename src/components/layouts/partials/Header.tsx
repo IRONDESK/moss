@@ -4,7 +4,7 @@ import useLoggedIn from 'src/libs/client/useLoggedIn';
 import { COLOR } from '../../../constants';
 
 export const Header = () => {
-  const { loading, user } = useLoggedIn();
+  const data = useLoggedIn();
 
   return (
     <HeaderCont className="max-width" id="header">
@@ -19,7 +19,16 @@ export const Header = () => {
         </Link>
       </div>
       <div className="right">
-        {loading ? (
+        {data?.ok ? (
+          <>
+            <Link href="/my-page" passHref>
+              <a className="mypage">{data?.profile?.username}님의 마이페이지</a>
+            </Link>
+            <Link href="/" passHref>
+              <a className="logout">로그아웃</a>
+            </Link>
+          </>
+        ) : (
           <>
             <Link href="/join" passHref>
               <a className="join">회원가입</a>
@@ -27,15 +36,6 @@ export const Header = () => {
 
             <Link href="/login" passHref>
               <a className="login">로그인</a>
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link href="/my-page" passHref>
-              <a className="mypage">{user?.username}님의 마이페이지</a>
-            </Link>
-            <Link href="/" passHref>
-              <a className="logout">로그아웃</a>
             </Link>
           </>
         )}

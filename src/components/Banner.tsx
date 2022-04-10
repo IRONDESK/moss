@@ -1,20 +1,19 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import useLoggedIn from 'src/libs/client/useLoggedIn';
 import { COLOR } from '../constants';
 
 export const Banner = () => {
-  //
   const router = useRouter();
-  const onClick = async () => {
-    const data = await (await fetch('/api/users/profile')).json();
+  const data = useLoggedIn();
+
+  const onClick = () => {
     if (!data.ok) {
-      //로그아웃인 경우
-      return router.push('/login');
+      return router.push('/login'); //로그아웃인 경우
     }
-    //로그인된 경우
-    return router.push('/my-page');
+    return router.push('/my-page'); //로그인된 경우
   };
-  //
+
   return (
     <BannerPage>
       <h2>Study with MOSS</h2>

@@ -5,12 +5,12 @@ import { MyStudyChart } from './MyStudyChart';
 import useLoggedIn from 'src/libs/client/useLoggedIn';
 
 export const MyPageBanner = () => {
-  const { user } = useLoggedIn();
-  console.log(user?.username);
+  const data = useLoggedIn();
+  const username = data?.profile.username;
 
   return (
     <MyPageBanners>
-      <UserInfo image="./images/studyLogo.png" name={user?.username} />
+      <UserInfo image="./images/studyLogo.png" name={username} />
       <MyStudyChart percent={50} attendance={3} month={4} studyhour={762} />
     </MyPageBanners>
   );

@@ -25,7 +25,8 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/login/login.tsx",
-    "src/components/Join/Join.tsx"
+    "src/components/Join/Join.tsx",
+    "src/components/layouts/partials/Header.jsx"
   ],
   "exclude": ["node_modules"]
 }
