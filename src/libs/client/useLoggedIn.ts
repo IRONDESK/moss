@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface IUser {
@@ -29,7 +30,6 @@ export default function useLoggedIn(): IUser {
         if (!data.ok) {
           //로그아웃인 경우
           setLoading(true);
-          return;
         }
         //로그인된 경우
         setUser(data.profile);

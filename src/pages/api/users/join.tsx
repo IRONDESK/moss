@@ -15,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         username,
         location,
         email,
-        phone: +phone,
+        phone,
       },
     });
 
@@ -27,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       user = await client.user.create({
         data: {
           email,
-          phone: +phone,
+          phone,
           userId,
           password,
           username,
@@ -39,7 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log(user);
   }
 
-  return res.status(200).end();
+  return res.json({ ok: true });
 }
 
-export default withHandler('POST', handler);
+export default withHandler({ method: 'POST', handler, isPrivate: false });
