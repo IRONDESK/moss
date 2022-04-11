@@ -1,0 +1,98 @@
+@import './reset.css';
+
+@font-face {
+  font-family: 'Gmarket Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Gmarket Sans Bold'), local('GmarketSans-Bold'),
+    url('http://script.ebay.co.kr/fonts/GmarketSansBold.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('http://script.ebay.co.kr/fonts/GmarketSansBold.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+@font-face {
+  font-family: 'Gmarket Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Gmarket Sans Medium'), local('GmarketSans-Medium'),
+    url('http://script.ebay.co.kr/fonts/GmarketSansMedium.woff2')
+      format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('http://script.ebay.co.kr/fonts/GmarketSansMedium.woff')
+      format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+@font-face {
+  font-family: 'Gmarket Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Gmarket Sans Light'), local('GmarketSans-Light'),
+    url('http://script.ebay.co.kr/fonts/GmarketSansLight.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('http://script.ebay.co.kr/fonts/GmarketSansLight.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: bold;
+  font-weight: 700;
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap')
+    format('woff2');
+}
+
+html,
+body {
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+  font-family: 'Gmarket Sans';
+}
+
+button,
+input {
+  font-family: 'Gmarket Sans';
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input:-webkit-autofill {
+  -webkit-box: 0 0 0 30px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+a,
+button {
+  cursor: pointer;
+}
+
+/* 반응형 가로폭 */
+.max-width {
+  width: 1224px;
+  max-width: calc(100% - 40px);
+  margin: 0 auto;
+}
+
+/* 접근성을 위한 텍스트 숨김 */
+.a11y-hidden {
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+}
