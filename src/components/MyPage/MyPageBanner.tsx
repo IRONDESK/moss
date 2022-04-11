@@ -2,10 +2,14 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants/index';
 import { UserInfo } from './UserInfo';
 import { MyStudyChart } from './MyStudyChart';
+import useLoggedIn from 'src/libs/client/useLoggedIn';
+
 export const MyPageBanner = () => {
+  const { username } = useLoggedIn();
+
   return (
     <MyPageBanners>
-      <UserInfo image="./images/studyLogo.png" name="김이끼" />
+      <UserInfo image="./images/studyLogo.png" name={username} />
       <MyStudyChart percent={50} attendance={3} month={4} studyhour={762} />
     </MyPageBanners>
   );

@@ -1,8 +1,19 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useLoggedIn from 'src/libs/client/useLoggedIn';
 import { COLOR } from '../constants';
 
 export const Banner = () => {
+  const router = useRouter();
+  const { loggedIn } = useLoggedIn();
+
+  const onClick = () => {
+    if (!loggedIn) {
+      return router.push('/login'); //로그아웃인 경우
+    }
+    return router.push('/my-page'); //로그인된 경우
+  };
+
   return (
     <BannerPage>
       <h2>Study with MOSS</h2>
@@ -11,9 +22,7 @@ export const Banner = () => {
         <p>혼자 공부하기 힘든 사람 모여라!</p>
         <p>서로 서로자극이 되어 함께 성장해요!</p>
       </div>
-      <Link href="/login" passHref>
-        <button>시작하기</button>
-      </Link>
+      <button onClick={onClick}>시작하기</button>
     </BannerPage>
   );
 };

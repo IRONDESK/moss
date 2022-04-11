@@ -9,16 +9,25 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   let user;
   if (userId && password && username && location && email && phone) {
     user = await client.user.findFirst({
-      where: { userId, password, username, location, email, phone: +phone },
+      where: {
+        userId,
+        password,
+        username,
+        location,
+        email,
+        phone,
+      },
     });
+
     //해당하는 유저가 있다면?
     if (user) console.log(`유저를 찾았습니다!`);
+
     //해당하는 유저가 db에 없다면? -> 유저를 생성한다.
     if (!user) {
       user = await client.user.create({
         data: {
           email,
-          phone: +phone,
+          phone,
           userId,
           password,
           username,
@@ -30,7 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log(user);
   }
 
-  return res.status(200).end();
+  return res.json({ ok: true });
 }
 
-export default withHandler('POST', handler);
+export default withHandler({ method: 'POST', handler, isPrivate: false });
