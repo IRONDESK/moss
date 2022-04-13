@@ -2,38 +2,50 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   Token     Token[]
   username  String
   userId    String?  @unique
-  password  String?   
-  @@unique(fields: [userId, password], name: "userId_password")  
-  email     String?   @unique
-  phone     String?   @unique
+  password  String?
+  email     String?  @unique
+  phone     String?  @unique
   avatar    String?
   location  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique(fields: [userId, password], name: "userId_password")
 }
+
 //User model에서 username은 required! (빠지면 error발생)
 
 model Token {
-  id             Int       @id @default(autoincrement())
-  payload        String    @unique
-  user           User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  UserModelId    Int
+  id          Int      @id @default(autoincrement())
+  payload     String   @unique
+  user        User     @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  UserModelId Int
 }
+
 //Token모델에서 payload와 users가 required! onDelete:Cascade는 토큰이 지워질때 유저도 같이 지워지게함
+
+model Todo {
+  id        Int       @id @default(autoincrement())
+  userId    String?   @unique
+  title     String
+  completed Boolean   @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
