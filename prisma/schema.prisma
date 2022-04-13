@@ -15,6 +15,7 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   Token     Token[]
+  Studyinfo Studyinfo[]
   username  String
   userId    String?  @unique
   password  String?
@@ -48,4 +49,19 @@ model Todo {
   completed Boolean   @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Studyinfo {
+  studyId        Int       @id @default(autoincrement())
+  studyName      String
+  leader         User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
+  image          String?
+  introduce      String
+  tag            String?
+  membersLimit   Int
+  chatLink       String?
+  joinMsg        String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  UserModelId    Int
 }
