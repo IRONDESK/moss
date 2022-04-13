@@ -5,6 +5,7 @@ export const Button = (props: {
   href: string;
   text: string;
   className: string;
+  type: string;
 }) => {
   return (
     <Btn href={props.href} className={props.className}>
