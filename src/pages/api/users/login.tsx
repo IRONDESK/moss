@@ -20,20 +20,23 @@ async function handler(
     where: { userId, password },
   });
 
-  //1. db에 유저가 없다?
-  if (!User) {
-    console.log(`일치하는 유저아이디 또는 비번이 없습니다!`);
-    //회원가입 페이지로 넘어감
-    return res.json({ ok: false, idpw_confirm: false });
-    //
-  } else if (User) {
-    //db에 유저가 있다? -> 쿠키(세션)에 유저아이디 저장
-    //
-    req.session.user = { id: User?.id };
-    await req.session.save();
-    return res.json({ ok: false, idpw_confirm: true });
-    //
+  if (userId || password) {
+    if (!User) {
+      console.log(`일치하는 유저아이디 또는 비번이 없습니다!`);
+      //회원가입 페이지로 넘어감
+      res.json({ ok: false, idpw_confirm: false });
+      //
+    } else if (User) {
+      //db에 유저가 있다? -> 쿠키(세션)에 유저아이디 저장
+      //
+      req.session.user = { id: User?.id };
+      await req.session.save();
+      console.log(`hello`);
+      return res.json({ ok: false, idpw_confirm: true });
+      //
+    }
   } else {
+    //1. db에 유저가 없다?
     //2. 토큰을 이용해서 로그인하는 유저들
     //
     const tokenUser = email ? { email } : phone ? { phone } : null;
