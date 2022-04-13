@@ -3,10 +3,22 @@ import { COLOR } from '../../constants';
 import { useSpring, animated } from 'react-spring';
 import { useState } from 'react';
 import { FileUpload } from '../Join/FileUpload';
+import { FieldErrors, useForm } from 'react-hook-form';
+import useMutation from 'src/libs/client/useMutation';
 
 interface StudyModal {
   modal: boolean;
   setModal: Function;
+}
+interface studyForm {
+  studyName?: string;
+  leader?: number;
+  image: string;
+  introduce?: string;
+  tag?: string;
+  membersLimit?: number;
+  chatLink: string;
+  joinMsg?: string;
 }
 export const StudyButton = ({ modal, setModal }: StudyModal) => {
   const [name, setName] = useState('');
@@ -25,6 +37,27 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
   const [isImage, setIsImage] = useState(false);
 
   const [memberMessage, setMemberMessage] = useState('');
+
+  const [study, {loading, data, error}] = useMutation('/api/study/create');
+  console.log(loading, data, error);
+
+  //useForm
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<studyForm>({
+    mode: 'onBlur',
+  });
+  //데이터가 useMutation으로 전송 ->
+  //handleSubmit 조건 달성시 onValid 함수실행
+  const onValid = (data: studyForm) => {
+    study(data);
+  };
+  //handleSubmit조건 실패시 InValid 함수실행
+  const inValid = (errors: FieldErrors) => {
+    console.log(errors);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -85,14 +118,15 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             <CloseBtn
               onClick={() => setModal((prev: boolean) => !prev)}
             ></CloseBtn>
-            <Form method="post">
+            <Form method="post" onSubmit={handleSubmit(onValid, inValid)}>
               <h1>
                 <div>스터디 개설</div>
               </h1>
-              <FileUpload getIsImage={getIsImage} />
+              <FileUpload getIsImage={getIsImage} register={register('image')} />
               <Label></Label>
               <Label htmlFor="study-name">스터디 이름</Label>
               <Input
+                {...register('studyName')}
                 name="name"
                 id="study-name"
                 type="text"
@@ -102,6 +136,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               />
               <Label htmlFor="study-des">소개</Label>
               <Input
+              {...register('introduce')}
                 name="des"
                 id="study-des"
                 type="text"
@@ -111,6 +146,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               />
               <Label htmlFor="study-tag">태그</Label>
               <Input
+              {...register('tag')}
                 name="tag"
                 id="study-tag"
                 type="text"
@@ -120,6 +156,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               />
               <Label htmlFor="study-tag">스터디 인원</Label>
               <Input
+              {...register('membersLimit')}
                 name="member"
                 id="study-tag"
                 type="number"
@@ -134,6 +171,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               )}
               <Label htmlFor="study-tag">카카오톡 오픈채팅 링크</Label>
               <Input
+              {...register('chatLink')}
                 name="link"
                 id="study-tag"
                 type="text"
@@ -144,6 +182,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
               <Label className="arrow">
                 가입 인사
                 <Select
+                {...register('joinMsg')}
                   defaultValue="xx"
                   name="region"
                   onChange={handleSelect}
@@ -157,9 +196,8 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
                 </Select>
               </Label>
               <MakeBtn
-                disabled={
-                  !(isName && isDes && isTag && isLink && isMember && isHi)
-                }
+                type="submit"
+                disabled={!(isName && isDes && isMember && isHi)}
               >
                 스터디 개설
               </MakeBtn>
