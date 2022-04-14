@@ -8,33 +8,20 @@ async function handler(
     ) {
     const { studyName, image, introduce, tag, membersLimit, chatLink, joinMsg } =
     req.body;
-
-    if (studyName && membersLimit && joinMsg) {
-    let study = await client.studyinfo.findUnique({
-        where: { studyName },
-    });
-
-    //동일한 이름의 스터디가 있다면?
-    if (study) console.log(`중복되는 이름의 스터디가 있습니다!`);
-    //해당하는 스터디가 db에 없다면? -> 스터디를 생성한다.
-    if (!study) {
-        study = await client.studyinfo.create({
-        data: {
-            studyName: "Untitled",
+        await client.studyinfo.create({
+        data : {
+            studyName,
             image,
-            introduce: "Introduction",
+            introduce,
             tag,
-            membersLimit: 5,
+            membersLimit,
             chatLink,
-            joinMsg: "Welcome to study group!"
+            joinMsg,
         },
         });
-        console.log(`입력된 정보로 스터디를 생성합니다.`);
-    }
-    }
+    
     const studyResult = { studyName, image, introduce, tag, membersLimit, chatLink, joinMsg }
     console.log(studyResult);
-
     return res.json({ ok: true });
 }
 

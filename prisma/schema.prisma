@@ -56,11 +56,11 @@ model Studyinfo {
   studyName      String
   leader         User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
   image          String?
-  introduce      String
+  introduce      String?
   tag            String?
-  membersLimit   Int
+  membersLimit   Int?
   chatLink       String?
-  joinMsg        String
+  joinMsg        String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   UserModelId    Int
