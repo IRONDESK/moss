@@ -1,7 +1,6 @@
-import styled from '@emotion/styled';
-import { COLOR } from '../constants';
 import AuthLogin from 'src/components/LoginComponent/loginType/AuthLogin';
 import { Container, H1 } from 'src/components/LoginComponent/loginStyles';
+import { LoginLink } from 'src/components/LoginComponent/LoginLink';
 
 export default function Login() {
   return (
@@ -10,6 +9,7 @@ export default function Login() {
         <span>로그인</span>
       </H1>
       <AuthLogin />
+      <LoginLink />
     </Container>
   );
 }

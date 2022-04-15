@@ -51,6 +51,9 @@ export const Container = styled.section`
       &::placeholder {
         color: ${COLOR.grayText};
       }
+      &:focus {
+        outline: 1px solid ${COLOR.main};
+      }
     }
   }
 `;
