@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import useMutation from 'src/libs/client/useMutation';
-import { MutationResult } from 'src/pages/login';
+import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { EmailLoginForm, PhoneLoginForm } from '../Forms';
 import TokenLogin from './TokenLogin';
 import UserLogin from './UserLogin';
@@ -8,11 +7,12 @@ import UserLogin from './UserLogin';
 function AuthLogin() {
   //select method
   const [method, setMethod] = useState('userId');
-  const onClick = (selectMethod: string) => {
-    setMethod(selectMethod);
+  const onClick = (option: React.FormEvent<HTMLSelectElement>) => {
+    setMethod(option.currentTarget.value);
   };
+  console.log(method);
   //API
-  const [login, { loading, data }] = useMutation<MutationResult>(
+  const [login, { loading, data }] = useMutation<IMutation>(
     '/api/users/tokenLogin',
   );
   //
@@ -22,23 +22,12 @@ function AuthLogin() {
         <TokenLogin />
       ) : (
         <>
-          <section>
-            <input
-              onClick={() => onClick('userId')}
-              type="button"
-              value="아이디 / 비밀번호"
-            />
-            <input
-              onClick={() => onClick('email')}
-              type="button"
-              value="이메일"
-            />
-            <input
-              onClick={() => onClick('phone')}
-              type="button"
-              value="휴대폰"
-            />
-          </section>
+          <select onInput={onClick} value={method}>
+            <option value="">로그인 방식을 선택하세요.</option>
+            <option value="userId">아이디 비밀번호로 로그인</option>
+            <option value="email">이메일 로그인</option>
+            <option value="phone">휴대폰 로그인</option>
+          </select>
 
           {method === 'userId' ? (
             <UserLogin />

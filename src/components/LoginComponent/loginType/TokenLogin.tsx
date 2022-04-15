@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
-import { MutationResult } from 'src/pages/login';
+import { IMutation } from 'src/pages/login';
 import Input from '../Input';
 
 export interface TokenForm {
@@ -10,7 +10,7 @@ export interface TokenForm {
 }
 
 function TokenLogin() {
-  const [login, { loading, data, error }] = useMutation<MutationResult>(
+  const [login, { loading, data, error }] = useMutation<IMutation>(
     '/api/users/token_session',
   );
 
