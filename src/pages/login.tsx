@@ -18,42 +18,11 @@ interface TokenForm {
 
 interface MutationResult {
   ok: boolean;
-  idpw_confirm: boolean;
+  [key: string]: any;
 }
 
 export default function Login() {
-  // Mutation Hook
-  //일반 로그인
-  const [login, { loading, data, error }] =
-    useMutation<MutationResult>('/api/users/login');
-  console.log(data);
-  const onValid = (validForm: LoginForm) => {
-    login(validForm);
-  };
-  //토큰 로그인
-  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
-    useMutation<MutationResult>('/api/users/token_session');
-
-  const onTokenValid = (validForm: TokenForm) => {
-    if (tokenLoading) return;
-    confirmToken(validForm);
-  };
-  //로그인 useForm
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({ mode: 'onBlur' });
-
-  //토큰 useForm
-  const {
-    register: tokenRegister,
-    reset: tokenReset,
-    handleSubmit: tokenHandleSubmit,
-    formState: { errors: tokenErrors },
-  } = useForm<TokenForm>({ mode: 'onBlur' });
-
+  const router = useRouter();
   const [method, setMethod] = useState('email');
   const onEmailClick = () => {
     setMethod('email');
@@ -68,13 +37,55 @@ export default function Login() {
     reset();
   };
 
+  //아이디 비번으로 로그인
+  const [login, { loading, data, error }] =
+    useMutation<MutationResult>('/api/users/login');
+
+  //이메일 휴대폰으로 로그인
+  const [
+    emailPhoneLogin,
+    { loading: emailPhoneLoading, data: emailPhoneData },
+  ] = useMutation<MutationResult>('/api/users/tokenLogin');
+
+  const onValid = (data: LoginForm) => {
+    if (method === 'email' || method === 'phone') {
+      return emailPhoneLogin(data);
+    }
+    return login(data);
+  };
+
+  //이메일 휴대폰 인증 후 -> 토큰 로그인
+  const [tokenLogin, { loading: tokenLoading, data: tokenData }] =
+    useMutation<MutationResult>('/api/users/token_session');
+
+  const onTokenValid = (data: TokenForm) => {
+    if (tokenLoading) return;
+    tokenLogin(data);
+  };
+  //로그인 useForm
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({ mode: 'onBlur' });
+
+  //토큰 useForm
+  const {
+    register: tokenRegister,
+    handleSubmit: tokenHandleSubmit,
+    formState: { errors: tokenErrors },
+  } = useForm<TokenForm>({ mode: 'onBlur' });
+
   //페이지이동
-  const router = useRouter();
   useEffect(() => {
-    if (data?.idpw_confirm) {
+    // 로그인된 유저 -> 마이페이지로 이동
+    if (data?.ok) {
       router.push('/my-page');
+      // 이메일비번유저, 토큰인증유저
     } else if (tokenData?.ok) {
       router.push('/');
+    } else {
     }
   }, [data, tokenData, router]);
 
@@ -83,7 +94,7 @@ export default function Login() {
       <h1>
         <span>로그인</span>
       </h1>
-      {data?.ok ? (
+      {emailPhoneData?.ok ? (
         <form onSubmit={tokenHandleSubmit(onTokenValid)}>
           <Input
             register={tokenRegister('token', {

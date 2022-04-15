@@ -18,12 +18,12 @@ async function handler(
     //2. 유저가 없으면?
     if (!User) {
       console.log(`일치하는 유저아이디 또는 비번이 없습니다!`);
-      res.json({ ok: false, idpw_confirm: false }); //확인메시지 -> front (회원가입페이지로 넘어가게 처리)
+      res.json({ ok: false }); //확인메시지 -> front (회원가입페이지로 넘어가게 처리)
     }
     //3. 유저가 있으면?
     req.session.user = { id: User?.id };
     await req.session.save(); //세션에 아이디 넣고, 저장!
-    return res.json({ ok: false, idpw_confirm: true }); //확인메시지 -> front (마이페이지로 넘어가게 처리)
+    return res.json({ ok: true }); //확인메시지 -> front (마이페이지로 넘어가게 처리)
   }
   //확인
   return res.json({ ok: true });
