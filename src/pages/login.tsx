@@ -1,201 +1,35 @@
 import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import Input from '../components/Login/Input';
+import Input from '../components/LoginComponent/Input';
 import { COLOR } from '../constants';
 import useMutation from '../libs/client/useMutation';
 import { useRouter } from 'next/router';
+import { TokenForm } from 'src/components/LoginComponent/loginType/TokenLogin';
+import AuthLogin from 'src/components/LoginComponent/loginType/AuthLogin';
 
-interface LoginForm {
+export interface ILoginForm {
   email?: string;
   phone?: string;
   userId?: string;
   password?: string;
 }
-interface TokenForm {
-  token: string;
-}
-
-interface MutationResult {
+export interface MutationResult {
   ok: boolean;
   [key: string]: any;
 }
 
 export default function Login() {
-  const router = useRouter();
-  const [method, setMethod] = useState('email');
-  const onEmailClick = () => {
-    setMethod('email');
-    reset();
-  };
-  const onPhoneClick = () => {
-    setMethod('phone');
-    reset();
-  };
-  const onUserIdClick = () => {
-    setMethod('userId');
-    reset();
-  };
-
-  //아이디 비번으로 로그인
-  const [login, { loading, data, error }] =
-    useMutation<MutationResult>('/api/users/login');
-
-  //이메일 휴대폰으로 로그인
-  const [
-    emailPhoneLogin,
-    { loading: emailPhoneLoading, data: emailPhoneData },
-  ] = useMutation<MutationResult>('/api/users/tokenLogin');
-
-  const onValid = (data: LoginForm) => {
-    if (method === 'email' || method === 'phone') {
-      return emailPhoneLogin(data);
-    }
-    return login(data);
-  };
-
-  //이메일 휴대폰 인증 후 -> 토큰 로그인
-  const [tokenLogin, { loading: tokenLoading, data: tokenData }] =
-    useMutation<MutationResult>('/api/users/token_session');
-
-  const onTokenValid = (data: TokenForm) => {
-    if (tokenLoading) return;
-    tokenLogin(data);
-  };
-  //로그인 useForm
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({ mode: 'onBlur' });
-
-  //토큰 useForm
-  const {
-    register: tokenRegister,
-    handleSubmit: tokenHandleSubmit,
-    formState: { errors: tokenErrors },
-  } = useForm<TokenForm>({ mode: 'onBlur' });
-
-  //페이지이동
-  useEffect(() => {
-    // 로그인된 유저 -> 마이페이지로 이동
-    if (data?.ok) {
-      router.push('/my-page');
-      // 이메일비번유저, 토큰인증유저
-    } else if (tokenData?.ok) {
-      router.push('/');
-    } else {
-    }
-  }, [data, tokenData, router]);
-
   return (
     <Container>
       <h1>
         <span>로그인</span>
       </h1>
-      {emailPhoneData?.ok ? (
-        <form onSubmit={tokenHandleSubmit(onTokenValid)}>
-          <Input
-            register={tokenRegister('token', {
-              required: '6자리 숫자 토큰을 입력해야 합니다!',
-            })}
-            method="token"
-            label="토큰으로 인증후 로그인"
-            name="token"
-            type="number"
-            placeholder="6자리 숫자 토큰을 입력하세요."
-            errorMsg={tokenErrors.token?.message}
-          />
-          <button>{tokenLoading ? '로딩중...' : '토큰으로 로그인'}</button>
-        </form>
-      ) : (
-        <>
-          <section>
-            <button
-              onClick={onEmailClick}
-              className={method === 'email' ? 'chosen' : 'unchosen'}
-            >
-              <p>이메일</p>
-            </button>
-            <button
-              onClick={onPhoneClick}
-              className={method === 'phone' ? 'chosen' : 'unchosen'}
-            >
-              <p>휴대폰</p>
-            </button>
-            <button
-              onClick={onUserIdClick}
-              className={method === 'userId' ? 'chosen' : 'unchosen'}
-            >
-              <p>아이디 | 비밀번호</p>
-            </button>
-          </section>
-
-          <form onSubmit={handleSubmit(onValid)}>
-            {method === 'email' ? (
-              <Input
-                register={register('email', {
-                  required: '이메일을 입력하세요!',
-                })}
-                method="email"
-                label="이메일 주소로 로그인 (Email Address)"
-                name="email"
-                type="text"
-                placeholder="이메일을 입력하세요."
-                errorMsg={errors.email?.message}
-              />
-            ) : null}
-
-            {method === 'phone' ? (
-              <Input
-                register={register('phone', {
-                  required: '휴대폰 번호를 입력하세요!',
-                })}
-                method="phone"
-                label="휴대폰 로그인 (Phone Number)"
-                name="phone"
-                type="number"
-                placeholder="휴대폰 번호를 입력하세요."
-                errorMsg={errors.phone?.message}
-              />
-            ) : null}
-
-            {method === 'userId' ? (
-              <Input
-                method="userId"
-                register={register('userId', {
-                  required: '아이디를 입력하세요!',
-                })}
-                register2={register('password', {
-                  required: '비밀번호를 입력하세요!',
-                })}
-                label="아이디 | 비밀번호 로그인 (Id | Password)"
-                name="userId"
-                type="text"
-                placeholder="아이디를 입력하세요."
-                errorMsg={errors.userId?.message}
-                errorMsg2={errors.password?.message}
-              />
-            ) : null}
-
-            {method === 'email' ? (
-              <button>{loading ? '로딩중...' : '로그인 링크 받기'}</button>
-            ) : null}
-            {method === 'phone' ? (
-              <button>
-                {loading ? '로딩중...' : 'One-time password 받기'}
-              </button>
-            ) : null}
-            {method === 'userId' ? (
-              <button>{loading ? '로딩중...' : '로그인'}</button>
-            ) : null}
-          </form>
-        </>
-      )}
+      <AuthLogin />
     </Container>
   );
 }
+
 const Container = styled.section`
   padding: 140px 0px;
   margin: 0 auto;
@@ -221,6 +55,7 @@ const Container = styled.section`
   }
   section {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     margin-top: 5%;
     width: 100%;
