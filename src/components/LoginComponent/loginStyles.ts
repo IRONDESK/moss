@@ -67,6 +67,7 @@ export const Container = styled.section`
     }
   }
 `;
+export const Form = styled.form``;
 export const Btn = styled.button`
   background-color: ${COLOR.main};
   color: white;

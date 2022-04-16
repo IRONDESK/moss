@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
-import { EmailLoginForm, PhoneLoginForm } from '../Forms';
+import { EmailLoginForm, LoginForm, PhoneLoginForm } from '../Forms';
 import TokenLogin from './TokenLogin';
 import UserLogin from './UserLogin';
 
@@ -10,7 +10,6 @@ function AuthLogin() {
   const onClick = (option: React.FormEvent<HTMLSelectElement>) => {
     setMethod(option.currentTarget.value);
   };
-  console.log(method);
   //API
   const [login, { loading, data }] = useMutation<IMutation>(
     '/api/users/tokenLogin',
@@ -30,11 +29,9 @@ function AuthLogin() {
           </select>
 
           {method === 'userId' ? (
-            <UserLogin />
-          ) : method === 'email' ? (
-            <EmailLoginForm login={login} loading={loading} />
-          ) : method === 'phone' ? (
-            <PhoneLoginForm login={login} loading={loading} />
+            <UserLogin method={method} />
+          ) : method === 'email' || method === 'phone' ? (
+            <LoginForm method={method} login={login} loading={loading} />
           ) : null}
         </>
       )}
