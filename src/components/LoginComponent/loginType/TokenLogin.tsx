@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { LoginForm } from '../Forms';
 
@@ -14,13 +13,6 @@ function TokenLogin({ method }: any) {
   );
   const errMsg = data?.errorMsg;
 
-  //토큰 useForm
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TokenForm>({ mode: 'onBlur' });
-
   //페이지 이동
   const router = useRouter();
   useEffect(() => {
@@ -33,8 +25,8 @@ function TokenLogin({ method }: any) {
   return (
     <>
       <LoginForm
-        errMsg={errMsg}
         method={method}
+        errMsg={errMsg}
         login={login}
         loading={loading}
       />

@@ -21,6 +21,7 @@ export default function Input({
   return (
     <>
       <input {...register} required={required} {...rest} />
+
       {method === 'userId' ? (
         <input
           {...register2}
@@ -29,6 +30,7 @@ export default function Input({
           placeholder="비밀번호를 입력하세요."
         />
       ) : null}
+
       {errorMsg ? (
         <Error>{errorMsg}</Error>
       ) : errorMsg2 ? (

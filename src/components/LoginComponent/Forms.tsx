@@ -23,7 +23,7 @@ export const LoginForm = ({
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginForm>({
-    mode: 'onBlur',
+    mode: 'onChange',
   });
   const onValid = (data: ILoginForm) => {
     reset();
@@ -58,6 +58,10 @@ export const LoginForm = ({
           <EmailLogin>
             <Input
               register={register('email', {
+                pattern: {
+                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  message: '이메일 형식이 올바르지 않습니다.',
+                },
                 required: '이메일을 입력하세요!',
               })}
               name="email"
@@ -70,12 +74,16 @@ export const LoginForm = ({
         ) : method === 'phone' ? (
           <PhoneLogin>
             <Input
+              type="number"
+              max={9}
               register={register('phone', {
+                maxLength: {
+                  value: 9,
+                  message: '휴대폰번호는 9자리를 넘을수 없습니다.',
+                },
                 required: '휴대폰 번호를 입력하세요!',
               })}
-              label="휴대폰 로그인 (Phone Number)"
               name="phone"
-              type="number"
               placeholder="휴대폰 번호를 입력하세요."
               errorMsg={errors.phone?.message}
             />
@@ -84,13 +92,22 @@ export const LoginForm = ({
         ) : method === 'token' ? (
           <TokenLogin>
             <Input
+              type="number"
+              max={6}
               register={register('token', {
-                required: '6자리 숫자 토큰을 입력해야 합니다!',
+                minLength: {
+                  value: 6,
+                  message: '토큰은 6자리 숫자입니다.',
+                },
+                maxLength: {
+                  value: 6,
+                  message: '토큰은 6자리 숫자입니다.',
+                },
+                required: '인증을 위해서 토큰을 입력해야 합니다!',
               })}
               method="token"
               label="토큰으로 인증후 로그인"
               name="token"
-              type="number"
               placeholder="6자리 숫자 토큰을 입력하세요."
               errorMsg={errors.token?.message}
             />

@@ -52,7 +52,7 @@ export const InputWrap = styled.div`
 `;
 export const Container = styled.section`
   padding: 10px;
-  margin: 0 auto;
+  margin: 100px auto;
   width: 60%;
   width: 340px;
   select,
