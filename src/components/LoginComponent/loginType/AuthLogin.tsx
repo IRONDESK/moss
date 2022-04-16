@@ -11,8 +11,8 @@ function AuthLogin() {
     setMethod(option.currentTarget.value);
   };
   //API
-  const [login, { loading, data, error: serverError }] = useMutation<IMutation>(
-    '/api/users/tokenLogin',
+  const [login, { loading, data }] = useMutation<IMutation>(
+    '/api/users/authLogin',
   );
 
   //
@@ -32,12 +32,7 @@ function AuthLogin() {
           {method === 'userId' ? (
             <UserLogin method={method} />
           ) : method === 'email' || method === 'phone' ? (
-            <LoginForm
-              serverError={serverError}
-              method={method}
-              login={login}
-              loading={loading}
-            />
+            <LoginForm method={method} login={login} loading={loading} />
           ) : null}
         </>
       )}

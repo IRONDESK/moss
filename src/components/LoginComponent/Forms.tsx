@@ -94,7 +94,7 @@ export const LoginForm = ({
               placeholder="6자리 숫자 토큰을 입력하세요."
               errorMsg={errors.token?.message}
             />
-            <Btn>{loading ? '로딩중...' : '토큰으로 로그인'}</Btn>
+            <Btn>{loading ? '로딩중...' : '인증완료 후 로그인'}</Btn>
           </TokenLogin>
         ) : null}
       </form>
