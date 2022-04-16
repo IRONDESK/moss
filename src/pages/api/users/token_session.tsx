@@ -18,6 +18,7 @@ async function handler(
   //Token Match Fail!
   if (!confirmedToken) {
     console.log(`일치하는 토큰이 없습니다!`);
+    res.json({ ok: false, errorMsg: `일치하는 토큰이 없습니다!` });
     return res.status(404).end();
   }
   //
