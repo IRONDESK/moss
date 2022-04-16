@@ -17,6 +17,16 @@ export const H1 = styled.h1`
   }
 `;
 
+export const Error = styled.span`
+  background: #fff5f5;
+  color: ${COLOR.error};
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 12px;
+`;
+
 export const Container = styled.section`
   padding: 10px;
   margin: 0 auto;

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import Input from './Input';
-import { Btn } from './loginStyles';
+import { Btn, Error } from './loginStyles';
 
 export interface ILoginForm {
   email?: string;
@@ -8,7 +8,7 @@ export interface ILoginForm {
   userId?: string;
   password?: string;
 }
-export const LoginForm = ({ login, loading }: any) => {
+export const LoginForm = ({ login, loading, errMsg }: any) => {
   const {
     register,
     reset,
@@ -37,6 +37,7 @@ export const LoginForm = ({ login, loading }: any) => {
         errorMsg={errors.userId?.message}
         errorMsg2={errors.password?.message}
       />
+      {errMsg ? <Error>{errMsg}</Error> : null}
       <Btn>{loading ? '로딩중...' : '로그인'}</Btn>
     </form>
   );

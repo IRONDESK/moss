@@ -5,9 +5,10 @@ import { LoginForm } from '../Forms';
 
 function UserLogin() {
   //아이디 비번으로 로그인
-  const [login, { loading, data, error }] =
+  const [login, { loading, data, error: serverError }] =
     useMutation<IMutation>('/api/users/login');
-
+  console.log(data, serverError);
+  const errMsg = data?.errorMsg;
   //
   const router = useRouter();
   useEffect(() => {
@@ -18,7 +19,7 @@ function UserLogin() {
   //
   return (
     <>
-      <LoginForm login={login} loading={loading} />
+      <LoginForm login={login} loading={loading} errMsg={errMsg} />
     </>
   );
 }

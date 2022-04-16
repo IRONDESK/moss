@@ -1,6 +1,5 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
-import styled from '@emotion/styled';
-import { COLOR } from 'src/constants';
+import { Error } from './loginStyles';
 
 interface InputProps {
   name: string;
@@ -38,12 +37,3 @@ export default function Input({
     </>
   );
 }
-const Error = styled.span`
-  background: #fff5f5;
-  color: ${COLOR.error};
-  width: 100%;
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 12px;
-`;

@@ -17,8 +17,10 @@ async function handler(
   if (userId && password) {
     //2. 유저가 없으면?
     if (!User) {
-      console.log(`일치하는 유저아이디 또는 비번이 없습니다!`);
-      res.json({ ok: false }); //확인메시지 -> front (회원가입페이지로 넘어가게 처리)
+      res.json({
+        ok: false,
+        errorMsg: `일치하는 유저아이디 또는 비밀번호가 없습니다!`,
+      }); //확인메시지 -> front (회원가입페이지로 넘어가게 처리)
     }
     //3. 유저가 있으면?
     req.session.user = { id: User?.id };
