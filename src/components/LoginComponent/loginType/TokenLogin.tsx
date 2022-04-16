@@ -1,28 +1,24 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import useMutation from 'src/libs/client/useMutation';
-import { IMutation } from 'src/pages/login';
-import Input from '../Input';
+import useMutation, { IMutation } from 'src/libs/client/useMutation';
+import { LoginForm } from '../Forms';
 
 export interface TokenForm {
   token: string;
 }
 
-function TokenLogin() {
-  const [login, { loading, data, error }] = useMutation<IMutation>(
+function TokenLogin({ method }: any) {
+  const [login, { loading, data }] = useMutation<IMutation>(
     '/api/users/token_session',
   );
+  const errMsg = data?.errorMsg;
 
-  const onTokenValid = (data: TokenForm) => {
-    if (loading) return;
-    login(data);
-  };
   //토큰 useForm
   const {
-    register: tokenRegister,
-    handleSubmit: tokenHandleSubmit,
-    formState: { errors: tokenErrors },
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm<TokenForm>({ mode: 'onBlur' });
 
   //페이지 이동
@@ -36,20 +32,12 @@ function TokenLogin() {
 
   return (
     <>
-      <form onSubmit={tokenHandleSubmit(onTokenValid)}>
-        <Input
-          register={tokenRegister('token', {
-            required: '6자리 숫자 토큰을 입력해야 합니다!',
-          })}
-          method="token"
-          label="토큰으로 인증후 로그인"
-          name="token"
-          type="number"
-          placeholder="6자리 숫자 토큰을 입력하세요."
-          errorMsg={tokenErrors.token?.message}
-        />
-        <button>{loading ? '로딩중...' : '토큰으로 로그인'}</button>
-      </form>
+      <LoginForm
+        errMsg={errMsg}
+        method={method}
+        login={login}
+        loading={loading}
+      />
     </>
   );
 }

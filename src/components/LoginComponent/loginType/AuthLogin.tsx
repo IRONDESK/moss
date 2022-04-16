@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
-import { EmailLoginForm, LoginForm, PhoneLoginForm } from '../Forms';
+import { LoginForm } from '../Forms';
 import TokenLogin from './TokenLogin';
 import UserLogin from './UserLogin';
 
@@ -11,14 +11,15 @@ function AuthLogin() {
     setMethod(option.currentTarget.value);
   };
   //API
-  const [login, { loading, data }] = useMutation<IMutation>(
+  const [login, { loading, data, error: serverError }] = useMutation<IMutation>(
     '/api/users/tokenLogin',
   );
+
   //
   return (
     <>
       {data?.ok ? (
-        <TokenLogin />
+        <TokenLogin method="token" />
       ) : (
         <>
           <select onInput={onClick} value={method}>
@@ -31,7 +32,12 @@ function AuthLogin() {
           {method === 'userId' ? (
             <UserLogin method={method} />
           ) : method === 'email' || method === 'phone' ? (
-            <LoginForm method={method} login={login} loading={loading} />
+            <LoginForm
+              serverError={serverError}
+              method={method}
+              login={login}
+              loading={loading}
+            />
           ) : null}
         </>
       )}

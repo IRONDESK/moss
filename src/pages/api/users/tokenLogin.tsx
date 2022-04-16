@@ -16,7 +16,7 @@ async function handler(
   const payload = Math.floor(100000 + Math.random() * 900000) + ''; //토큰번호 (payload); 6자리 랜덤숫자
 
   const tokenUser = email ? { email } : phone ? { phone } : null;
-  //token으로 로그인한느 유저가 없다면? -> 400 error!
+  //token으로 로그인하는 유저가 없다면? -> 400 error!
   if (!tokenUser) return res.status(400).json({ ok: false });
 
   // 토큰 생성 -> 유저가 존재? -> 유저를 연결
