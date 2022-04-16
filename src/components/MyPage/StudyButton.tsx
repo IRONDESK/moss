@@ -25,9 +25,8 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
   const [study, {loading, data, error}] = useMutation('/api/study/create');
   //useForm
   const { register, handleSubmit } = useForm<studyForm>();
-  const onSubmit: SubmitHandler<studyForm> = (data) => {
-    study(data);
-    console.log(data);
+  const onSubmit: SubmitHandler<studyForm> = async (data) => {
+    await study(data);
   };
 
   const getIsImage = (img: boolean) => {
@@ -38,7 +37,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
     <>
     <StudyWrap>
       <StudySetBtn onClick={() => setModal((prev: boolean) => !prev)}>
-        스터디 신청하기
+        스터디 개설
       </StudySetBtn>
     </StudyWrap>
       {modal ? (
@@ -55,7 +54,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             <Label htmlFor="study-name">스터디 이름</Label>
             <Input
               {...register('studyName')}
-              name="name"
+              name="studyName"
               id="study-name"
               type="text"
               placeholder="스터디 이름을 작성해주세요"
@@ -63,7 +62,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             <Label htmlFor="study-des">소개</Label>
             <Input
             {...register('introduce')}
-              name="des"
+              name="introduce"
               id="study-des"
               type="text"
               placeholder="스터디 소개를 작성해주세요"
@@ -79,16 +78,16 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             <Label htmlFor="study-members">스터디 인원</Label>
             <Input
             {...register('membersLimit')}
-              name="member"
+              name="membersLimit"
               id="study-members"
               type="number"
-              min={5}
-              placeholder="스터디 인원 제한을 설정하세요"
+              min={3}
+              placeholder="최소 3인 이상의 인원을 설정해주세요"
             />
             <Label htmlFor="study-chatlink">카카오톡 오픈채팅 링크</Label>
             <Input
             {...register('chatLink')}
-              name="link"
+              name="chatLink"
               id="study-chatlink"
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
@@ -98,7 +97,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
             </Label>
               <Select 
               {...register('joinMsg')}
-                name="region"
+                name="joinMsg"
                 id="study-joinmsg"
               >
                 <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
@@ -124,12 +123,18 @@ const StudyWrap = styled.article`
 `;
 
 const StudySetBtn = styled.button`
+  padding: 5px 3px;
   display: inline-block;
   width: 120px;
-  height: 32px;
+  color: ${COLOR.main};
+  font-size: 16px;
+  line-height: 25px;
   border: 1px solid ${COLOR.main};
   border-radius: 40px;
-  color: ${COLOR.main};
+  &:hover {
+    background-color: ${COLOR.main};
+    color: ${COLOR.white};
+  }
 `;
 
 const Container = styled.section`
@@ -167,6 +172,7 @@ const Container = styled.section`
 
 const CloseBtn = styled.button`
   position: absolute;
+  cursor: pointer;
   top: 18px;
   right: 18px;
   background: url('./images/icons/close.png') no-repeat;
@@ -216,10 +222,11 @@ const Form = styled.form`
 `;
 
 const CreateButton = styled.button`
+  margin-top: 33px;
   width: 100%;
   height: 48px;
-  margin-top: 33px;
   background: ${COLOR.main};
+  font-size: 16px;
   color: ${COLOR.white};
   &:disabled {
     background: ${COLOR.gray};

@@ -55,10 +55,10 @@ model Studyinfo {
   studyId        Int       @id @default(autoincrement())
   studyName      String
   leader         User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
-  image          String?
+  image          Json?
   introduce      String?
   tag            String?
-  membersLimit   Int?
+  membersLimit   String?
   chatLink       String?
   joinMsg        String?
   createdAt      DateTime  @default(now())
