@@ -1,7 +1,8 @@
 export interface NoticeData {
-  id: number
-  tag: string
-  title: string
-  author: string
-  createddate: string
+  id: number;
+  category: string;
+  title: string;
+  author: string;
+  content: string;
+  createddate: string;
 }
