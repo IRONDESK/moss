@@ -3,11 +3,11 @@ import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
 import { COLOR } from '../../../constants';
 import dynamic from 'next/dynamic';
 import useMutation from 'src/libs/client/useMutation';
-import { FieldErrors, useForm } from 'react-hook-form';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { Button } from '../../../components/Notice/Button';
+import { NoticeData } from 'src/types/Notice';
 import React, { useState } from 'react';
-import { ThisMonthInstance } from 'twilio/lib/rest/api/v2010/account/usage/record/thisMonth';
+
 const PostEditor = dynamic(
   () => import('../../../components/Notice/PostEditor'),
   {
@@ -15,40 +15,47 @@ const PostEditor = dynamic(
   },
 );
 
-interface NoticeForm {
-  category?: string;
-  title?: string;
-  author?: string;
-  content?: string;
-}
-
 export default function NoticePage(): JSX.Element {
+  const [notice, { loading, data, error }] = useMutation('/api/notice/write');
+
+  let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [newNotice, setNewnotice] = useState({});
 
-  const [notice, { loading, data, error }] = useMutation('/api/notice');
-  console.log(loading, data, error);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<NoticeForm>({
-    mode: 'onBlur',
-  });
-
-  const onValid = (data: NoticeForm) => {
-    notice(data);
-  };
-
-  const InValid = (errors: FieldErrors) => {
-    console.log(errors);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name },
+    } = e;
+    if (name === 'category') {
+      setCategory(e.target.value);
+    }
+    if (name === 'title') {
+      setTitle(e.target.value);
+    }
   };
 
   const editor = (editor: string) => {
     setContent(editor);
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNoticeList(
+      (noticeList = [{ category: category, title: title, content: content }]),
+    );
+    console.log(noticeList);
+    const data = noticeList;
+    console.log(data);
+    notice(data);
+    reset();
+  };
+
+  const reset = () => {
+    setNoticeList([]);
+    setCategory('');
+    setTitle('');
+    setContent('');
   };
 
   return (
@@ -63,26 +70,26 @@ export default function NoticePage(): JSX.Element {
         link="#"
       />
       <NoticeTitle />
-      <NoticeForm onSubmit={handleSubmit(onValid, InValid)}>
+      <NoticeForm onSubmit={onSubmit}>
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input
-            {...register('category', { required: '카테고리가 필요합니다!' })}
+            onChange={onChange}
             list="category-list"
             id="input-category"
-            name="input-category"
+            name="category"
             placeholder="최대 4자까지 입력할 수 있습니다."
           />
-          <datalist id="category-list">
+          {/* <datalist id="category-list">
             <option value="장소" />
             <option value="미션" />
             <option value="일반공지" />
-          </datalist>
+          </datalist> */}
         </div>
         <div className="list">
           <label htmlFor="input-title">제목</label>
           <input
-            {...register('title', { required: '제목이 필요합니다!' })}
+            onChange={onChange}
             name="title"
             type="text"
             id="input-title"
@@ -90,21 +97,11 @@ export default function NoticePage(): JSX.Element {
           />
         </div>
         <div className="list">
-          <PostEditor editor={editor} register={register('content')} />
+          <PostEditor editor={editor} />
         </div>
         <BtnGroup>
-          <Button
-            text="글게시"
-            href="/study/notice/view"
-            className="write"
-            type="submit"
-          />
-          <Button
-            text="취소"
-            href="/study/notice/view"
-            className="cancel"
-            type="#"
-          />
+          <Button text="글게시" className="write" type="submit" />
+          <Button text="취소" className="cancel" type="#" />
         </BtnGroup>
       </NoticeForm>
     </>

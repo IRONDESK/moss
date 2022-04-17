@@ -2,19 +2,14 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
 export const Button = (props: {
-  href: string;
   text: string;
   className: string;
   type: string;
 }) => {
-  return (
-    <Btn href={props.href} className={props.className}>
-      {props.text}
-    </Btn>
-  );
+  return <Btn className={props.className}>{props.text}</Btn>;
 };
 
-const Btn = styled.a`
+const Btn = styled.button`
   max-width: 120px;
   color: #fff;
   height: 40px;
