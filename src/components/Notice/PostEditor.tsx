@@ -15,7 +15,7 @@ const PostEditor = (props: any) => {
       previewStyle="vertical"
       height="600px"
       useCommandShortcut={true}
-      initialValue="hello"
+      initialValue=" "
       onChange={onChangeIntroFunction}
       ref={editorRef}
     />
