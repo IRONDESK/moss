@@ -6,7 +6,15 @@ async function handler(
     req: NextApiRequest,
     res: NextApiResponse
     ) {
-    const { studyName, image, introduce, tag, membersLimit, chatLink, joinMsg } = req.body;
+    const {
+        studyName,
+        image,
+        introduce,
+        tag,
+        membersLimit,
+        chatLink,
+        joinMsg } = req.body;
+
         let study = await client.studyinfo.create({
         data : {
             studyName,
@@ -21,4 +29,8 @@ async function handler(
     return res.json({ ok: true, data: study });
 }
 
-export default withHandler({ method: 'POST', handler, isPrivate: false });
+export default withHandler({
+    method: 'POST',
+    handler,
+    isPrivate: false
+});
