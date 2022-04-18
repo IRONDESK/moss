@@ -1,15 +1,8 @@
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
-import Input from './Input';
-import { Btn, Error, InputWrap } from './loginStyles';
+import { Btn, Error, InputWrap } from 'src/styles/loginStyles';
+import Input from './LoginInput';
 
-export interface ILoginForm {
-  email?: string;
-  phone?: string;
-  userId?: string;
-  password?: string;
-  token?: string;
-}
 export const LoginForm = ({
   method,
   login,
@@ -75,7 +68,6 @@ export const LoginForm = ({
           <PhoneLogin>
             <Input
               type="number"
-              max={9}
               register={register('phone', {
                 maxLength: {
                   value: 9,
@@ -93,7 +85,6 @@ export const LoginForm = ({
           <TokenLogin>
             <Input
               type="number"
-              max={6}
               register={register('token', {
                 minLength: {
                   value: 6,
@@ -118,6 +109,17 @@ export const LoginForm = ({
     </Container>
   );
 };
+
+//TS
+export interface ILoginForm {
+  email?: string;
+  phone?: string;
+  userId?: string;
+  password?: string;
+  token?: string;
+}
+
+//COMPONENTS
 const Container = styled.div``;
 const UserIdLogin = styled(InputWrap)``;
 const EmailLogin = styled(InputWrap)``;

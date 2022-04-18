@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
-import { LoginForm } from '../Forms';
+import { LoginForm } from '../components/LoginForm';
 import TokenLogin from './TokenLogin';
 import UserLogin from './UserLogin';
 
-function AuthLogin() {
+export const AuthLogin = () => {
   //select method
   const [method, setMethod] = useState('userId');
   const onClick = (option: React.FormEvent<HTMLSelectElement>) => {
@@ -38,5 +38,4 @@ function AuthLogin() {
       )}
     </>
   );
-}
-export default AuthLogin;
+};

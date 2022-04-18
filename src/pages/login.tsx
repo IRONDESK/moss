@@ -1,6 +1,6 @@
-import AuthLogin from 'src/components/LoginComponent/loginType/AuthLogin';
-import { Container, H1 } from 'src/components/LoginComponent/loginStyles';
-import { LoginLink } from 'src/components/LoginComponent/LoginLink';
+import { Container, H1 } from 'src/styles/loginStyles';
+import { LoginLink } from 'src/components/Login/components/LoginLink';
+import { AuthLogin } from 'src/components/Login/LoginMethod/AuthLogin';
 
 export default function Login() {
   return (

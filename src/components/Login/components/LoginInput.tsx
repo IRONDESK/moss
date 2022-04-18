@@ -1,13 +1,6 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { Error } from './loginStyles';
+import { Error } from '../../../styles/loginStyles';
 
-interface InputProps {
-  name: string;
-  register: UseFormRegisterReturn;
-  register2?: UseFormRegisterReturn;
-  required?: boolean;
-  [key: string]: any;
-}
 export default function Input({
   name,
   method,
@@ -21,7 +14,6 @@ export default function Input({
   return (
     <>
       <input {...register} required={required} {...rest} />
-
       {method === 'userId' ? (
         <input
           {...register2}
@@ -38,4 +30,13 @@ export default function Input({
       ) : null}
     </>
   );
+}
+
+//TS
+interface InputProps {
+  name: string;
+  register: UseFormRegisterReturn;
+  register2?: UseFormRegisterReturn;
+  required?: boolean;
+  [key: string]: any;
 }

@@ -1,11 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { COLOR } from '../../constants';
+import { COLOR } from '../../../constants';
 
-interface SpanProps {
-  txtColor: string;
-}
 export const StayBtn = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const onClick = () => {
@@ -41,3 +38,8 @@ const Span = styled.div<SpanProps>`
   line-height: 15px;
   color: ${(props) => props.txtColor};
 `;
+
+//TS
+interface SpanProps {
+  txtColor: string;
+}

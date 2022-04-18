@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
-import { LoginForm } from '../Forms';
+import { LoginForm } from '../components/LoginForm';
 
 export interface TokenForm {
   token: string;
