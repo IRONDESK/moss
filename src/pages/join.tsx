@@ -1,10 +1,11 @@
 import { Title } from '../components/layouts';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { FileUpload } from 'src/components/Join/FileUpload';
 import { COLOR } from 'src/constants';
+import { useRouter } from 'next/router';
 
 interface joinForm {
   email?: string;
@@ -21,8 +22,6 @@ export default function Join() {
   //fecth를 위한 mutation Hook // 데이터 -> 백엔드(url)로 전송
   const [join, { loading, data, error }] = useMutation('/api/users/join');
 
-  console.log(loading, data, error); //백엔드 데이터 확인!
-
   //useForm
   const {
     register,
@@ -32,15 +31,21 @@ export default function Join() {
     mode: 'onBlur',
   });
 
-  //데이터가 useMutation으로 전송 ->
-  //handleSubmit 조건 달성시 onValid 함수실행
   const onValid = (data: joinForm) => {
     join(data);
   };
-  //handleSubmit조건 실패시 InValid 함수실행
+
   const InValid = (errors: FieldErrors) => {
     console.log(errors);
   };
+
+  //제출후 페이지 이동
+  const router = useRouter();
+  useEffect(() => {
+    if (data?.ok) {
+      router.push('/login');
+    }
+  }, [data, router]);
 
   //프로필사진 파일 업로드
   const [isImage, setIsImage] = useState(false);

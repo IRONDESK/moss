@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import useMutation from 'src/libs/client/useMutation';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = () => {
+
+  const [item, {loading, data, error }] = useMutation('/api/todoList/todo')
 
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
@@ -44,13 +47,40 @@ export const TodoList = () => {
     setIsTodo(true)
   }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setTodoList([...todoList, {id: count, title: todo, completed: false}])
     setTodo("")
     setIsTodo(false)
     count = count + 1
     setCount(count)
+  }
+
+  const resetTodo = () => {
+    setTodo("")
+  }
+
+
+  const test = async (e) => {
+      e.preventDefault()
+      const body = todoList
+      try {
+      const res = await fetch("/api/todoList/todo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "applcation/json"
+        },
+        body: JSON.stringify(body)
+      })
+      if(res.status !== 200) {
+        console.log("No");
+      } else {
+        resetTodo()
+        console.log("YES!");
+      }
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -64,7 +94,7 @@ export const TodoList = () => {
           })}
         </ul>
       </ItemList>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={test}>
         <label>
           <Input
             type="text"

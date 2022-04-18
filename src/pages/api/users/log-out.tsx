@@ -6,9 +6,13 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
 ) {
-  //세션을 없애주고 홈페이지로 이동
-  await req.session.destroy();
-  return res.redirect('/');
+  if (req.method === 'GET') {
+    //세션을 없애주고 홈페이지로 이동
+    await req.session.destroy();
+    return res.redirect('/');
+  }
 }
 
-export default withApiSession(withHandler({ method: 'GET', handler }));
+export default withApiSession(
+  withHandler({ methods: ['GET', 'POST'], handler }),
+);

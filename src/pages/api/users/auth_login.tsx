@@ -12,35 +12,15 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
 ) {
-  const { email, phone, userId, password } = req.body;
-  const payload = Math.floor(100000 + Math.random() * 900000) + ''; //토큰번호 (payload); 6자리 랜덤숫자
+  if (req.method === 'POST') {
+    const payload = Math.floor(100000 + Math.random() * 900000) + ''; //토큰번호 (payload); 6자리 랜덤숫자
+    const { email, phone } = req.body;
 
-  //1. 아이디 비번으로 로그인하는 유저를 찾음
-  const User = await client.user.findFirst({
-    where: { userId, password },
-  });
-
-  //1. db에 유저가 없다?
-  if (!User) {
-    console.log(`일치하는 유저아이디 또는 비번이 없습니다!`);
-    //회원가입 페이지로 넘어감
-    return res.json({ ok: false, idpw_confirm: false });
-    //
-  } else if (User) {
-    //db에 유저가 있다? -> 쿠키(세션)에 유저아이디 저장
-    //
-    req.session.user = { id: User?.id };
-    await req.session.save();
-    return res.json({ ok: false, idpw_confirm: true });
-    //
-  } else {
-    //2. 토큰을 이용해서 로그인하는 유저들
-    //
     const tokenUser = email ? { email } : phone ? { phone } : null;
+
     if (!tokenUser) return res.status(400).json({ ok: false });
 
-    // 토큰 생성 -> 유저가 존재? -> 유저를 연결 // 유저가 없으면? -> 유저를 생성하고 연결
-    const token = await client.token.create({
+    await client.token.create({
       data: {
         payload,
         user: {
@@ -56,6 +36,7 @@ async function handler(
         },
       },
     });
+
     //SMS 토큰 전송
     if (phone) {
       // const message = await twilioClient.messages.create({
@@ -76,11 +57,10 @@ async function handler(
       // console.log(email);
     }
 
-    //확인
     return res.json({ ok: true });
   }
 }
 
 export default withApiSession(
-  withHandler({ method: 'POST', handler, isPrivate: false }),
+  withHandler({ methods: ['GET', 'POST'], handler, isPrivate: false }),
 );
