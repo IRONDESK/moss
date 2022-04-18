@@ -1,85 +1,55 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { Todo } from '@prisma/client';
+import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = () => {
-  const [item, { loading, data, error }] = useMutation('/api/todoList/todo');
+
+  // const {data, mutate} = useSWR("/api/todo/getTodo")
+
+  const [item] = useMutation('/api/todo/todo')
+
+  // console.log(data, mutate);
+  
+  // const { v } = useSWR("/api/todo/getTodo");
+
+  // console.log(v);
 
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
       id: 0,
-      title: 'JavaScript 챕터 1',
-      completed: true,
-    },
-    {
-      id: 1,
-      title: '자바스크립트 코딩테스트 1문제 풀기',
-      completed: false,
-    },
-    {
-      id: 2,
-      title: '영어공부 하기',
-      completed: false,
-    },
-    {
-      id: 3,
-      title: '이거 왜 안됨',
-      completed: false,
-    },
-    {
-      id: 4,
-      title: 'ㅜㅜ',
-      completed: false,
-    },
-  ]);
+      title: '',
+      completed: false
+    }
+  ])
 
-  const [todo, setTodo] = useState('');
-  const [isTodo, setIsTodo] = useState(false);
+  const [todo, setTodo] = useState("")
+  const [isTodo, setIsTodo] = useState(false)
 
-  let [count, setCount] = useState(6);
+  let [count, setCount] = useState(6)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodo(e.target.value);
-    setIsTodo(true);
+    setTodo(e.target.value)
+    setIsTodo(true)
+  }
+
+  const onValid = (todoItem: string) => {
+    item(todoItem);
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setTodoList([...todoList, { id: count, title: todo, completed: false }]);
-    setTodo('');
-    setIsTodo(false);
-    count = count + 1;
-    setCount(count);
-  };
-
-  const resetTodo = () => {
-    setTodo('');
-  };
-
-  const test = async (e) => {
-    e.preventDefault();
-    const body = todoList;
-    try {
-      const res = await fetch('/api/todoList/todo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'applcation/json',
-        },
-        body: JSON.stringify(body),
-      });
-      if (res.status !== 200) {
-        console.log('No');
-      } else {
-        resetTodo();
-        console.log('YES!');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const onSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    onValid(todo)
+    setTodoList([...todoList, {id: count, title: todo, completed: false}])
+    count = count + 1
+    setCount(count)
+    setTodo("")
+    setIsTodo(false)
+  }
 
   return (
     <Container>
@@ -88,18 +58,11 @@ export const TodoList = () => {
       <ItemList todoList={todoList}>
         <ul>
           {todoList.map((todoItem) => {
-            return (
-              <TodoItem
-                key={todoItem.id}
-                todoItem={todoItem}
-                todoList={todoList}
-                setTodoList={setTodoList}
-              />
-            );
+            return <TodoItem key={todoItem.id} todoItem={todoItem} todoList={todoList} setTodoList={setTodoList}/>
           })}
         </ul>
       </ItemList>
-      <Form onSubmit={test}>
+      <Form onSubmit={onSubmit}>
         <label>
           <Input
             type="text"
@@ -108,9 +71,7 @@ export const TodoList = () => {
             onChange={onChange}
           />
         </label>
-        <Btn disabled={!isTodo} type="submit">
-          입력
-        </Btn>
+        <Btn disabled={!isTodo} type="submit" >입력</Btn>
       </Form>
     </Container>
   );
@@ -157,24 +118,24 @@ const Form = styled.form`
   }
 `;
 
-const ItemList = styled.article<{ todoList: TodoData[] }>`
+const ItemList = styled.article<{todoList: TodoData[]}>`
   padding-right: 10px;
   height: 200px;
   overflow-y: scroll;
   margin: 10px 0 0;
   &::-webkit-scrollbar {
     width: 6px;
-  }
+  };
   &::-webkit-scrollbar-thumb {
     background: ${COLOR.grayText};
     border-radius: 6px;
-  }
+  };
   &::-webkit-scrollbar-track {
-    background: ${(props) => props.todoList.length > 3 && COLOR.gray};
+    background: ${props => props.todoList.length > 3 && COLOR.gray};
     border-radius: 6px;
-  }
+  };
   ul li {
-    width: 100%;
+    width: 100%
   }
 `;
 
@@ -203,6 +164,6 @@ const Btn = styled.button`
     color: ${COLOR.white};
   }
   &:focus-visible {
-    outline: 1px solid #0085ff;
+    outline: 1px solid #0085FF;
   }
 `;
