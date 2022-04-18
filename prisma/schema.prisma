@@ -13,18 +13,18 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   Token     Token[]
   Studyinfo Studyinfo[]
   username  String
-  userId    String?  @unique
+  userId    String?     @unique
   password  String?
-  email     String?  @unique
-  phone     String?  @unique
+  email     String?     @unique
+  phone     String?     @unique
   avatar    String?
   location  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@unique(fields: [userId, password], name: "userId_password")
 }
@@ -44,37 +44,35 @@ model Token {
 
 model Todo {
   id        Int       @id @default(autoincrement())
-  userId    String?   @unique
-  title     String
+  title     String    @db.VarChar(100)
   completed Boolean   @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
 
 model Studyinfo {
-  studyId        Int       @id @default(autoincrement())
-  studyName      String
-  leader         User      @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
-  image          Json?
-  introduce      String?
-  tag            String?
-  membersLimit   String?
-  chatLink       String?
-  joinMsg        String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  UserModelId    Int
+  studyId      Int      @id @default(autoincrement())
+  studyName    String
+  leader       User     @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
+  image        Json?
+  introduce    String?
+  tag          String?
+  membersLimit String?
+  chatLink     String?
+  joinMsg      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  UserModelId  Int
 }
 
 //Token모델에서 payload와 users가 required! onDelete:Cascade는 토큰이 지워질때 유저도 같이 지워지게함
 
 model Notice {
-    id        Int       @id @default(autoincrement())
-    category  String 
-    title     String   
-    content   String
-    author    String?    
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  category  String
+  title     String
+  content   String
+  author    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
-
