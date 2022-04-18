@@ -3,13 +3,15 @@ import React, { useEffect } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { LoginForm } from '../components/LoginForm';
 
-function UserLogin({ method }: any) {
-  //아이디 비번으로 로그인
-  const [login, { loading, data, error: serverError }] =
-    useMutation<IMutation>('/api/users/login');
+export const UserLogin = ({ method }: any) => {
+  const [login, { loading, data }] = useMutation<IMutation>(
+    '/api/users/user_login',
+  );
 
+  console.log(data);
   const errMsg = data?.errorMsg;
-  //
+
+  //페이지이동
   const router = useRouter();
   useEffect(() => {
     if (data?.ok) {
@@ -28,6 +30,4 @@ function UserLogin({ method }: any) {
       />
     </>
   );
-}
-
-export default UserLogin;
+};

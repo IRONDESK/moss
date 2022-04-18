@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { LoginForm } from '../components/LoginForm';
 import TokenLogin from './TokenLogin';
-import UserLogin from './UserLogin';
+import { UserLogin } from './UserLogin';
 
 export const AuthLogin = () => {
   //select method
@@ -12,7 +12,7 @@ export const AuthLogin = () => {
   };
   //API
   const [login, { loading, data }] = useMutation<IMutation>(
-    '/api/users/authLogin',
+    '/api/users/auth_login',
   );
 
   //
