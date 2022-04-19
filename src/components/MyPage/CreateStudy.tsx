@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import { useSpring, animated } from 'react-spring';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FileUpload } from '../Join/FileUpload';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useMutation from 'src/libs/client/useMutation';
+import useMutation, { IMutation } from 'src/libs/client/useMutation';
+import { useRouter } from 'next/router';
+import { color } from 'd3';
 
 interface StudyModal {
   modal: boolean;
@@ -20,13 +22,31 @@ interface studyForm {
   chatLink: string;
   joinMsg?: string;
 }
-export const StudyButton = ({ modal, setModal }: StudyModal) => {
+export const CreateStudy = ({ modal, setModal }: StudyModal) => {
+  const router = useRouter();
   const [isImage, setIsImage] = useState(false);
+  const [checkmodal, setCheckmodal] = useState(false);
+
+  const [reqdata, setReqdata] = useState<any>()
+  const [resdata, setResdata] = useState<any>();
   const [study, {loading, data, error}] = useMutation('/api/study/create');
+
+  useEffect(() => {
+    setResdata(data);
+  }, [data?.ok]);
+
   //useForm
   const { register, handleSubmit } = useForm<studyForm>();
-  const onSubmit: SubmitHandler<studyForm> = async (data) => {
-    await study(data);
+  const onSubmit: SubmitHandler<studyForm> = async (inputValue) => {
+    await study(inputValue);
+    await setReqdata(inputValue);
+    await setModal(false);
+    await setCheckmodal(true);
+  };
+
+  const MoveToStudyPage = () => {
+    setCheckmodal(!checkmodal);
+    router.push(`/study/${resdata.data.studyId}`);
   };
 
   const getIsImage = (img: boolean) => {
@@ -41,7 +61,7 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
       </StudySetBtn>
     </StudyWrap>
       {modal ? (
-        <Container>
+        <Container size="large">
           <CloseBtn onClick={() => setModal((prev: boolean) => !prev)} />
           <h1>
             <div>스터디 개설</div>
@@ -113,6 +133,27 @@ export const StudyButton = ({ modal, setModal }: StudyModal) => {
           </Form>
         </Container>
     ) : null}
+      {checkmodal ? (
+        <Container size="small">
+          <CloseBtn onClick={() => setCheckmodal((prev: boolean) => !prev)} />
+          <h1>
+            <div>스터디 개설</div>
+          </h1>
+          <AlretMsg>
+          스터디가 개설되었습니다.
+          <ul>
+            <li><dt>스터디명</dt><dd>{reqdata.studyName}</dd></li>
+            <li><dt>인원</dt><dd>{reqdata.membersLimit}명</dd></li>
+            <li><dt>오픈채팅</dt><dd>{reqdata.chatLink}</dd></li>
+          </ul>
+          스터디 페이지로 이동하시겠습니까?
+          </AlretMsg>
+        <ButtonArray>
+          <CreateButton onClick={MoveToStudyPage}>예</CreateButton>
+          <CreateButton onClick={() => setCheckmodal((prev: boolean) => !prev)}>아니오</CreateButton>
+        </ButtonArray>
+        </Container>
+      ) : null}
     </>
   );
 };
@@ -137,7 +178,7 @@ const StudySetBtn = styled.button`
   }
 `;
 
-const Container = styled.section`
+const Container = styled.section<{size: string}>`
   position: absolute;
   top: 15vh;
   left: 50%;
@@ -146,7 +187,7 @@ const Container = styled.section`
   border: 1px solid ${COLOR.gray};
   padding: 90px 50px;
   width: 500px;
-  height: 1019px;
+  height: ${props => props.size == "large" ? "1019px" : "550px"};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -157,7 +198,7 @@ const Container = styled.section`
     display: flex;
     justify-content: center;
     position: relative;
-    font-size: 32px;
+    font-size: 29px;
     &:after {
       content: '';
       display: block;
@@ -232,4 +273,37 @@ const CreateButton = styled.button`
     background: ${COLOR.gray};
     color: ${COLOR.grayText};
   }
+`;
+
+const AlretMsg = styled.div`
+  margin: 20px auto;
+  font-size: 20px;
+  text-align: center;
+  line-height: 25px;
+  ul {
+    margin: 13px auto;
+    padding: 10px;
+    width: 100%;
+    background-color: ${'rgba(' + COLOR.rgbMain + ', 0.2)'};
+    li {
+      display: flex;
+      font-size: 16px;
+      dt {
+        flex: 1;
+        font-weight: 600;
+      }
+      dd {
+        flex: 3;
+        font-size: 14px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+`;
+const ButtonArray = styled.div`
+  display: flex;
+  gap: 15px;
+  width: 400px;
 `;

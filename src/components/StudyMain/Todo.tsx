@@ -1,38 +1,28 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import { Todo } from '@prisma/client';
+import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = () => {
 
-  const [item, {loading, data, error }] = useMutation('/api/todoList/todo')
+  // const {data, mutate} = useSWR("/api/todo/getTodo")
+
+  const [item] = useMutation('/api/todo/todo')
+
+  // console.log(data, mutate);
+  
+  // const { v } = useSWR("/api/todo/getTodo");
+
+  // console.log(v);
 
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
       id: 0,
-      title: 'JavaScript 챕터 1',
-      completed: true
-    },
-    {
-      id: 1,
-      title: '자바스크립트 코딩테스트 1문제 풀기',
-      completed: false
-    },
-    {
-      id: 2,
-      title: '영어공부 하기',
-      completed: false
-    },
-    {
-      id: 3,
-      title: '이거 왜 안됨',
-      completed: false
-    },
-    {
-      id: 4,
-      title: 'ㅜㅜ',
+      title: '',
       completed: false
     }
   ])
@@ -47,40 +37,18 @@ export const TodoList = () => {
     setIsTodo(true)
   }
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onValid = (todoItem: string) => {
+    item(todoItem);
+  };
+
+  const onSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    onValid(todo)
     setTodoList([...todoList, {id: count, title: todo, completed: false}])
-    setTodo("")
-    setIsTodo(false)
     count = count + 1
     setCount(count)
-  }
-
-  const resetTodo = () => {
     setTodo("")
-  }
-
-
-  const test = async (e) => {
-      e.preventDefault()
-      const body = todoList
-      try {
-      const res = await fetch("/api/todoList/todo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "applcation/json"
-        },
-        body: JSON.stringify(body)
-      })
-      if(res.status !== 200) {
-        console.log("No");
-      } else {
-        resetTodo()
-        console.log("YES!");
-      }
-    } catch(err) {
-      console.log(err);
-    }
+    setIsTodo(false)
   }
 
   return (
@@ -94,7 +62,7 @@ export const TodoList = () => {
           })}
         </ul>
       </ItemList>
-      <Form onSubmit={test}>
+      <Form onSubmit={onSubmit}>
         <label>
           <Input
             type="text"
@@ -103,7 +71,7 @@ export const TodoList = () => {
             onChange={onChange}
           />
         </label>
-        <Btn disabled={!isTodo} type="submit">입력</Btn>
+        <Btn disabled={!isTodo} type="submit" >입력</Btn>
       </Form>
     </Container>
   );

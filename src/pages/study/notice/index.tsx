@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-
 import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
 import { Button } from '../../../components/Notice/Button';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
@@ -83,7 +82,9 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        <Button text="글작성" href="/study/notice/write" className="write" />
+        <Link href="/study/notice/write" passHref>
+          <Button type="#" text="글작성" className="write" />
+        </Link>
       </BtnGroup>
     </>
   );

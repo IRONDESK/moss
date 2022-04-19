@@ -15,18 +15,19 @@ datasource db {
 //Schemas
 
 model User {
-  id        Int      @id @default(autoincrement())
-  Token     Token[]  
+  id        Int         @id @default(autoincrement())
+  Token     Token[]
   username  String
-  userId    String?  @unique
+  userId    String?     @unique
   password  String?
-  @@unique(fields: [userId, password], name: "userId_password")
-  email     String?  @unique
-  phone     String?  @unique
+  email     String?     @unique
+  phone     String?     @unique
   avatar    String?
   location  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@unique(fields: [userId, password], name: "userId_password")
 }
 
 model Token {
@@ -40,33 +41,32 @@ model Token {
 
 model Todo {
   id        Int       @id @default(autoincrement())
-  userId    String?   @unique
-  title     String
+  title     String    @db.VarChar(100)
   completed Boolean   @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 }
 
 model Studyinfo {
-  studyId        Int       @id @default(autoincrement())
-  studyName      String  
-  image          Json?
-  introduce      String?
-  tag            String?
-  membersLimit   String?
-  chatLink       String?
-  joinMsg        String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt  
+  studyId      Int      @id @default(autoincrement())
+  studyName    String
+  image        Json?
+  introduce    String?
+  tag          String?
+  membersLimit String?
+  chatLink     String?
+  joinMsg      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 
 model Notice {
-  id            Int       @id @default(autoincrement())
-  category      String 
-  title         String   
-  content       String
-  author        String?    
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  category  String
+  title     String
+  content   String
+  author    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

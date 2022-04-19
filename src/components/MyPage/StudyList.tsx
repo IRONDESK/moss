@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { StudyCard } from '../StudyCard';
-import { StudyButton } from './StudyButton';
+import { CreateStudy } from './CreateStudy';
 
 export const StudyList = () => {
   const [modal, setModal] = useState(false);
@@ -42,7 +42,7 @@ export const StudyList = () => {
           leader={true}
         />{' '}
       </StudyLists>
-      <StudyButton modal={modal} setModal={setModal} />
+      <CreateStudy modal={modal} setModal={setModal} />
     </MyPageStudy>
   );
 };
