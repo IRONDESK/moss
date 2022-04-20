@@ -1,12 +1,21 @@
+import { User } from '@prisma/client';
 import useSWR from 'swr';
 
+export interface IUser {
+  ok: boolean;
+  loggedInUser: User;
+  users: User[];
+  userCount: number;
+}
+
 export default function useUser() {
-  const { data, error } = useSWR('/api/users');
+  const { data, error } = useSWR<IUser>('/api/users');
+  //
   return {
-    loggedIn: data?.ok,
-    user: data?.loggedInUser,
-    username: data?.loggedInUser?.username,
+    users: data?.users,
     loading: !data && !error,
-    allUsers: data?.allUsers,
+    isLoggedIn: data?.ok,
+    loggedInUser: data?.loggedInUser,
+    userCount: data?.userCount,
   };
 }

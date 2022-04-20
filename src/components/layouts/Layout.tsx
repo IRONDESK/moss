@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { Header, Footer } from './';
 import { Title } from './partials/Title';
 

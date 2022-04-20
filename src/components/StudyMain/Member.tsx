@@ -1,29 +1,11 @@
 import styled from '@emotion/styled';
-import { User } from '@prisma/client';
 import Link from 'next/link';
-import useUser from 'src/libs/client/useUser';
+import { IUser } from 'src/libs/client/useUser';
 import useSWR from 'swr';
 import { COLOR } from '../../constants';
-import { MemberData } from '../../types/Member';
-
-interface IMember {
-  ok: boolean;
-  loggedInUser?: User[];
-  users?: User[];
-  userCount?: number;
-}
 
 export const Member = () => {
-  const MemberData: MemberData[] = [
-    { id: 1, name: '손수철', image: '/images/profile.svg' },
-    { id: 2, name: '박유진', image: '/images/profile.svg' },
-    { id: 3, name: '김준우', image: '/images/profile.svg' },
-    { id: 4, name: '최성이', image: '/images/profile.svg' },
-    { id: 5, name: '심영은', image: '/images/profile.svg' },
-    { id: 6, name: '강혜진', image: '/images/profile.svg' },
-  ];
-
-  const { data } = useSWR<IMember>('/api/users');
+  const { data } = useSWR<IUser>('/api/users');
   const maxNumber = 10;
   //
   return (
@@ -32,7 +14,7 @@ export const Member = () => {
       <SubTitle>People</SubTitle>
       <Contents>
         <MemberLength>
-          <strong>{data?.userCount}</strong>/maxNumber
+          <strong>{data?.userCount}</strong>/{maxNumber}
         </MemberLength>
         <MemberDetail>
           {data?.users?.map((member) => (

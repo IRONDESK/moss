@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { MyPageBanner } from '../../components/MyPage/MyPageBanner';
 import { StudyList } from '../../components/MyPage/StudyList';
 import { MyPageContainer } from '../../components/MyPage/MyPageContainer';
 
-export default function MyPage({ User, Logout }) {
+export default function MyPage() {
   return (
     <Container>
       <MyPageBanner />

@@ -9,12 +9,6 @@ async function handler(
 ) {
   if (req.method === 'GET') {
     const { user } = req.session;
-
-    //로그인 유저
-    const loggedInUser = await client.user.findUnique({
-      where: { id: user?.id },
-    });
-
     //모든 유저
     const users = await client.user.findMany({
       select: {
@@ -23,13 +17,18 @@ async function handler(
         avatar: true,
       },
     });
-
     //모든유저 카운트
     const userCount = await client.user.count();
 
+    //로그인 유저
+    const loggedInUser = await client.user.findUnique({
+      where: { id: user?.id },
+    });
     //
     return res.json({ ok: true, loggedInUser, users, userCount });
   }
 }
 
-export default withApiSession(withHandler({ methods: ['GET'], handler }));
+export default withApiSession(
+  withHandler({ methods: ['GET', 'POST'], handler }),
+);
