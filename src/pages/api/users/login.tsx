@@ -19,7 +19,7 @@ async function handler(
         where: { userId, password },
       });
       if (!User) {
-        res.json({
+        return res.json({
           ok: false,
           errorMsg: `일치하는 유저아이디 또는 비밀번호가 없습니다!`,
         });
@@ -27,7 +27,7 @@ async function handler(
       req.session.user = { id: User?.id };
       await req.session.save();
       //
-      return res.json({ ok: true });
+      return res.json({ ok: true, method: 'userLogin' });
     }
 
     //이메일 또는 휴대폰으로 인증하여 로그인
@@ -74,7 +74,7 @@ async function handler(
         */
       }
       //
-      return res.json({ ok: true });
+      return res.json({ ok: true, method: 'authLogin' });
     }
   }
 

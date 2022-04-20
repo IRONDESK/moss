@@ -30,7 +30,7 @@ export const Error = styled.span`
     margin: 10px 0;
   }
 `;
-export const InputWrap = styled.div`
+const InputWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -50,14 +50,21 @@ export const InputWrap = styled.div`
     }
   }
 `;
+export const UserIdLogin = styled(InputWrap)``;
+export const EmailLogin = styled(InputWrap)``;
+export const PhoneLogin = styled(InputWrap)``;
+export const TokenLogin = styled(InputWrap)``;
+
 export const Container = styled.section`
   padding: 10px;
   margin: 100px auto;
   width: 60%;
-  width: 340px;
+  width: 400px;
   select,
   form {
     width: 100%;
+    margin: 10px auto;
+    padding: 0 20px;
   }
   select {
     height: 48px;
@@ -69,10 +76,6 @@ export const Container = styled.section`
     font-size: 20px;
     outline: none;
     margin-bottom: 20px;
-  }
-  form {
-    margin: 10px auto;
-    padding: 0 20px;
   }
 `;
 
