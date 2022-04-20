@@ -1,7 +1,7 @@
 import { Title } from '../components/layouts';
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { FileUpload } from 'src/components/Join/FileUpload';
 import { COLOR } from 'src/constants';
@@ -60,7 +60,7 @@ export default function Join() {
           <Loading>로딩중...</Loading>
         ) : (
           <form onSubmit={handleSubmit(onValid)}>
-            <Error>{data?.error ? data?.error : null}</Error>
+            {data?.error ? <Error>data?.error</Error> : null}
             <FileUpload getIsImage={getIsImage} register={register('avatar')} />
             <input
               {...register('userId', { required: '아이디가 필요합니다!' })}

@@ -12,13 +12,11 @@ async function handler(
 
     //로그인 유저
     const loggedInUser = await client.user.findUnique({
-      where: {
-        id: user?.id,
-      },
+      where: { id: user?.id },
     });
 
     //모든 유저
-    const allUsers = await client.user.findMany({
+    const users = await client.user.findMany({
       select: {
         id: true,
         username: true,
@@ -26,8 +24,11 @@ async function handler(
       },
     });
 
+    //모든유저 카운트
+    const userCount = await client.user.count();
+
     //
-    return res.json({ ok: true, loggedInUser, allUsers });
+    return res.json({ ok: true, loggedInUser, users, userCount });
   }
 }
 

@@ -8,7 +8,9 @@ import { MemberData } from '../../types/Member';
 
 interface IMember {
   ok: boolean;
-  allUsers: User[];
+  loggedInUser?: User[];
+  users?: User[];
+  userCount?: number;
 }
 
 export const Member = () => {
@@ -22,8 +24,7 @@ export const Member = () => {
   ];
 
   const { data } = useSWR<IMember>('/api/users');
-  console.log(data);
-
+  const maxNumber = 10;
   //
   return (
     <Container>
@@ -31,18 +32,18 @@ export const Member = () => {
       <SubTitle>People</SubTitle>
       <Contents>
         <MemberLength>
-          <strong>{MemberData.length}</strong>/10
+          <strong>{data?.userCount}</strong>/maxNumber
         </MemberLength>
         <MemberDetail>
-          {data?.allUsers?.map((member) => (
-            <MemberList key={member.id}>
-              <Link href={`/users/profile/${member.id}`}>
-                <a>
+          {data?.users?.map((member) => (
+            <Link key={member.id} href={`/users/profile/${member.id}`}>
+              <a>
+                <MemberList>
                   <Img src="/images/profile.svg" alt="스터디원 이미지" />
                   <p>{member.username}</p>
-                </a>
-              </Link>
-            </MemberList>
+                </MemberList>
+              </a>
+            </Link>
           ))}
         </MemberDetail>
       </Contents>
