@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -13,38 +10,37 @@ datasource db {
 }
 
 //Schemas
-
 model User {
-  id        Int         @id @default(autoincrement())
-  Token     Token[]
-  username  String
-  userId    String?     @unique
-  password  String?
-  email     String?     @unique
-  phone     String?     @unique
-  avatar    String?
-  location  String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id          Int         @id @default(autoincrement())
+  username    String
+  userId      String?     @unique
+  password    String?
+  email       String?     @unique
+  phone       String?     @unique
+  avatar      String?
+  location    String?
+  Token       Token[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
   @@unique(fields: [userId, password], name: "userId_password")
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [UserModelId], references: [id], onDelete: Cascade)
-  UserModelId Int
-  payload     String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int         @id @default(autoincrement())
+  payload     String      @unique
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Todo {
-  id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(100)
-  completed Boolean   @default(false)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(100)
+  completed   Boolean       @default(false)
+  createdAt   DateTime?     @default(now())
+  updatedAt   DateTime?     @updatedAt
 }
 
 model Studyinfo {

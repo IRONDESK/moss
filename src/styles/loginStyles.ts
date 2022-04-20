@@ -17,8 +17,7 @@ export const H1 = styled.h1`
   }
 `;
 
-export const Error = styled.span`
-  display: block;
+export const Error = styled.div`
   background: #fff5f5;
   color: ${COLOR.error};
   width: 100%;
