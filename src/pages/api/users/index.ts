@@ -9,16 +9,26 @@ async function handler(
 ) {
   if (req.method === 'GET') {
     const { user } = req.session;
-    const profile = await client.user.findUnique({
+
+    //로그인 유저
+    const loggedInUser = await client.user.findUnique({
       where: {
         id: user?.id,
       },
     });
 
-    return res.json({ ok: true, profile });
+    //모든 유저
+    const allUsers = await client.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        avatar: true,
+      },
+    });
+
+    //
+    return res.json({ ok: true, loggedInUser, allUsers });
   }
 }
 
-export default withApiSession(
-  withHandler({ methods: ['GET', 'POST'], handler }),
-);
+export default withApiSession(withHandler({ methods: ['GET'], handler }));

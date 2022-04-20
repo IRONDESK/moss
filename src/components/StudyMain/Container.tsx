@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Record } from './Record';
 import { TodoList } from './Todo';
 import { Notice } from './Notice';
@@ -57,7 +57,7 @@ const Container = styled.div`
   @media (max-width: 1024px) {
     display: flex;
     flex-direction: column;
-  };
+  } ;
 `;
 
 const Blur = styled.div`

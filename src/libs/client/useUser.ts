@@ -1,11 +1,12 @@
 import useSWR from 'swr';
 
 export default function useUser() {
-  const { data, error } = useSWR('/api/users/profile');
+  const { data, error } = useSWR('/api/users');
   return {
     loggedIn: data?.ok,
-    user: data?.profile,
-    username: data?.profile?.username,
+    user: data?.loggedInUser,
+    username: data?.loggedInUser?.username,
     loading: !data && !error,
+    allUsers: data?.allUsers,
   };
 }

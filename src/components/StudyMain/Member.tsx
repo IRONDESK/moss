@@ -1,6 +1,15 @@
 import styled from '@emotion/styled';
+import { User } from '@prisma/client';
+import Link from 'next/link';
+import useUser from 'src/libs/client/useUser';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
 import { MemberData } from '../../types/Member';
+
+interface IMember {
+  ok: boolean;
+  allUsers: User[];
+}
 
 export const Member = () => {
   const MemberData: MemberData[] = [
@@ -11,21 +20,30 @@ export const Member = () => {
     { id: 5, name: '심영은', image: '/images/profile.svg' },
     { id: 6, name: '강혜진', image: '/images/profile.svg' },
   ];
+
+  const { data } = useSWR<IMember>('/api/users');
+  console.log(data);
+
+  //
   return (
     <Container>
       <Title>스터디원</Title>
       <SubTitle>People</SubTitle>
       <Contents>
-        <MemberLength><strong>{MemberData.length}</strong>/10</MemberLength>
+        <MemberLength>
+          <strong>{MemberData.length}</strong>/10
+        </MemberLength>
         <MemberDetail>
-          {MemberData.map((member) => {
-            return (
-              <MemberList key={member.id}>
-                <Img src={member.image} alt="스터디원 이미지" />
-                <p>{member.name}</p>
-              </MemberList>
-            );
-          })}
+          {data?.allUsers?.map((member) => (
+            <MemberList key={member.id}>
+              <Link href={`/users/profile/${member.id}`}>
+                <a>
+                  <Img src="/images/profile.svg" alt="스터디원 이미지" />
+                  <p>{member.username}</p>
+                </a>
+              </Link>
+            </MemberList>
+          ))}
         </MemberDetail>
       </Contents>
     </Container>
@@ -43,7 +61,7 @@ const Container = styled.section`
     left: 32px;
     width: 40px;
     height: 48px;
-    background: #5885F8 url('/images/members.svg') no-repeat 50% 70%;
+    background: #5885f8 url('/images/members.svg') no-repeat 50% 70%;
   }
 `;
 
@@ -72,16 +90,16 @@ const Contents = styled.article`
     padding: 0;
     flex-direction: column;
     gap: 3px;
-  };
+  } ;
 `;
 
 const MemberLength = styled.p`
-    position: relative;
-    width: 100px;
-    margin: 77px 8px;
-    padding-left: 29px;
-    line-height: 31px;
-    &::before {
+  position: relative;
+  width: 100px;
+  margin: 77px 8px;
+  padding-left: 29px;
+  line-height: 31px;
+  &::before {
     content: '';
     position: absolute;
     left: 0;
@@ -97,7 +115,7 @@ const MemberLength = styled.p`
   }
   @media (max-width: 1024px) {
     margin: 5px 8px;
-  };
+  } ;
 `;
 
 const MemberDetail = styled.ul`
@@ -106,7 +124,7 @@ const MemberDetail = styled.ul`
   gap: 32px;
   @media (max-width: 1024px) {
     justify-content: space-evenly;
-  };
+  } ;
 `;
 
 const MemberList = styled.li`
