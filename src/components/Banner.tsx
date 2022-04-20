@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import useLoggedIn from 'src/libs/client/useLoggedIn';
+import useUser from 'src/libs/client/useUser';
 import { COLOR } from '../constants';
 
 export const Banner = () => {
   const router = useRouter();
-  const { loggedIn } = useLoggedIn();
+  const { loggedIn } = useUser();
 
   const onClick = () => {
     if (!loggedIn) {

@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import useLoggedIn from 'src/libs/client/useLoggedIn';
+import useUser from 'src/libs/client/useUser';
 import { COLOR } from '../../../constants';
 
 export const Header = () => {
-  const { username, loggedIn } = useLoggedIn();
+  const { username, loggedIn } = useUser();
 
   return (
     <HeaderCont className="max-width" id="header">
@@ -34,7 +34,7 @@ export const Header = () => {
             <Link href="/my-page" passHref>
               <a className="mypage">{username}님의 마이페이지</a>
             </Link>
-            <Link href="/api/users/log-out" passHref>
+            <Link href="/api/users/login" passHref>
               <a className="logout">로그아웃</a>
             </Link>
           </>

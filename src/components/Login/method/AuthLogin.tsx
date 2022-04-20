@@ -11,9 +11,7 @@ export const AuthLogin = () => {
     setMethod(option.currentTarget.value);
   };
   //API
-  const [login, { loading, data }] = useMutation<IMutation>(
-    '/api/users/auth_login',
-  );
+  const [login, { loading, data }] = useMutation<IMutation>('/api/users/login');
 
   //
   return (
