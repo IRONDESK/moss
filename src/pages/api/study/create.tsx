@@ -26,6 +26,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
     return res.json({ ok: true, data: study });
   }
+
+  if (req.method === 'GET') {
+    const queryid = req.query.id;
+    let studydata = await client.studyinfo.findUnique({
+      where: {
+        studyId: Number(queryid),
+      },
+    });
+    return res.json(studydata);
+  }
 }
 
 export default withHandler({

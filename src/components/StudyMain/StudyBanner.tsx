@@ -3,33 +3,39 @@ import { useState } from 'react';
 import { COLOR } from '../../constants';
 import { JoinStudyModal } from '../JoinStudy/JoinStudyModal';
 
-export const StudyBanner = (props: {
-  logo: string;
+interface bannerType {
+  logo?: string;
   category: string;
   title: string;
   des: string;
   hashtag: string;
-  member: number;
+  members?: number;
+  memberlimit: number;
   link: string;
-}) => {
+}
+
+export const StudyBanner = ({
+  logo = "/images/StudyLogo.png",
+  category, title, des, hashtag, members, memberlimit, link,
+}: bannerType) => {
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
   return (
     <Banner>
       <StudyIntro>
-        <StudyImg src={props.logo} alt="study-logo" />
+        <StudyImg src={logo} alt="study-logo" />
         <StudyDescription>
           <StudyDetail>
             <TagWrap>
-              <Category>{props.category}</Category>
-              <Hashtag>{props.hashtag}</Hashtag>
+              <Category>{category}</Category>
+              <Hashtag>{hashtag}</Hashtag>
             </TagWrap>
-            <Title>{props.title}</Title>
-            <Des>{props.des}</Des>
+            <Title>{title}</Title>
+            <Des>{des}</Des>
           </StudyDetail>
           <Join>
-            <Member>{props.member}/10</Member>
-            <StudyBtn onClick={openModal} href={props.link}>
+            <Member>{members}/{memberlimit}</Member>
+            <StudyBtn onClick={openModal} href={link}>
               스터디 신청하기
             </StudyBtn>
           </Join>
@@ -124,6 +130,7 @@ const Hashtag = styled.div`
   @media (max-width: 1024px) {
     margin: 0;
     position: static;
+    border: 1px solid ${COLOR.boxBorder};
   };
 `;
 const Title = styled.h2`
@@ -132,8 +139,10 @@ const Title = styled.h2`
   line-height: 50px;
   font-weight: 700;
   @media (max-width: 1024px) {
-    margin: 0;
-    font-size: 33px;
+    margin: 7px 0;
+    font-size: 29px;
+    line-height: 32px;
+    text-align: center;
     word-break: keep-all;
   };
 `;
