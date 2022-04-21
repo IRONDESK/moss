@@ -30,7 +30,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const queryid = req.query.id;
 
-    if (queryid) {
+    if (queryid !== "many") {
       let studydata = await client.studyinfo.findUnique({
         where: {
           studyId: Number(queryid),

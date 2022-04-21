@@ -31,10 +31,8 @@ export default function StudyPage() {
 
     const res = getInfo(studyId);
     useEffect(() => {
-        res?.then((value) => {
-            setData(value)
-        })
-    }, [res])
+        setData(res);
+    }, [res]);
     
     return (
     <>
