@@ -29,12 +29,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method === 'GET') {
     const queryid = req.query.id;
-    let studydata = await client.studyinfo.findUnique({
-      where: {
-        studyId: Number(queryid),
-      },
-    });
-    return res.json(studydata);
+
+    if (queryid) {
+      let studydata = await client.studyinfo.findUnique({
+        where: {
+          studyId: Number(queryid),
+        },
+      });
+      return res.json(studydata);
+    } else {
+      let studydata = await client.studyinfo.findMany();
+      return res.json(studydata);
+    };
   }
 }
 
