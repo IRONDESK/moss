@@ -1,11 +1,12 @@
 import { Title } from '../components/layouts';
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { FileUpload } from 'src/components/Join/FileUpload';
 import { COLOR } from 'src/constants';
 import { useRouter } from 'next/router';
+import { Error } from 'src/styles/loginStyles';
 
 interface joinForm {
   email?: string;
@@ -19,27 +20,23 @@ interface joinForm {
 }
 
 export default function Join() {
-  //fecth를 위한 mutation Hook // 데이터 -> 백엔드(url)로 전송
-  const [join, { loading, data, error }] = useMutation('/api/users/join');
-
-  //useForm
+  //Submit
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<joinForm>({
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const onValid = (data: joinForm) => {
     join(data);
   };
 
-  const InValid = (errors: FieldErrors) => {
-    console.log(errors);
-  };
+  //API
+  const [join, { loading, data }] = useMutation('/api/users/join');
 
-  //제출후 페이지 이동
+  //페이지 이동
   const router = useRouter();
   useEffect(() => {
     if (data?.ok) {
@@ -59,67 +56,81 @@ export default function Join() {
         <h1>
           <span>회원가입</span>
         </h1>
-        <form onSubmit={handleSubmit(onValid, InValid)}>
-          <FileUpload getIsImage={getIsImage} register={register('avatar')} />
-          <input
-            {...register('userId', { required: '아이디가 필요합니다!' })}
-            name="userId"
-            type="text"
-            placeholder="아이디"
-          />
-          <span>{errors.userId?.message}</span>
-          <input
-            {...register('password', { required: '비밀번호가 필요합니다!' })}
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-          />
-          <span>{errors.password?.message}</span>
-          <input
-            {...register('password2', { required: '비밀번호가 필요합니다!' })}
-            name="password2"
-            type="password"
-            placeholder="비밀번호 재확인"
-          />
-          <span>{errors.password2?.message}</span>
-          <input
-            {...register('email', { required: '이메일이 필요합니다!' })}
-            name="email"
-            type="email"
-            placeholder="이메일"
-          />
-          <span>{errors.email?.message}</span>
-          <input
-            {...register('phone', { required: '전화번호가 필요합니다!' })}
-            name="phone"
-            type="number"
-            placeholder="전화번호"
-          />
-          <span>{errors.phone?.message}</span>
-          <input
-            {...register('username', { required: '이름이 필요합니다!' })}
-            name="username"
-            type="text"
-            placeholder="이름"
-          />
-          <span>{errors.username?.message}</span>
-          <input
-            {...register('location', { required: '거주지 필요합니다!' })}
-            name="location"
-            type="text"
-            placeholder="거주지"
-          />
-          <span>{errors.location?.message}</span>
+        {loading ? (
+          <Loading>로딩중...</Loading>
+        ) : (
+          <form onSubmit={handleSubmit(onValid)}>
+            {data?.error ? <Error>data?.error</Error> : null}
+            <FileUpload getIsImage={getIsImage} register={register('avatar')} />
+            <input
+              {...register('userId', { required: '아이디가 필요합니다!' })}
+              name="userId"
+              type="text"
+              placeholder="아이디"
+            />
+            <span>{errors.userId?.message}</span>
+            <input
+              {...register('password', { required: '비밀번호가 필요합니다!' })}
+              name="password"
+              type="password"
+              placeholder="비밀번호"
+            />
+            <span>{errors.password?.message}</span>
+            <input
+              {...register('password2', { required: '비밀번호가 필요합니다!' })}
+              name="password2"
+              type="password"
+              placeholder="비밀번호 재확인"
+            />
+            <span>{errors.password2?.message}</span>
+            <input
+              {...register('email', { required: '이메일이 필요합니다!' })}
+              name="email"
+              type="email"
+              placeholder="이메일"
+            />
+            <span>{errors.email?.message}</span>
+            <input
+              {...register('phone', { required: '전화번호가 필요합니다!' })}
+              name="phone"
+              type="number"
+              placeholder="전화번호"
+            />
+            <span>{errors.phone?.message}</span>
+            <input
+              {...register('username', { required: '이름이 필요합니다!' })}
+              name="username"
+              type="text"
+              placeholder="이름"
+            />
+            <span>{errors.username?.message}</span>
+            <input
+              {...register('location', { required: '거주지 필요합니다!' })}
+              name="location"
+              type="text"
+              placeholder="거주지"
+            />
+            <span>{errors.location?.message}</span>
 
-          <button type="submit">{loading ? '로딩중...' : '회원가입'}</button>
-        </form>
+            <button type="submit">{loading ? '로딩중...' : '회원가입'}</button>
+          </form>
+        )}
       </Container>
     </>
   );
 }
+const Loading = styled.div`
+  font-size: 40px;
+  color: ${COLOR.main};
+  text-align: center;
+  margin-top: 100px;
+`;
 const Container = styled.section`
   padding: 100px 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   h1 {
     display: flex;
     justify-content: center;

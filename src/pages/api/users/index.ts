@@ -8,12 +8,24 @@ async function handler(
   res: NextApiResponse<ResponseType>,
 ) {
   if (req.method === 'GET') {
-    // 세션에 저장된 유저와 아이디가 일치하는 유저를 db에서 찾는다.
-    const profile = await client.user.findUnique({
-      where: { id: req.session.user?.id },
+    const { user } = req.session;
+    //모든 유저
+    const users = await client.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        avatar: true,
+      },
     });
+    //모든유저 카운트
+    const userCount = await client.user.count();
 
-    return res.json({ ok: true, profile });
+    //로그인 유저
+    const loggedInUser = await client.user.findUnique({
+      where: { id: user?.id },
+    });
+    //
+    return res.json({ ok: true, loggedInUser, users, userCount });
   }
 }
 

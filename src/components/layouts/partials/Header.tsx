@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import useLoggedIn from 'src/libs/client/useLoggedIn';
+import useUser from 'src/libs/client/useUser';
 import { COLOR } from '../../../constants';
 
 export const Header = () => {
-  const { username, loggedIn } = useLoggedIn();
-
+  const { isLoggedIn, loggedInUser } = useUser();
+  //
   return (
     <HeaderCont className="max-width" id="header">
       <div className="left">
@@ -19,22 +19,25 @@ export const Header = () => {
         </Link>
       </div>
       <div className="right">
-        {!loggedIn ? (
+        {!isLoggedIn ? (
           <>
-            <Link href="/join" passHref>
+            <Link href="/join">
               <a className="join">회원가입</a>
             </Link>
 
-            <Link href="/login" passHref>
+            <Link href="/login">
               <a className="login">로그인</a>
             </Link>
           </>
         ) : (
           <>
-            <Link href="/my-page" passHref>
-              <a className="mypage">{username}님의 마이페이지</a>
+            <Link href="/my-page">
+              <a className="mypage">{loggedInUser?.username}님의 마이페이지</a>
             </Link>
-            <Link href="/api/users/log-out" passHref>
+            <Link href={`/profile/${loggedInUser?.id}`}>
+              <a className="mypage">프로필 관리</a>
+            </Link>
+            <Link href="/api/users/logout">
               <a className="logout">로그아웃</a>
             </Link>
           </>

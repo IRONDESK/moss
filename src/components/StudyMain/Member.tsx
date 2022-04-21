@@ -1,31 +1,32 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
+import { IUser } from 'src/libs/client/useUser';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
-import { MemberData } from '../../types/Member';
 
 export const Member = () => {
-  const MemberData: MemberData[] = [
-    { id: 1, name: '손수철', image: '/images/profile.svg' },
-    { id: 2, name: '박유진', image: '/images/profile.svg' },
-    { id: 3, name: '김준우', image: '/images/profile.svg' },
-    { id: 4, name: '최성이', image: '/images/profile.svg' },
-    { id: 5, name: '심영은', image: '/images/profile.svg' },
-    { id: 6, name: '강혜진', image: '/images/profile.svg' },
-  ];
+  const { data } = useSWR<IUser>('/api/users');
+  const maxNumber = 10;
+  //
   return (
     <Container>
       <Title>스터디원</Title>
       <SubTitle>People</SubTitle>
       <Contents>
-        <MemberLength><strong>{MemberData.length}</strong>/10</MemberLength>
+        <MemberLength>
+          <strong>{data?.userCount}</strong>/{maxNumber}
+        </MemberLength>
         <MemberDetail>
-          {MemberData.map((member) => {
-            return (
-              <MemberList key={member.id}>
-                <Img src={member.image} alt="스터디원 이미지" />
-                <p>{member.name}</p>
-              </MemberList>
-            );
-          })}
+          {data?.users?.map((member) => (
+            <Link key={member.id} href={`/users/profile/${member.id}`}>
+              <a>
+                <MemberList>
+                  <Img src="/images/profile.svg" alt="스터디원 이미지" />
+                  <p>{member.username}</p>
+                </MemberList>
+              </a>
+            </Link>
+          ))}
         </MemberDetail>
       </Contents>
     </Container>
@@ -43,7 +44,7 @@ const Container = styled.section`
     left: 32px;
     width: 40px;
     height: 48px;
-    background: #5885F8 url('/images/members.svg') no-repeat 50% 70%;
+    background: #5885f8 url('/images/members.svg') no-repeat 50% 70%;
   }
 `;
 
@@ -72,16 +73,16 @@ const Contents = styled.article`
     padding: 0;
     flex-direction: column;
     gap: 3px;
-  };
+  } ;
 `;
 
 const MemberLength = styled.p`
-    position: relative;
-    width: 100px;
-    margin: 77px 8px;
-    padding-left: 29px;
-    line-height: 31px;
-    &::before {
+  position: relative;
+  width: 100px;
+  margin: 77px 8px;
+  padding-left: 29px;
+  line-height: 31px;
+  &::before {
     content: '';
     position: absolute;
     left: 0;
@@ -97,7 +98,7 @@ const MemberLength = styled.p`
   }
   @media (max-width: 1024px) {
     margin: 5px 8px;
-  };
+  } ;
 `;
 
 const MemberDetail = styled.ul`
@@ -106,7 +107,7 @@ const MemberDetail = styled.ul`
   gap: 32px;
   @media (max-width: 1024px) {
     justify-content: space-evenly;
-  };
+  } ;
 `;
 
 const MemberList = styled.li`

@@ -1,15 +1,25 @@
-import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
-import { Btn, Error, InputWrap } from 'src/styles/loginStyles';
+import {
+  Btn,
+  EmailLogin,
+  Error,
+  PhoneLogin,
+  TokenLogin,
+  UserIdLogin,
+} from 'src/styles/loginStyles';
 import Input from './LoginInput';
 
-export const LoginForm = ({
-  method,
-  login,
-  loading,
-  errMsg,
-  serverError,
-}: any) => {
+//TS
+export interface ILoginForm {
+  email?: string;
+  phone?: string;
+  userId?: string;
+  password?: string;
+  token?: string;
+}
+
+export const LoginForm = ({ method, login, loading, errMsg }: any) => {
+  //
   const {
     register,
     reset,
@@ -18,6 +28,7 @@ export const LoginForm = ({
   } = useForm<ILoginForm>({
     mode: 'onChange',
   });
+  //
   const onValid = (data: ILoginForm) => {
     reset();
     if (loading) return;
@@ -25,10 +36,12 @@ export const LoginForm = ({
   };
   //
   return (
-    <Container>
+    <>
       <form onSubmit={handleSubmit(onValid)}>
         {errMsg ? <Error>{errMsg}</Error> : null}
-        {serverError ? <Error>{serverError}</Error> : null}
+
+        {/*  */}
+
         {method === 'userId' ? (
           <UserIdLogin>
             <Input
@@ -47,7 +60,9 @@ export const LoginForm = ({
             />
             <Btn>{loading ? '로딩중...' : '로그인'}</Btn>
           </UserIdLogin>
-        ) : method === 'email' ? (
+        ) : //
+
+        method === 'email' ? (
           <EmailLogin>
             <Input
               register={register('email', {
@@ -64,7 +79,9 @@ export const LoginForm = ({
             />
             <Btn>{loading ? '로딩중...' : '로그인 링크 받기'}</Btn>
           </EmailLogin>
-        ) : method === 'phone' ? (
+        ) : //
+
+        method === 'phone' ? (
           <PhoneLogin>
             <Input
               type="number"
@@ -81,7 +98,9 @@ export const LoginForm = ({
             />
             <Btn>{loading ? '로딩중...' : '인증번호 받기'}</Btn>
           </PhoneLogin>
-        ) : method === 'token' ? (
+        ) : //
+
+        method === 'token' ? (
           <TokenLogin>
             <Input
               type="number"
@@ -106,22 +125,6 @@ export const LoginForm = ({
           </TokenLogin>
         ) : null}
       </form>
-    </Container>
+    </>
   );
 };
-
-//TS
-export interface ILoginForm {
-  email?: string;
-  phone?: string;
-  userId?: string;
-  password?: string;
-  token?: string;
-}
-
-//COMPONENTS
-const Container = styled.div``;
-const UserIdLogin = styled(InputWrap)``;
-const EmailLogin = styled(InputWrap)``;
-const PhoneLogin = styled(InputWrap)``;
-const TokenLogin = styled(InputWrap)``;

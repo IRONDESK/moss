@@ -1,6 +1,6 @@
 import { Container, H1 } from 'src/styles/loginStyles';
 import { LoginLink } from 'src/components/Login/components/LoginLink';
-import { AuthLogin } from 'src/components/Login/LoginMethod/AuthLogin';
+import { LoginStart } from 'src/components/Login/LoginStart';
 
 export default function Login() {
   return (
@@ -8,7 +8,7 @@ export default function Login() {
       <H1>
         <span>로그인</span>
       </H1>
-      <AuthLogin />
+      <LoginStart />
       <LoginLink />
     </Container>
   );
