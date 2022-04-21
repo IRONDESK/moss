@@ -40,11 +40,12 @@ export default function StudyPage() {
     <>
         <StudyBanner
         category="카테고리"
-        title={data.studyName}
-        des={data.introduce}
-        hashtag={data.tag}
-        memberlimit={data.membersLimit}
-        link={data.chatLink}
+        title={data?.studyName}
+        des={data?.introduce}
+        hashtag={data?.tag}
+        members={1}
+        memberlimit={data?.membersLimit}
+        link={data?.chatLink}
         />
         <StudyComponents />
     </>

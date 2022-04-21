@@ -4,14 +4,14 @@ import { COLOR } from '../../constants';
 import { JoinStudyModal } from '../JoinStudy/JoinStudyModal';
 
 interface bannerType {
-  logo?: string;
-  category: string;
-  title: string;
-  des: string;
-  hashtag: string;
-  members?: number;
-  memberlimit: number;
-  link: string;
+  logo?: string|undefined;
+  category: string|undefined;
+  title: string|undefined;
+  des: string|undefined;
+  hashtag: string|undefined;
+  members?: number|undefined;
+  memberlimit: number|undefined;
+  link: string|undefined;
 }
 
 export const StudyBanner = ({
@@ -35,7 +35,10 @@ export const StudyBanner = ({
           </StudyDetail>
           <Join>
             <Member>{members}/{memberlimit}</Member>
-            <StudyBtn onClick={openModal} href={link}>
+            <StudyBtn
+              onClick={openModal}
+              // href={link}
+              >
               스터디 신청하기
             </StudyBtn>
           </Join>

@@ -52,6 +52,7 @@ model Studyinfo {
   tag          String?
   membersLimit String?
   chatLink     String?
+  joinMember   Json?
   joinMsg      String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
