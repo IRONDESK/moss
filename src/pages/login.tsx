@@ -1,4 +1,4 @@
-import { Container, H1 } from 'src/styles/loginStyles';
+import { Container, H1 } from 'src/styles/componentsStyles';
 import { LoginLink } from 'src/components/Login/components/LoginLink';
 import { LoginStart } from 'src/components/Login/LoginStart';
 

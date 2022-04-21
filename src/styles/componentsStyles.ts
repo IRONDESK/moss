@@ -29,7 +29,7 @@ export const Error = styled.div`
     margin: 10px 0;
   }
 `;
-const InputWrap = styled.div`
+export const InputWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -49,10 +49,6 @@ const InputWrap = styled.div`
     }
   }
 `;
-export const UserIdLogin = styled(InputWrap)``;
-export const EmailLogin = styled(InputWrap)``;
-export const PhoneLogin = styled(InputWrap)``;
-export const TokenLogin = styled(InputWrap)``;
 
 export const Container = styled.section`
   padding: 10px;

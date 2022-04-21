@@ -1,12 +1,5 @@
 import { useForm } from 'react-hook-form';
-import {
-  Btn,
-  EmailLogin,
-  Error,
-  PhoneLogin,
-  TokenLogin,
-  UserIdLogin,
-} from 'src/styles/loginStyles';
+import { Btn, Error, InputWrap } from 'src/styles/componentsStyles';
 import Input from './LoginInput';
 
 //TS
@@ -43,7 +36,7 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
         {/*  */}
 
         {method === 'userId' ? (
-          <UserIdLogin>
+          <InputWrap>
             <Input
               method={method}
               register={register('userId', {
@@ -59,11 +52,11 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               errorMsg2={errors.password?.message}
             />
             <Btn>{loading ? '로딩중...' : '로그인'}</Btn>
-          </UserIdLogin>
+          </InputWrap>
         ) : //
 
         method === 'email' ? (
-          <EmailLogin>
+          <InputWrap>
             <Input
               register={register('email', {
                 pattern: {
@@ -78,11 +71,11 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               errorMsg={errors.email?.message}
             />
             <Btn>{loading ? '로딩중...' : '로그인 링크 받기'}</Btn>
-          </EmailLogin>
+          </InputWrap>
         ) : //
 
         method === 'phone' ? (
-          <PhoneLogin>
+          <InputWrap>
             <Input
               type="number"
               register={register('phone', {
@@ -97,11 +90,11 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               errorMsg={errors.phone?.message}
             />
             <Btn>{loading ? '로딩중...' : '인증번호 받기'}</Btn>
-          </PhoneLogin>
+          </InputWrap>
         ) : //
 
         method === 'token' ? (
-          <TokenLogin>
+          <InputWrap>
             <Input
               type="number"
               register={register('token', {
@@ -122,7 +115,7 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               errorMsg={errors.token?.message}
             />
             <Btn>{loading ? '로딩중...' : '인증완료 후 로그인'}</Btn>
-          </TokenLogin>
+          </InputWrap>
         ) : null}
       </form>
     </>
