@@ -3,9 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { StudyCard } from './StudyCard';
 import getInfo from 'src/pages/api/study/getInfo';
 
-export const StudyList = () => {
+interface DataProps {
+  studyId: number;
+  studyName: string;
+  leader?: number;
+  tag?: string;
+  membersLimit?: number;
+}
 
-  const [data, setData] = useState();
+export const StudyList = () => {
+  const [data, setData] = useState<any>();
   const res = getInfo("many");
   useEffect(() => {
       setData(res);
@@ -15,7 +22,7 @@ export const StudyList = () => {
   return (
     <>
       <List>
-        { data?.map( (value) => { return (
+        { data?.map( (value: DataProps) => { return (
         <StudyCard
           category="카테고리"
           title={value.studyName}
