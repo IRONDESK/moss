@@ -5,8 +5,23 @@ import { Button } from '../../../components/Notice/Button';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { COLOR } from '../../../constants';
 import { NoticeList } from '../../../components/Notice/NoticeList';
+import { NoticeData } from '../../types/Notice';
+import { useEffect, useState } from 'react';
+import view from 'src/pages/api/notice/view';
 
 export default function NoticePage(): JSX.Element {
+  const [noticeList, setNoticeList] = useState<NoticeData[]>([
+    {
+      category: '',
+      title: '',
+      content: '',
+    },
+  ]);
+  const res = view('many');
+  useEffect(() => {
+    setNoticeList(res);
+    console.log(noticeList);
+  }, [res]);
   return (
     <>
       <StudyBanner
@@ -49,22 +64,21 @@ export default function NoticePage(): JSX.Element {
             </th>
           </tr>
         </thead>
-        <tbody>
-          <NoticeList
-            num={2}
-            category="장소"
-            title="공지사항입니다"
-            writer="손수철"
-            date="2022.04.02 00:00"
-          />
-          <NoticeList
-            num={1}
-            category="일반공지"
-            title="알려드립니다"
-            writer="박유진"
-            date="2022.04.02 00:00"
-          />
-        </tbody>
+        <>
+          {noticeList?.noticeData?.map((notice: any, id: number) => {
+            return (
+              <tbody key={notice.id}>
+                <NoticeList
+                  num={notice.id}
+                  category={notice.category}
+                  title={notice.title}
+                  writer="#"
+                  date={notice.createdAt}
+                />
+              </tbody>
+            );
+          })}
+        </>
       </Table>
       <Page>
         <ol>
