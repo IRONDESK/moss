@@ -7,6 +7,7 @@ interface DataProps {
   studyId: number;
   studyName: string;
   leader?: number;
+  category?: string;
   tag?: string;
   membersLimit?: number;
 }
@@ -24,7 +25,7 @@ export const StudyList = () => {
       <List>
         { data?.map( (value: DataProps) => { return (
         <StudyCard
-          category="카테고리"
+          category={value.category}
           title={value.studyName}
           hashtag={value.tag}
           members={2}

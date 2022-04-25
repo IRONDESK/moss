@@ -8,7 +8,7 @@ interface CardProps {
   hashtag: string|undefined;
   members: number|undefined;
   membersLimit: number|undefined;
-  link: string|undefined;
+  link: string;
   leader: boolean|undefined;
 }
 
@@ -41,8 +41,8 @@ export const StudyCard = ({
           <Member>{members}/{membersLimit}</Member>
         </Detail>
 
-        <Link href="/study">
-          <StudyBtn href={link}>
+        <Link href={link}>
+          <StudyBtn>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>
         </Link>

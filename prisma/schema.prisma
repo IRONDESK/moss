@@ -49,6 +49,7 @@ model Studyinfo {
   studyName    String
   image        Json?
   introduce    String?
+  category     String?
   tag          String?
   membersLimit String?
   chatLink     String?
