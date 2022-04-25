@@ -9,7 +9,7 @@ export interface IUser {
 }
 
 export default function useUser() {
-  const { data, error } = useSWR<IUser>('/api/users');
+  const { data, error } = useSWR<IUser>('/api/users/me');
   //
   return {
     users: data?.users,

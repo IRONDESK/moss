@@ -1,5 +1,4 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { Error } from '../../../styles/componentsStyles';
 
 //TS
 interface InputProps {

@@ -5,10 +5,10 @@ import { COLOR } from '../constants';
 
 export const Banner = () => {
   const router = useRouter();
-  const { loggedIn } = useUser();
+  const { isLoggedIn } = useUser();
 
   const onClick = () => {
-    if (!loggedIn) {
+    if (!isLoggedIn) {
       return router.push('/login'); //로그아웃인 경우
     }
     return router.push('/my-page'); //로그인된 경우

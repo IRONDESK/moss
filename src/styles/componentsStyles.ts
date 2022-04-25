@@ -25,7 +25,7 @@ export const Error = styled.div`
   text-align: center;
   font-size: 14px;
   margin-bottom: 10px;
-  &:first-child {
+  &:first-of-type {
     margin: 10px 0;
   }
 `;
