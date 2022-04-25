@@ -35,36 +35,37 @@ export interface joinForm {
   avatar?: string;
 }
 
-interface EditProfileForm {
-  email?: string;
-  phone?: string;
-  username?: string;
-  location?: string;
-}
-
 function Profile() {
-  const [formErrors, setFormErrors] = useState('');
+  // const [formErrors, setFormErrors] = useState('');
 
   //GET api
   const { loggedInUser } = useUser();
 
-  //Submit
-  const { register, handleSubmit, setValue } = useForm<EditProfileForm>({
+  //SUBMIT
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<joinForm>({
     mode: 'onBlur',
   });
   //
   const onValid = ({ email, phone, username, location }: joinForm) => {
     if (loading) return;
     if (email === '' && phone === '' && username === '' && location === '') {
-      return setFormErrors('이메일 또는 휴대폰 번호가 필요합니다.');
+      return setError('email', {
+        message: '이메일 또는 휴대폰 번호가 필요합니다.',
+      });
+    } else {
+      editProfile({
+        email,
+        phone,
+        username,
+        location,
+      });
     }
-    editProfile({
-      email,
-      phone,
-      username,
-      location,
-    });
-    return setFormErrors('');
   };
 
   //POST API
@@ -84,8 +85,8 @@ function Profile() {
       <H1>
         <span>프로필 관리</span>
       </H1>
-      {data?.errorMessage ? <Error>{data?.errorMessage}</Error> : null}
-      {data?.editMessage ? <Message>{data?.editMessage}</Message> : null}
+      {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
+      {data?.editMessage && <Message>{data?.editMessage}</Message>}
       <form onSubmit={handleSubmit(onValid)}>
         <InputWrap>
           <JoinInput
@@ -119,12 +120,12 @@ function Profile() {
             type="text"
             placeholer="수정할 위치를 적어주세요."
           />
-          {formErrors ? <Error>{formErrors}</Error> : null}
+          {errors.email && <Error>{errors.email.message}</Error>}
           <Btn type="submit">{loading ? '로딩중...' : '프로필 수정'}</Btn>
         </InputWrap>
       </form>
       <EditBtn>
-        <Link href="/profile/edit">
+        <Link href={`/profile/${loggedInUser?.id}/edit`}>
           <a>아이디 및 비밀번호 수정 &rarr;</a>
         </Link>
       </EditBtn>
