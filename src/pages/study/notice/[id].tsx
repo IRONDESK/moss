@@ -1,10 +1,38 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
 import { COLOR } from '../../../constants';
 import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { Button } from '../../../components/Notice/Button';
+import { useRouter } from 'next/router';
+import view from '../../api/notice/view';
+import useSWR from 'swr';
 
-export default function NoticePage(): JSX.Element {
+interface NoticeData {
+  category: string;
+  title: string;
+  content: string;
+}
+
+export default function NoticePage() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [notice, setNotice] = useState<NoticeData[]>([
+    {
+      category: '',
+      title: '',
+      content: '',
+    },
+  ]);
+
+  const res = view(id);
+  useEffect(() => {
+    setNotice(res);
+  }, [res]);
+
+  console.log(notice);
+
   return (
     <>
       <StudyBanner
@@ -21,11 +49,11 @@ export default function NoticePage(): JSX.Element {
 
       <ViewSection>
         <div className="title">
-          <p className="category">일반공지</p>
-          <h4>스터디 공지사항입니다. </h4>
+          <p className="category">{notice?.noticeData?.category}</p>
+          <h4>{notice?.noticeData?.title}</h4>
         </div>
         <div className="editor-content">
-          <p>매주 월,목 13:00 프로젝트 회의를 진행합니다.</p>
+          <p>{notice?.noticeData?.content}</p>
         </div>
         <div className="btn-group">
           <Button href="/study/notice" text="목록" className="list" />
@@ -72,3 +100,6 @@ const ViewSection = styled.section`
     gap: 8px;
   }
 `;
+function noticeId(noticeId: any) {
+  throw new Error('Function not implemented.');
+}
