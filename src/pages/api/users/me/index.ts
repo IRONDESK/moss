@@ -51,8 +51,10 @@ async function handler(
       );
       //이메일 중복체크
       if (joinedUser) {
-        res.json({ ok: false, errorMessage: '이미 등록한 이메일입니다.' });
-        console.log('이미 등록한 이메일입니다.');
+        return res.json({
+          ok: false,
+          errorMessage: '이미 등록한 이메일입니다.',
+        });
       }
       await client.user.update({
         where: { id: user?.id },
@@ -70,7 +72,10 @@ async function handler(
       );
       //휴대폰 중복체크
       if (joinedUser) {
-        res.json({ ok: false, errorMessage: '이미 등록한 휴대폰 번호입니다.' });
+        return res.json({
+          ok: false,
+          errorMessage: '이미 등록한 휴대폰 번호입니다.',
+        });
       }
       await client.user.update({
         where: { id: user?.id },

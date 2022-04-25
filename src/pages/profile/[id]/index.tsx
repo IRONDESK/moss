@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import JoinInput from 'src/components/Join/components/JoinInput';
 import useMutation from 'src/libs/client/useMutation';
@@ -9,6 +10,7 @@ import {
   Error,
   H1,
   InputWrap,
+  Message,
 } from 'src/styles/componentsStyles';
 
 //ts
@@ -34,11 +36,11 @@ interface EditProfileForm {
   phone?: string;
   username?: string;
   location?: string;
-  formErrors?: string;
-  apiErrors?: string;
 }
 
 function Profile() {
+  const [formErrors, setFormErrors] = useState('');
+
   //GET api
   const { loggedInUser } = useUser();
 
@@ -47,17 +49,15 @@ function Profile() {
     register,
     handleSubmit,
     setValue,
-    setError,
     formState: { errors },
   } = useForm<EditProfileForm>({
-    mode: 'onChange',
+    mode: 'onBlur',
   });
   //
   const onValid = ({ email, phone, username, location }: joinForm) => {
     if (loading) return;
-    //error handling
     if (email === '' && phone === '' && username === '' && location === '') {
-      setError('formErrors', { message: '이메일 또는 휴대폰을 적어주세요.' });
+      return setFormErrors('이메일 또는 휴대폰 번호가 필요합니다.');
     }
     editProfile({
       email,
@@ -65,6 +65,7 @@ function Profile() {
       username,
       location,
     });
+    return setFormErrors('');
   };
 
   //POST API
@@ -79,21 +80,13 @@ function Profile() {
     if (loggedInUser?.location) setValue('location', loggedInUser.location);
   }, [loggedInUser, setValue]);
 
-  //api error
-  useEffect(() => {
-    if (data && !data.ok && data.errorMessage) {
-      setError('apiErrors', { message: data.errorMessage });
-    }
-  }, [data, setError]);
-
-  //
   return (
     <Container>
       <H1>
-        <span>프로필 편집</span>
+        <span>프로필 관리</span>
       </H1>
-      {errors.apiErrors ? <Error>{errors.apiErrors.message}</Error> : null}
-      {data?.editMessage ? <Error>{data?.editMessage}</Error> : null}
+      {data?.errorMessage ? <Error>{data?.errorMessage}</Error> : null}
+      {data?.editMessage ? <Message>{data?.editMessage}</Message> : null}
       <form onSubmit={handleSubmit(onValid)}>
         <InputWrap>
           <JoinInput
@@ -127,10 +120,8 @@ function Profile() {
             type="text"
             placeholer="수정할 위치를 적어주세요."
           />
-          {errors.formErrors ? (
-            <Error>{errors.formErrors.message}</Error>
-          ) : null}
-          <Btn type="submit">프로필 수정</Btn>
+          {formErrors ? <Error>{formErrors}</Error> : null}
+          <Btn type="submit">{loading ? '로딩중...' : '프로필 수정'}</Btn>
         </InputWrap>
       </form>
     </Container>

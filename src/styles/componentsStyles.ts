@@ -29,6 +29,13 @@ export const Error = styled.div`
     margin: 10px 0;
   }
 `;
+
+export const Message = styled(Error)`
+  background-color: ${COLOR.main};
+  background-color: #2ecc71;
+  color: white;
+`;
+
 export const InputWrap = styled.div`
   width: 100%;
   display: flex;
