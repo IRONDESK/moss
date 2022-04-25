@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
-import { COLOR } from 'src/constants';
-import { Calendar } from '../Calendar/Calendar';
-import { TodoList } from '../StudyMain/Todo';
+
+import { useEffect, useState } from 'react';
+import { Container } from 'src/styles/loginStyles';
+import { Calendar } from './Calendar';
+import { CalendarList } from './CalendarList';
 
 const studyData = [
   {
@@ -62,26 +64,29 @@ const studyData = [
   },
 ];
 
-export const MyPageContainer = () => {
+export const CalendarComponents = () => {
   return (
-    <Container>
-      <CalendarWrap>
-        <Calendar studyData={studyData} />
-      </CalendarWrap>
-      <TodoList />
-    </Container>
+    <Wrapper>
+      <Calendar studyData={studyData} />
+      <StudyListWrap>
+        <h3>
+          스터디 일정 <span>Calendar</span>
+        </h3>
+        <button>스터디 일정 등록</button>
+        <CalendarList studyData={studyData} />
+      </StudyListWrap>
+    </Wrapper>
   );
 };
 
-const Container = styled.section`
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 33px;
+  gap: 24px;
+  border: 1px solid #ddd;
+  padding: 40px;
 `;
-const CalendarWrap = styled.div`
-  /* 임시로 만들어 놓은 자리 */
-  height: 450px;
-  padding: 48px 24px 16px;
-  background-color: ${COLOR.white};
-  border: 1px solid ${COLOR.boxBorder};
+const StudyListWrap = styled.div`
+  flex-grow: 1;
+  border-left: 1px solid #eee;
+  padding-left: 24px;
 `;

@@ -1,3 +1,4 @@
+import { CalendarComponents } from 'src/components/Calendar/Container';
 import { StudyComponents } from 'src/components/StudyMain/Container';
 import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
 
@@ -13,6 +14,7 @@ export default function StudyPage() {
         link="#"
       />
       <StudyComponents />
+      <CalendarComponents />
       {/* <Record />
       <TodoList />
       <Notice /> */}
