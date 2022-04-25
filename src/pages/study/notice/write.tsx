@@ -16,7 +16,7 @@ const PostEditor = dynamic(
 );
 
 export default function NoticePage(): JSX.Element {
-  const [notice, { loading, data, error }] = useMutation('/api/notice/write');
+  const [notice, { loading, data, error }] = useMutation('/api/notice');
 
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
