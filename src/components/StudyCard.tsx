@@ -3,19 +3,21 @@ import Link from 'next/link';
 import { COLOR } from '../constants';
 
 interface CardProps {
-  category: string;
-  title: string;
-  hashtag: string;
-  member: number;
+  category: string|undefined;
+  title: string|undefined;
+  hashtag: string|undefined;
+  members: number|undefined;
+  membersLimit: number|undefined;
   link: string;
-  leader: boolean;
+  leader: boolean|undefined;
 }
 
 export const StudyCard = ({
   category,
   title,
   hashtag,
-  member,
+  members,
+  membersLimit,
   link,
   leader = false,
 }: CardProps) => {
@@ -36,11 +38,11 @@ export const StudyCard = ({
       <Join>
         <Detail>
           <MemberIcon src="/images/login.svg" />
-          <Member>{member}/10</Member>
+          <Member>{members}/{membersLimit}</Member>
         </Detail>
 
-        <Link href="/study">
-          <StudyBtn href={link}>
+        <Link href={link}>
+          <StudyBtn>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>
         </Link>

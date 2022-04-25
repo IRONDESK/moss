@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Todo } from '@prisma/client';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
 import useSWR from 'swr';
@@ -7,49 +7,55 @@ import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
 
+interface Data {
+  [todo: string] : TodoData[]
+}
+
+interface Todo {
+  title: string,
+  completed: boolean
+}
+
 export const TodoList = () => {
 
-  // const {data, mutate} = useSWR("/api/todo/getTodo")
+  const { data } = useSWR<Data>('/api/todo');
 
-  const [item] = useMutation('/api/todo/todo')
+  // console.log(data?.todo);
 
-  // console.log(data, mutate);
-  
-  // const { v } = useSWR("/api/todo/getTodo");
+  const [item] = useMutation('/api/todo');
 
-  // console.log(v);
-
-  const [todoList, setTodoList] = useState<TodoData[]>([
+  const [todoList, setTodoList] = useState<Todo[]>([
     {
-      id: 0,
-      title: '',
-      completed: false
-    }
-  ])
+      title: "",
+      completed: false,
+    },
+  ]);
 
-  const [todo, setTodo] = useState("")
-  const [isTodo, setIsTodo] = useState(false)
-
-  let [count, setCount] = useState(6)
+  const [todo, setTodo] = useState('');
+  const [isTodo, setIsTodo] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodo(e.target.value)
-    setIsTodo(true)
-  }
+    setTodo(e.target.value);
+    setIsTodo(true);
+  };
 
-  const onValid = (todoItem: string) => {
+  const onValid = (todoItem: Todo) => {
     item(todoItem);
   };
 
-  const onSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    onValid(todo)
-    setTodoList([...todoList, {id: count, title: todo, completed: false}])
-    count = count + 1
-    setCount(count)
-    setTodo("")
-    setIsTodo(false)
-  }
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setTodoList([...todoList, { title: todo, completed: false }]);
+    onValid({ title: todo, completed: false });
+    setTodo('');
+    setIsTodo(false);
+  };
+
+  
+  useEffect(() => {
+    // window.location.reload()
+    // router.push('/study');
+  }, [todo]);
 
   return (
     <Container>
@@ -57,8 +63,15 @@ export const TodoList = () => {
       <SubTitle>Todo List</SubTitle>
       <ItemList todoList={todoList}>
         <ul>
-          {todoList.map((todoItem) => {
-            return <TodoItem key={todoItem.id} todoItem={todoItem} todoList={todoList} setTodoList={setTodoList}/>
+          {data?.todo?.map((todoItem: TodoData, index: number) => {
+            return (
+              <TodoItem
+                key={index}
+                todoItem={todoItem}
+                todoList={data?.todo}
+                setTodoList={setTodoList}
+              />
+            );
           })}
         </ul>
       </ItemList>
@@ -71,7 +84,9 @@ export const TodoList = () => {
             onChange={onChange}
           />
         </label>
-        <Btn disabled={!isTodo} type="submit" >입력</Btn>
+        <Btn disabled={!isTodo} type="submit">
+          입력
+        </Btn>
       </Form>
     </Container>
   );
@@ -118,24 +133,24 @@ const Form = styled.form`
   }
 `;
 
-const ItemList = styled.article<{todoList: TodoData[]}>`
+const ItemList = styled.article<{ todoList: Todo[] }>`
   padding-right: 10px;
   height: 200px;
   overflow-y: scroll;
   margin: 10px 0 0;
   &::-webkit-scrollbar {
     width: 6px;
-  };
+  }
   &::-webkit-scrollbar-thumb {
     background: ${COLOR.grayText};
     border-radius: 6px;
-  };
+  }
   &::-webkit-scrollbar-track {
-    background: ${props => props.todoList.length > 3 && COLOR.gray};
+    background: ${(props) => props.todoList.length > 3 && COLOR.gray};
     border-radius: 6px;
-  };
+  }
   ul li {
-    width: 100%
+    width: 100%;
   }
 `;
 
@@ -164,6 +179,6 @@ const Btn = styled.button`
     color: ${COLOR.white};
   }
   &:focus-visible {
-    outline: 1px solid #0085FF;
+    outline: 1px solid #0085ff;
   }
 `;

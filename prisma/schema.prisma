@@ -24,16 +24,16 @@ model User {
   location  String?
   Token     Token[]
   createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  updatedAt DateTime    @updatedAt  
 }
 
 model Token {
   id          Int      @id @default(autoincrement())
-  payload     String   @unique
-  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId      Int
+  payload     String   @unique  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId      Int
 }
 
 model Todo {
@@ -44,14 +44,16 @@ model Todo {
   updatedAt DateTime? @updatedAt
 }
 
-model Studyinfo {
+model Studyinfo {  
   studyId      Int      @id @default(autoincrement())
   studyName    String
   image        Json?
   introduce    String?
+  category     String?
   tag          String?
   membersLimit String?
   chatLink     String?
+  joinMember   String?
   joinMsg      String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

@@ -1,15 +1,26 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useRef, useState } from 'react';
+import useMutation from 'src/libs/client/useMutation';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
+
+interface Todo {
+  title: string,
+  completed: boolean
+}
 
 interface TodoList {
   todoItem: TodoData
   todoList: TodoData[]
-  setTodoList: (todoList: TodoData[]) => void
+  setTodoList: (todoList: Todo[]) => void
 }
 
 export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
+
+  const [del] = useMutation('/api/todo/delTodo');
+  const [edit] = useMutation('/api/todo/editTodo');
+  
 
   const [editTodo, setEditTodo] = useState(todoItem.title)
   const [isEdit, setIsEdit] = useState(false)
@@ -22,11 +33,13 @@ export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
 
   const todoCompleted = (id: number) => {
     setTodoList(todoList.map(v => v.id === id ? {...v, completed: !v.completed} : v))
+    edit({id: id, title: editTodo, completed: !(todoList.filter(v => v.id === id && {...v, completed: !v.completed})[0].completed)})
   }
 
   const todoEdit = (id: number) => {
     setTodoList(todoList.map(v => v.id === id ? {...v, title: editTodo} : v))
     setIsEdit(!isEdit)
+    edit({id: id, title: editTodo, completed: todoItem.completed})
     if(editRef.current !== null) editRef.current.focus()
   }
 
@@ -39,6 +52,7 @@ export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
 
   const todoDelete = (id: number) => {
     setTodoList(todoList.filter(v => v.id !== id))
+    del(id)
   }
 
   return (
@@ -124,6 +138,3 @@ const UtilBtn = styled.button<{util: string}>`
   margin: 0 6px 0 0;
   background: url(${props => props.util});
 `
-
-
-

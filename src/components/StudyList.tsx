@@ -1,51 +1,39 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StudyCard } from './StudyCard';
+import getInfo from 'src/pages/api/study/getInfo';
+
+interface DataProps {
+  studyId: number;
+  studyName: string;
+  leader?: number;
+  category?: string;
+  tag?: string;
+  membersLimit?: number;
+}
 
 export const StudyList = () => {
+  const [data, setData] = useState<any>();
+  const res = getInfo("many");
+  useEffect(() => {
+      setData(res);
+      console.log(data);
+  }, [res]);
+
   return (
     <>
       <List>
+        { data?.map( (value: DataProps) => { return (
         <StudyCard
-          category="카테고리"
-          title="React 강의 듣기"
-          hashtag="#리액트 #프론트엔드"
-          member={1}
-          link="#"
+          category={value.category}
+          title={value.studyName}
+          hashtag={value.tag}
+          members={2}
+          membersLimit={value.membersLimit}
+          link={`/study/` + value.studyId}
           leader={true}
         />
-        <StudyCard
-          category="카테고리"
-          title="React 강의 듣기"
-          hashtag="#리액트 #프론트엔드"
-          member={1}
-          link="#"
-          leader={false}
-        />
-        <StudyCard
-          category="카테고리"
-          title="React 강의 듣기"
-          hashtag="#리액트 #프론트엔드"
-          member={1}
-          link="#"
-          leader={false}
-        />
-        <StudyCard
-          category="카테고리"
-          title="React 강의 듣기"
-          hashtag="#리액트 #프론트엔드"
-          member={1}
-          link="#"
-          leader={false}
-        />
-        <StudyCard
-          category="카테고리"
-          title="React 강의 듣기"
-          hashtag="#리액트 #프론트엔드"
-          member={1}
-          link="#"
-          leader={false}
-        />
+        )}) }
       </List>
     </>
   );

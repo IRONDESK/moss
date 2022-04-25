@@ -17,6 +17,7 @@ interface studyForm {
   leader?: number;
   image: string;
   introduce?: string;
+  category?: string;
   tag?: string;
   membersLimit?: number;
   chatLink: string;
@@ -86,6 +87,14 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
               id="study-des"
               type="text"
               placeholder="스터디 소개를 작성해주세요"
+            />
+            <Label htmlFor="study-category">카테고리</Label>
+            <Input
+            {...register('category')}
+              name="category"
+              id="study-category"
+              type="text"
+              placeholder="스터디에 해당하는 카테고리를 작성해주세요"
             />
             <Label htmlFor="study-tag">태그</Label>
             <Input

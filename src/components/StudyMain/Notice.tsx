@@ -2,39 +2,19 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import Link from 'next/link';
 import { NoticeData } from '../../types/Notice';
+import useSWR from 'swr';
+import { useEffect, useState } from 'react';
+import view from 'src/pages/api/notice/view';
 
 export const Notice = () => {
-
-  const noticeData: NoticeData[] = [
-    {
-      id: 1,
-      tag: "일반공지",
-      title: "스터디 공지사항입니다.",
-      author: "최성이",
-      createddate: "2022.04.01"
-    },
-    {
-      id: 2,
-      tag: "미션",
-      title: "아침 4시 기상 도전!",
-      author: "강혜진",
-      createddate: "2022.03.25"
-    },
-    {
-      id: 3,
-      tag: "미션",
-      title: "백엔드 모여라!~!",
-      author: "김준우",
-      createddate: "2022.03.22"
-    },
-    {
-      id: 4,
-      tag: "일반공지",
-      title: "스터디 공지사항입니다.",
-      author: "최성이",
-      createddate: "2022.03.01"
-    },       
-  ]
+  const [noticeList, setNoticeList] = useState<NoticeData[]>([
+    { category: '', title: '', content: '' },
+  ]);
+  const res = view('many');
+  useEffect(() => {
+    setNoticeList(res);
+    console.log(noticeList);
+  }, [res]);
 
   return (
     <Container>
@@ -42,22 +22,24 @@ export const Notice = () => {
       <SubTitle>Notice</SubTitle>
       <article>
         <ul>
-          {noticeData.slice(0, 3).map((notice) => {
-            return (
-              <NoticeList key={notice.id}>
-                <NoticeTitle>
-                  <Tag>{notice.tag}</Tag>
-                  <Link href={`/study/notice/${notice.id}`}>
-                    {notice.title}
-                  </Link>
-                </NoticeTitle>
-                <CreatedDate>{notice.createddate}</CreatedDate>
-              </NoticeList>
-            )
-          })}
+          {noticeList?.noticeData
+            ?.slice(0, 3)
+            .map((notice: any, id: number) => {
+              return (
+                <NoticeList key={notice.id}>
+                  <NoticeTitle>
+                    <Tag>{notice.category}</Tag>
+                    <Link href={`/study/notice/${notice.id}`}>
+                      {notice.title}
+                    </Link>
+                  </NoticeTitle>
+                  <CreatedDate>{notice.createdAt}</CreatedDate>
+                </NoticeList>
+              );
+            })}
         </ul>
       </article>
-      <Link href="/study/notice">
+      <Link href="/study/notice" passHref>
         <Button>더보기</Button>
       </Link>
     </Container>
@@ -76,7 +58,7 @@ const Container = styled.section`
     width: 40px;
     height: 48px;
     background: ${COLOR.point} url('/images/notice.svg') no-repeat 50% 70%;
-  };
+  }
 `;
 
 const Title = styled.h2`

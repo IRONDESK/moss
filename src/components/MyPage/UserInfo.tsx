@@ -1,13 +1,17 @@
 import styled from '@emotion/styled';
-import * as d3 from 'd3';
-import { COLOR } from '../../constants';
 
-export const UserInfo = (props: { image: string; name: string }) => {
+//ts
+interface IUserInfo {
+  image?: string;
+  name?: string;
+}
+
+export const UserInfo = ({ image, name }: IUserInfo) => {
   return (
     <UserInfos>
       <UserImg src="./images/studyLogo.png" alt="user-image" />
       <p className="title">할수있다!</p>
-      <p className="user-name">{props.name}</p>
+      <p className="user-name">{name}</p>
     </UserInfos>
   );
 };
