@@ -7,90 +7,61 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
 ) {
+  let updatedId;
+  let updatedPw;
   const { user } = req.session;
   const loggedInUser = await client.user.findUnique({
     where: { id: user?.id },
+    select: { id: true, userId: true, password: true },
   });
+  const { userId, password, confirmPassword } = req.body;
 
-  //GET
-  if (req.method === 'GET') {
-    //모든 유저
-    const users = await client.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        avatar: true,
-      },
-    });
-    //모든유저 카운트
-    const userCount = await client.user.count();
-
+  //아이디 수정
+  if (userId && userId !== loggedInUser?.userId) {
+    //중복 데이터 -> error
+    const dupData = Boolean(
+      await client.user.findUnique({
+        where: { userId },
+        select: { id: true },
+      }),
+    );
+    if (dupData) {
+      return res.json({
+        ok: false,
+        errorMessage: '이미 존재하는 아이디 입니다.',
+      });
+    }
     //
-    return res.json({ ok: true, loggedInUser, users, userCount });
+    updatedId = await client.user.update({
+      where: { id: loggedInUser?.id },
+      data: { userId },
+    });
   }
 
-  //POST
-  if (req.method === 'POST') {
-    const { email, phone, username, location } = req.body;
-
-    //이름, 위치 편집
-    if (username || location) {
-      await client.user.update({
-        where: { id: loggedInUser?.id },
-        data: { username, location },
+  //비밀번호 수정
+  if (password && confirmPassword && password !== loggedInUser?.password) {
+    //비밀번호 일치여부 확인
+    if (password !== confirmPassword) {
+      return res.json({
+        ok: false,
+        errorMessage: '비밀번호가 일치하지 않습니다.',
       });
     }
-
-    //이메일 편집
-    if (email && email !== loggedInUser?.email) {
-      const joinedUser = Boolean(
-        await client.user.findUnique({
-          where: { email },
-          select: { id: true },
-        }),
-      );
-      //이메일 중복체크
-      if (joinedUser) {
-        return res.json({
-          ok: false,
-          errorMessage: '이미 등록한 이메일입니다.',
-        });
-      }
-      await client.user.update({
-        where: { id: user?.id },
-        data: { email },
-      });
-    }
-
-    //휴대폰 편집
-    if (phone && phone !== loggedInUser?.phone) {
-      const joinedUser = Boolean(
-        await client.user.findUnique({
-          where: { phone },
-          select: { id: true },
-        }),
-      );
-      //휴대폰 중복체크
-      if (joinedUser) {
-        return res.json({
-          ok: false,
-          errorMessage: '이미 등록한 휴대폰 번호입니다.',
-        });
-      }
-      await client.user.update({
-        where: { id: user?.id },
-        data: { phone },
-      });
-    }
-
     //
+    updatedPw = await client.user.update({
+      where: { id: user?.id },
+      data: { password },
+    });
+  }
+
+  if (updatedId || updatedPw) {
     return res.json({
       ok: true,
-      editMessage: '프로필 편집이 성공적으로 완료되었습니다.',
+      message: `아이디 | 비밀번호를 성공적으로 수정했습니다!`,
     });
   }
+  //
+  return res.json({ ok: false, errorMessage: '변경사항이 없습니다.' });
 }
 
-export default withApiSession(
-  withHandler({ methods: ['GET', 'POST'], handler }),
-);
+export default withApiSession(withHandler({ methods: ['POST'], handler }));

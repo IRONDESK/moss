@@ -12,7 +12,6 @@ async function handler(
     where: { id: user?.id },
   });
 
-  //GET
   if (req.method === 'GET') {
     //모든 유저
     const users = await client.user.findMany({
@@ -29,65 +28,69 @@ async function handler(
     return res.json({ ok: true, loggedInUser, users, userCount });
   }
 
-  //POST
   if (req.method === 'POST') {
     const { email, phone, username, location } = req.body;
 
-    //이름, 위치 편집
-    if (username || location) {
+    //이름 수정
+    if (username)
       await client.user.update({
         where: { id: loggedInUser?.id },
-        data: { username, location },
+        data: { username },
       });
-    }
 
-    //이메일 편집
+    //위치 수정
+    if (location)
+      await client.user.update({
+        where: { id: loggedInUser?.id },
+        data: { location },
+      });
+
+    //이메일 수정
     if (email && email !== loggedInUser?.email) {
-      const joinedUser = Boolean(
+      const dupEmail = Boolean(
         await client.user.findUnique({
           where: { email },
           select: { id: true },
         }),
       );
-      //이메일 중복체크
-      if (joinedUser) {
+      //handling error
+      if (dupEmail)
         return res.json({
           ok: false,
           errorMessage: '이미 등록한 이메일입니다.',
         });
-      }
       await client.user.update({
-        where: { id: user?.id },
+        where: { id: loggedInUser?.id },
         data: { email },
       });
     }
 
-    //휴대폰 편집
+    //휴대폰 수정
     if (phone && phone !== loggedInUser?.phone) {
-      const joinedUser = Boolean(
+      const dupPhone = Boolean(
         await client.user.findUnique({
           where: { phone },
           select: { id: true },
         }),
       );
-      //휴대폰 중복체크
-      if (joinedUser) {
+      //handling error
+      if (dupPhone)
         return res.json({
           ok: false,
           errorMessage: '이미 등록한 휴대폰 번호입니다.',
         });
-      }
       await client.user.update({
-        where: { id: user?.id },
+        where: { id: loggedInUser?.id },
         data: { phone },
       });
     }
 
+    //데이터 입력 X
+    if (!email && !phone && !username && !location)
+      return res.json({ ok: false, errorMessage: '입력데이터가 없습니다!' });
+
     //
-    return res.json({
-      ok: true,
-      editMessage: '프로필 편집이 성공적으로 완료되었습니다.',
-    });
+    return res.json({ ok: true, message: '프로필을 성공적으로 수정했습니다!' });
   }
 }
 

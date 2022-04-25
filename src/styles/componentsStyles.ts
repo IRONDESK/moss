@@ -18,7 +18,7 @@ export const H1 = styled.h1`
 `;
 
 export const Error = styled.div`
-  background: #fff5f5;
+  background-color: #fff5f5;
   color: ${COLOR.error};
   width: 100%;
   padding: 12px;
@@ -31,9 +31,10 @@ export const Error = styled.div`
 `;
 
 export const Message = styled(Error)`
-  background-color: ${COLOR.main};
-  background-color: #2ecc71;
-  color: white;
+  background: none;
+  color: ${COLOR.main};
+  font-size: 16px;
+  font-style: italic;
 `;
 
 export const InputWrap = styled.div`

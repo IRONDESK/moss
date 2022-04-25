@@ -8,6 +8,7 @@ import {
   Error,
   H1,
   InputWrap,
+  Message,
 } from 'src/styles/componentsStyles';
 
 interface IEditForm {
@@ -20,10 +21,8 @@ interface IEditForm {
 function Edit() {
   const { loggedInUser } = useUser();
 
-  //POST API
   const [edit, { data, loading }] = useMutation(`/api/users/me/edit`);
 
-  //SUBMIT
   const {
     register,
     handleSubmit,
@@ -32,31 +31,14 @@ function Edit() {
     formState: { errors },
   } = useForm<IEditForm>({ mode: 'onBlur' });
 
-  // const onValid = (data: IEditForm) => {
-  //   if (data.password !== data.confirmPassword) {
-  //     setError('password', { message: '비밀번호가 일치하지 않습니다.' });
-  //   } else {
-  //     console.log('성공!');
-  //   }
-  //   //
-  //   // edit(data);
-  // };
   const onValid = ({ userId, password, confirmPassword }: IEditForm) => {
-    if (password !== confirmPassword) {
-      setError('password', { message: '비밀번호가 일치하지 않습니다.' });
-    } else {
-      console.log('성공!');
-    }
-    //
-    // edit(data);
+    edit({ userId, password, confirmPassword });
   };
 
-  //SET ERROR
-
-  //초기값 설정
   useEffect(() => {
-    if (loggedInUser?.userId) setValue('userId', loggedInUser.userId);
+    loggedInUser?.userId && setValue('userId', loggedInUser.userId);
   }, [loggedInUser, setValue]);
+
   //
   return (
     <>
@@ -64,7 +46,8 @@ function Edit() {
         <H1>
           <span>아이디 | 비밀번호 수정</span>
         </H1>
-        {errors.password && <Error>{errors.password.message}</Error>}
+        {data?.errorMessage && <Error>{data.errorMessage}</Error>}
+        {data?.message && <Message>{data.message}</Message>}
         <form onSubmit={handleSubmit(onValid)}>
           <InputWrap>
             <input

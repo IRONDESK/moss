@@ -1,10 +1,7 @@
-import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import JoinInput from 'src/components/Join/components/JoinInput';
-import { COLOR } from 'src/constants';
 import useMutation from 'src/libs/client/useMutation';
 import useUser from 'src/libs/client/useUser';
 import {
@@ -21,7 +18,7 @@ import {
 interface IEditResponse {
   ok: boolean;
   errorMessage?: string;
-  editMessage?: string;
+  message?: string;
 }
 
 export interface joinForm {
@@ -36,12 +33,16 @@ export interface joinForm {
 }
 
 function Profile() {
-  // const [formErrors, setFormErrors] = useState('');
-
-  //GET api
   const { loggedInUser } = useUser();
 
-  //SUBMIT
+  const existingId = loggedInUser?.userId;
+  const existingEmail = loggedInUser?.email;
+  const existingPhone = loggedInUser?.phone;
+
+  const [editProfile, { data, loading }] =
+    useMutation<IEditResponse>(`/api/users/me`);
+  console.log(data);
+
   const {
     register,
     handleSubmit,
@@ -51,10 +52,10 @@ function Profile() {
   } = useForm<joinForm>({
     mode: 'onBlur',
   });
-  //
+
   const onValid = ({ email, phone, username, location }: joinForm) => {
     if (loading) return;
-    if (email === '' && phone === '' && username === '' && location === '') {
+    if (!email && !phone && !existingId && !existingEmail && !existingPhone) {
       return setError('email', {
         message: '이메일 또는 휴대폰 번호가 필요합니다.',
       });
@@ -68,11 +69,6 @@ function Profile() {
     }
   };
 
-  //POST API
-  const [editProfile, { data, loading }] =
-    useMutation<IEditResponse>(`/api/users/me`);
-
-  //초기값 설정
   useEffect(() => {
     if (loggedInUser?.username) setValue('username', loggedInUser.username);
     if (loggedInUser?.email) setValue('email', loggedInUser.email);
@@ -86,7 +82,7 @@ function Profile() {
         <span>프로필 관리</span>
       </H1>
       {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
-      {data?.editMessage && <Message>{data?.editMessage}</Message>}
+      {data?.message && <Message>{data?.message}</Message>}
       <form onSubmit={handleSubmit(onValid)}>
         <InputWrap>
           <JoinInput
