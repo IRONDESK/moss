@@ -16,7 +16,8 @@ const PostEditor = dynamic(
 );
 
 export default function NoticePage(): JSX.Element {
-  const [notice, { loading, data, error }] = useMutation('/api/notice/write');
+  const [notice, { loading, data, error }] = useMutation('/api/notice');
+  console.log(data);
 
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
@@ -44,9 +45,7 @@ export default function NoticePage(): JSX.Element {
     setNoticeList(
       (noticeList = [{ category: category, title: title, content: content }]),
     );
-    console.log(noticeList);
     const data = noticeList;
-    console.log(data);
     notice(data);
     reset();
   };
@@ -80,11 +79,6 @@ export default function NoticePage(): JSX.Element {
             name="category"
             placeholder="최대 4자까지 입력할 수 있습니다."
           />
-          {/* <datalist id="category-list">
-            <option value="장소" />
-            <option value="미션" />
-            <option value="일반공지" />
-          </datalist> */}
         </div>
         <div className="list">
           <label htmlFor="input-title">제목</label>
