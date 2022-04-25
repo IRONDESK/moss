@@ -1,12 +1,16 @@
+import styled from '@emotion/styled';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import JoinInput from 'src/components/Join/components/JoinInput';
+import { COLOR } from 'src/constants';
 import useMutation from 'src/libs/client/useMutation';
 import useUser from 'src/libs/client/useUser';
 import {
   Btn,
   Container,
+  EditBtn,
   Error,
   H1,
   InputWrap,
@@ -45,12 +49,7 @@ function Profile() {
   const { loggedInUser } = useUser();
 
   //Submit
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<EditProfileForm>({
+  const { register, handleSubmit, setValue } = useForm<EditProfileForm>({
     mode: 'onBlur',
   });
   //
@@ -124,6 +123,11 @@ function Profile() {
           <Btn type="submit">{loading ? '로딩중...' : '프로필 수정'}</Btn>
         </InputWrap>
       </form>
+      <EditBtn>
+        <Link href="/profile/edit">
+          <a>아이디 및 비밀번호 수정 &rarr;</a>
+        </Link>
+      </EditBtn>
     </Container>
   );
 }

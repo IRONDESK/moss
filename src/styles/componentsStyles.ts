@@ -5,12 +5,12 @@ export const H1 = styled.h1`
   display: flex;
   justify-content: center;
   width: 60px;
-  font-size: 30px;
+  font-size: 25px;
   margin: 10px auto 66px;
   border-bottom: 4px solid ${COLOR.main};
   position: relative;
   span {
-    width: 200px;
+    width: 700px;
     position: absolute;
     bottom: 16px;
     text-align: center;
@@ -40,6 +40,7 @@ export const InputWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   input {
     padding: 16px;
     width: 100%;
@@ -47,7 +48,6 @@ export const InputWrap = styled.div`
     font-size: 14px;
     color: ${COLOR.grayText};
     border: 1px solid ${COLOR.gray};
-    margin-bottom: 10px;
     &::placeholder {
       color: ${COLOR.grayText};
     }
@@ -60,8 +60,8 @@ export const InputWrap = styled.div`
 export const Container = styled.section`
   padding: 10px;
   margin: 100px auto;
-  width: 60%;
   width: 400px;
+  text-align: center;
   select,
   form {
     width: 100%;
@@ -89,4 +89,13 @@ export const Btn = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+`;
+
+export const EditBtn = styled.button`
+  font-size: 15px;
+  margin: 10px auto;
+  text-align: center;
+  &:hover {
+    color: ${COLOR.main};
+  }
 `;
