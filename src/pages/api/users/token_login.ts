@@ -20,9 +20,9 @@ async function handler(
   //save & delete
   req.session.user = { id: foundToken?.UserId };
   await req.session.save();
-  await client.token.deleteMany({
-    where: { UserId: foundToken.UserId },
-  });
+  // await client.token.deleteMany({
+  //   where: { UserId: foundToken.UserId },
+  // });
   //
   return res.json({ ok: true, method: 'tokenLogin' });
 }

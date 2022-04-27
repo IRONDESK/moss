@@ -6,18 +6,8 @@ import useMutation from 'src/libs/client/useMutation';
 import { FileUpload } from 'src/components/Join/FileUpload';
 import { COLOR } from 'src/constants';
 import { useRouter } from 'next/router';
-import { Error } from 'src/styles/loginStyles';
-
-interface joinForm {
-  email?: string;
-  phone?: string;
-  userId?: string;
-  password?: string;
-  password2?: string;
-  username?: string;
-  location?: string;
-  avatar?: string;
-}
+import { Error } from 'src/styles/componentsStyles';
+import { joinForm } from './profile/[id]';
 
 export default function Join() {
   //Submit

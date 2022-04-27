@@ -5,12 +5,12 @@ export const H1 = styled.h1`
   display: flex;
   justify-content: center;
   width: 60px;
-  font-size: 30px;
+  font-size: 25px;
   margin: 10px auto 66px;
   border-bottom: 4px solid ${COLOR.main};
   position: relative;
   span {
-    width: 200px;
+    width: 700px;
     position: absolute;
     bottom: 16px;
     text-align: center;
@@ -18,21 +18,30 @@ export const H1 = styled.h1`
 `;
 
 export const Error = styled.div`
-  background: #fff5f5;
+  background-color: #fff5f5;
   color: ${COLOR.error};
   width: 100%;
   padding: 12px;
   text-align: center;
   font-size: 14px;
   margin-bottom: 10px;
-  &:first-child {
+  &:first-of-type {
     margin: 10px 0;
   }
 `;
-const InputWrap = styled.div`
+
+export const Message = styled(Error)`
+  background: none;
+  color: ${COLOR.main};
+  font-size: 16px;
+  font-style: italic;
+`;
+
+export const InputWrap = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   input {
     padding: 16px;
     width: 100%;
@@ -40,7 +49,6 @@ const InputWrap = styled.div`
     font-size: 14px;
     color: ${COLOR.grayText};
     border: 1px solid ${COLOR.gray};
-    margin-bottom: 10px;
     &::placeholder {
       color: ${COLOR.grayText};
     }
@@ -49,16 +57,12 @@ const InputWrap = styled.div`
     }
   }
 `;
-export const UserIdLogin = styled(InputWrap)``;
-export const EmailLogin = styled(InputWrap)``;
-export const PhoneLogin = styled(InputWrap)``;
-export const TokenLogin = styled(InputWrap)``;
 
 export const Container = styled.section`
   padding: 10px;
   margin: 100px auto;
-  width: 60%;
   width: 400px;
+  text-align: center;
   select,
   form {
     width: 100%;
@@ -86,4 +90,13 @@ export const Btn = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+`;
+
+export const EditBtn = styled.button`
+  font-size: 15px;
+  margin: 10px auto;
+  text-align: center;
+  &:hover {
+    color: ${COLOR.main};
+  }
 `;
