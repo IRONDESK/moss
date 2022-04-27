@@ -13,23 +13,13 @@ import {
   InputWrap,
   Message,
 } from 'src/styles/componentsStyles';
+import { joinForm } from 'src/types/join';
 
 //ts
 interface IEditResponse {
   ok: boolean;
   errorMessage?: string;
   message?: string;
-}
-
-export interface joinForm {
-  username?: string;
-  userId?: string;
-  password?: string;
-  password2?: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  avatar?: string;
 }
 
 function Profile() {

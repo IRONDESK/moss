@@ -6,7 +6,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { userId, password, username, location, email, phone, avatar } =
       req.body;
-    if (userId && password && username && location && email && phone) {
+    if (userId && password && username) {
       const alreadyExists = await client.user.findFirst({
         where: {
           userId,

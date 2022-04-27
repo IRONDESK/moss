@@ -6,8 +6,16 @@ import useMutation from 'src/libs/client/useMutation';
 import { FileUpload } from 'src/components/Join/FileUpload';
 import { COLOR } from 'src/constants';
 import { useRouter } from 'next/router';
-import { Error } from 'src/styles/componentsStyles';
-import { joinForm } from './profile/[id]';
+import {
+  Btn,
+  Container,
+  Error,
+  H1,
+  InputWrap,
+} from 'src/styles/componentsStyles';
+
+import JoinInput from 'src/components/Join/components/JoinInput';
+import { joinForm } from 'src/types/join';
 
 export default function Join() {
   //Submit
@@ -16,11 +24,12 @@ export default function Join() {
     handleSubmit,
     formState: { errors },
   } = useForm<joinForm>({
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
   const onValid = (data: joinForm) => {
     join(data);
+    console.log(data);
   };
 
   //API
@@ -43,134 +52,101 @@ export default function Join() {
     <>
       <Title title="회원가입" />
       <Container>
-        <h1>
+        <H1>
           <span>회원가입</span>
-        </h1>
+        </H1>
         {loading ? (
-          <Loading>로딩중...</Loading>
+          <span>로딩중...</span>
         ) : (
-          <form onSubmit={handleSubmit(onValid)}>
-            {data?.error ? <Error>data?.error</Error> : null}
-            <FileUpload getIsImage={getIsImage} register={register('avatar')} />
-            <input
-              {...register('userId', { required: '아이디가 필요합니다!' })}
-              name="userId"
-              type="text"
-              placeholder="아이디"
-            />
-            <span>{errors.userId?.message}</span>
-            <input
-              {...register('password', { required: '비밀번호가 필요합니다!' })}
-              name="password"
-              type="password"
-              placeholder="비밀번호"
-            />
-            <span>{errors.password?.message}</span>
-            <input
-              {...register('password2', { required: '비밀번호가 필요합니다!' })}
-              name="password2"
-              type="password"
-              placeholder="비밀번호 재확인"
-            />
-            <span>{errors.password2?.message}</span>
-            <input
-              {...register('email', { required: '이메일이 필요합니다!' })}
-              name="email"
-              type="email"
-              placeholder="이메일"
-            />
-            <span>{errors.email?.message}</span>
-            <input
-              {...register('phone', { required: '전화번호가 필요합니다!' })}
-              name="phone"
-              type="number"
-              placeholder="전화번호"
-            />
-            <span>{errors.phone?.message}</span>
-            <input
-              {...register('username', { required: '이름이 필요합니다!' })}
-              name="username"
-              type="text"
-              placeholder="이름"
-            />
-            <span>{errors.username?.message}</span>
-            <input
-              {...register('location', { required: '거주지 필요합니다!' })}
-              name="location"
-              type="text"
-              placeholder="거주지"
-            />
-            <span>{errors.location?.message}</span>
+          <>
+            <form onSubmit={handleSubmit(onValid)}>
+              <InputWrap>
+                <JoinInput
+                  register={register('username', {
+                    required: '이름이 필요합니다.',
+                  })}
+                  required={false}
+                  name="username"
+                  type="text"
+                  placeholer="이름을 입력해주세요."
+                ></JoinInput>
 
-            <button type="submit">{loading ? '로딩중...' : '회원가입'}</button>
-          </form>
+                {errors.username && <Error>{errors.username.message}</Error>}
+
+                <JoinInput
+                  register={register('userId', {
+                    required: '아이디가 필요합니다.',
+                  })}
+                  required={false}
+                  name="userId"
+                  type="text"
+                  placeholer="아이디를 입력해주세요."
+                ></JoinInput>
+
+                {errors.userId && <Error>{errors.userId.message}</Error>}
+
+                <JoinInput
+                  register={register('password', {
+                    required: '비밀번호가 필요합니다.',
+                  })}
+                  required={false}
+                  name="password"
+                  type="password"
+                  placeholer="비밀번호를 입력해주세요."
+                ></JoinInput>
+
+                {errors.password && <Error>{errors.password.message}</Error>}
+
+                <JoinInput
+                  register={register('confirmPassword', {
+                    required: '재확인 비밀번호가 필요합니다.',
+                  })}
+                  required={false}
+                  name="confirmPassword"
+                  type="password"
+                  placeholer="비밀번호를 다시한번 입력해주세요."
+                ></JoinInput>
+
+                {errors.confirmPassword && (
+                  <Error>{errors.confirmPassword.message}</Error>
+                )}
+
+                <JoinInput
+                  register={register('email')}
+                  required={false}
+                  name="email"
+                  type="text"
+                  placeholer="이메일을 입력해주세요."
+                ></JoinInput>
+
+                {errors.email && <Error>{errors.email.message}</Error>}
+
+                <JoinInput
+                  register={register('phone')}
+                  required={false}
+                  name="phone"
+                  type="text"
+                  placeholer="휴대폰 번호를 입력해주세요."
+                ></JoinInput>
+
+                {errors.phone && <Error>{errors.phone.message}</Error>}
+
+                <JoinInput
+                  register={register('location')}
+                  required={false}
+                  name="location"
+                  type="text"
+                  placeholer="위치를 입력해주세요."
+                ></JoinInput>
+
+                {errors.location && <Error>{errors.location.message}</Error>}
+
+                <Btn>{loading ? '로딩중...' : '회원가입'}</Btn>
+              </InputWrap>
+            </form>
+          </>
         )}
       </Container>
     </>
   );
 }
-const Loading = styled.div`
-  font-size: 40px;
-  color: ${COLOR.main};
-  text-align: center;
-  margin-top: 100px;
-`;
-const Container = styled.section`
-  padding: 100px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  h1 {
-    display: flex;
-    justify-content: center;
-    width: 60px;
-    font-size: 30px;
-    margin: 10px auto;
-    border-bottom: 4px solid ${COLOR.main};
-    position: relative;
-    span {
-      width: 200px;
-      position: absolute;
-      bottom: 16px;
-      text-align: center;
-    }
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    input,
-    button,
-    span {
-      margin: 0 auto;
-      width: 30%;
-    }
-    input,
-    button {
-      margin: 0 auto;
-      width: 30%;
-      padding: 10px 20px;
-      height: 48px;
-      width: 340px;
-      color: ${COLOR.grayText};
-    }
-    input {
-      &::placeholder {
-        color: ${COLOR.grayText};
-      }
-      border: 1px solid ${COLOR.gray};
-      font-size: 14px;
-    }
-    button {
-      border: none;
-      font-size: 16px;
-      background-color: ${COLOR.gray};
-    }
-    span {
-      text-align: left;
-      font-size: 12px;
-      color: ${COLOR.error};
-    }
-  }
-`;
