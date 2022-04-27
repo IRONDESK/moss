@@ -14,26 +14,28 @@ interface DataProps {
 
 export const StudyList = () => {
   const [data, setData] = useState<any>();
-  const res = getInfo("many");
+  const res = getInfo('many');
   useEffect(() => {
-      setData(res);
-      console.log(data);
+    setData(res);
+    console.log(data);
   }, [res]);
 
   return (
     <>
       <List>
-        { data?.map( (value: DataProps) => { return (
-        <StudyCard
-          category={value.category}
-          title={value.studyName}
-          hashtag={value.tag}
-          members={2}
-          membersLimit={value.membersLimit}
-          link={`/study/` + value.studyId}
-          leader={true}
-        />
-        )}) }
+        {data?.map((value: DataProps) => {
+          return (
+            <StudyCard
+              category={value.category}
+              title={value.studyName}
+              hashtag={value.tag}
+              members={2}
+              membersLimit={value.membersLimit}
+              link={`/study/` + value.studyId}
+              leader={true}
+            />
+          );
+        })}
       </List>
     </>
   );

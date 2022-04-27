@@ -19,7 +19,7 @@ interface NoticeData {
 export default function NoticePage() {
   const router = useRouter();
   const { id } = router.query;
-
+  const [del] = useMutation('/api/notice/delete');
   const [notice, setNotice] = useState<NoticeData[]>([
     {
       id: 0,
@@ -33,6 +33,13 @@ export default function NoticePage() {
   useEffect(() => {
     setNotice(data);
   }, [data]);
+
+  const deleteAlert = () => {
+    const Id = parseInt(id);
+    del(Id);
+    alert('해당 게시글이 삭제되었습니다.');
+    window.location.href = '/study/notice';
+  };
 
   return (
     <>
@@ -62,8 +69,14 @@ export default function NoticePage() {
               <Button text="목록" className="list" />
             </a>
           </Link>
-          <Button text="수정" className="modify" />
-          <Button text="삭제" className="delete" />
+          <Link href={`/study/notice/edit/${notice?.noticeData?.id}`} passHref>
+            <a>
+              <Button text="수정" className="modify" />
+            </a>
+          </Link>
+          <button text="삭제" className="delete" onClick={deleteAlert}>
+            삭제
+          </button>
         </div>
       </ViewSection>
     </>
@@ -103,5 +116,25 @@ const ViewSection = styled.section`
     justify-content: flex-end;
     margin-top: 40px;
     gap: 8px;
+    .delete {
+      max-width: 120px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      text-align: center;
+      padding: 0 20px 0 40px;
+      background: url(../../images/notice_delete.svg) no-repeat 12px 50% / 20px;
+      color: #ff6347;
+      border: 1px solid rgba(255, 99, 71, 0.2);
+      transition: all 0.3s;
+      &:hover {
+        background: #ff6347 url(../../images/notice_delete_white.svg) no-repeat
+          12px 50% / 20px;
+        color: #fff;
+        border-color: #ff6347;
+      }
+    }
   }
 `;
