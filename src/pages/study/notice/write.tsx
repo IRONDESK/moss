@@ -17,7 +17,6 @@ const PostEditor = dynamic(
 
 export default function NoticePage(): JSX.Element {
   const [notice, { loading, data, error }] = useMutation('/api/notice');
-
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
@@ -40,13 +39,11 @@ export default function NoticePage(): JSX.Element {
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     setNoticeList(
       (noticeList = [{ category: category, title: title, content: content }]),
     );
     console.log(noticeList);
     const data = noticeList;
-    console.log(data);
     notice(data);
     reset();
   };
@@ -56,6 +53,7 @@ export default function NoticePage(): JSX.Element {
     setCategory('');
     setTitle('');
     setContent('');
+    history.go('/study/notice');
   };
 
   return (
@@ -70,7 +68,7 @@ export default function NoticePage(): JSX.Element {
         link="#"
       />
       <NoticeTitle />
-      <NoticeForm onSubmit={onSubmit}>
+      <NoticeForm onSubmit={onSubmit} action="/study/notice">
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input

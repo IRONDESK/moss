@@ -10,6 +10,7 @@ export const Notice = () => {
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     { category: '', title: '', content: '' },
   ]);
+
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);

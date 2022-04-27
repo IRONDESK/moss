@@ -6,9 +6,11 @@ import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
 import { Button } from '../../../components/Notice/Button';
 import { useRouter } from 'next/router';
 import view from '../../api/notice/view';
-import useSWR from 'swr';
+import Link from 'next/link';
+import useMutation from 'src/libs/client/useMutation';
 
 interface NoticeData {
+  id: number;
   category: string;
   title: string;
   content: string;
@@ -20,18 +22,17 @@ export default function NoticePage() {
 
   const [notice, setNotice] = useState<NoticeData[]>([
     {
+      id: 0,
       category: '',
       title: '',
       content: '',
     },
   ]);
 
-  const res = view(id);
+  const data = view(id);
   useEffect(() => {
-    setNotice(res);
-  }, [res]);
-
-  console.log(notice);
+    setNotice(data);
+  }, [data]);
 
   return (
     <>
@@ -56,9 +57,13 @@ export default function NoticePage() {
           <p>{notice?.noticeData?.content}</p>
         </div>
         <div className="btn-group">
-          <Button href="/study/notice" text="목록" className="list" />
-          <Button href="#" text="수정" className="modify" />
-          <Button href="#" text="삭제" className="delete" />
+          <Link href="/study/notice" passHref>
+            <a>
+              <Button text="목록" className="list" />
+            </a>
+          </Link>
+          <Button text="수정" className="modify" />
+          <Button text="삭제" className="delete" />
         </div>
       </ViewSection>
     </>
@@ -100,6 +105,3 @@ const ViewSection = styled.section`
     gap: 8px;
   }
 `;
-function noticeId(noticeId: any) {
-  throw new Error('Function not implemented.');
-}

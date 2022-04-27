@@ -17,11 +17,13 @@ export default function NoticePage(): JSX.Element {
       content: '',
     },
   ]);
+
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);
     console.log(noticeList);
   }, [res]);
+
   return (
     <>
       <StudyBanner
@@ -97,7 +99,9 @@ export default function NoticePage(): JSX.Element {
       </Page>
       <BtnGroup>
         <Link href="/study/notice/write" passHref>
-          <Button type="#" text="글작성" className="write" />
+          <a>
+            <Button type="#" text="글작성" className="write" />
+          </a>
         </Link>
       </BtnGroup>
     </>
