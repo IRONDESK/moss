@@ -21,9 +21,7 @@ export default function NoticePage(): JSX.Element {
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);
-    console.log(noticeList);
   }, [res]);
-
   return (
     <>
       <StudyBanner
@@ -67,19 +65,22 @@ export default function NoticePage(): JSX.Element {
           </tr>
         </thead>
         <>
-          {noticeList?.noticeData?.map((notice: any, id: number) => {
-            return (
-              <tbody key={notice.id}>
-                <NoticeList
-                  num={notice.id}
-                  category={notice.category}
-                  title={notice.title}
-                  writer="#"
-                  date={notice.createdAt}
-                />
-              </tbody>
-            );
-          })}
+          {noticeList?.noticeData
+            ?.slice(0)
+            .reverse()
+            .map((notice: any, id: number) => {
+              return (
+                <tbody key={notice.id}>
+                  <NoticeList
+                    num={notice.id}
+                    category={notice.category}
+                    title={notice.title}
+                    writer="#"
+                    date={notice.createdAt}
+                  />
+                </tbody>
+              );
+            })}
         </>
       </Table>
       <Page>
