@@ -13,25 +13,19 @@ import {
   InputWrap,
   Message,
 } from 'src/styles/componentsStyles';
+import { IEditResponse } from 'src/types/editProfile';
 import { joinForm } from 'src/types/join';
 
-//ts
-interface IEditResponse {
-  ok: boolean;
-  errorMessage?: string;
-  message?: string;
-}
-
-function Profile() {
+export default function Profile() {
+  //GET
   const { loggedInUser } = useUser();
-
   const existingId = loggedInUser?.userId;
   const existingEmail = loggedInUser?.email;
   const existingPhone = loggedInUser?.phone;
 
+  //POST
   const [editProfile, { data, loading }] =
     useMutation<IEditResponse>(`/api/users/me`);
-  console.log(data);
 
   const {
     register,
@@ -49,6 +43,8 @@ function Profile() {
       return setError('email', {
         message: '이메일 또는 휴대폰 번호가 필요합니다.',
       });
+    } else if (phone) {
+      phone = phone.replace(/-/g, '');
     } else {
       editProfile({
         email,
@@ -71,10 +67,10 @@ function Profile() {
       <H1>
         <span>프로필 관리</span>
       </H1>
-      {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
-      {data?.message && <Message>{data?.message}</Message>}
       <form onSubmit={handleSubmit(onValid)}>
         <InputWrap>
+          {data?.message && <Message>{data?.message}</Message>}
+          {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
           <JoinInput
             register={register('username')}
             required={false}
@@ -118,5 +114,3 @@ function Profile() {
     </Container>
   );
 }
-
-export default Profile;

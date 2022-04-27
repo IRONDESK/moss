@@ -8,3 +8,8 @@ export interface joinForm {
   location?: string;
   avatar?: string;
 }
+export interface IJoinResponse {
+  ok: boolean;
+  errorMessage?: string;
+  message?: string;
+}

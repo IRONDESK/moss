@@ -3,42 +3,56 @@ import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { userId, password, username, location, email, phone, avatar } =
-      req.body;
-    if (userId && password && username) {
-      const alreadyExists = await client.user.findFirst({
+  const {
+    username,
+    userId,
+    password,
+    confirmPassword,
+    email,
+    phone,
+    location,
+    avatar,
+  } = req.body;
+
+  if (username && userId && password && confirmPassword) {
+    //데이터 중복체크
+    const alreadyExists = Boolean(
+      await client.user.findUnique({
         where: {
           userId,
-          password,
-          username,
-          location,
-          email,
-          phone,
         },
+      }),
+    );
+    if (alreadyExists)
+      return res.json({ ok: false, errorMessage: '이미 가입한 유저입니다.' });
+
+    //비밀번호 일치체크
+    if (password !== confirmPassword)
+      return res.json({
+        ok: false,
+        errorMessage: '비밀번호가 일치하지 않습니다.',
       });
-      //
-      if (alreadyExists)
-        return res.json({ ok: false, error: '이미 가입한 유저입니다!' });
-      //
-      await client.user.create({
-        data: {
-          email,
-          phone,
-          userId,
-          password,
-          username,
-          location,
-        },
-      });
-      //
-      return res.json({ ok: true });
-    }
+
+    // 유저생성
+    await client.user.create({
+      data: {
+        username,
+        userId,
+        password,
+        email,
+        phone,
+        location,
+        avatar,
+      },
+    });
+
+    //
+    return res.json({ ok: true, message: '회원가입을 축하합니다!' });
   }
 }
 
 export default withHandler({
-  methods: ['GET', 'POST'],
+  methods: ['POST'],
   handler,
   isPrivate: false,
 });

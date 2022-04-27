@@ -12,12 +12,17 @@ import {
   Error,
   H1,
   InputWrap,
+  Message,
 } from 'src/styles/componentsStyles';
 
 import JoinInput from 'src/components/Join/components/JoinInput';
-import { joinForm } from 'src/types/join';
+import { IJoinResponse, joinForm } from 'src/types/join';
 
 export default function Join() {
+  //POST
+  const [join, { loading, data }] =
+    useMutation<IJoinResponse>('/api/users/join');
+
   //Submit
   const {
     register,
@@ -27,19 +32,37 @@ export default function Join() {
     mode: 'onSubmit',
   });
 
-  const onValid = (data: joinForm) => {
-    join(data);
-    console.log(data);
+  const onValid = ({
+    username,
+    userId,
+    password,
+    confirmPassword,
+    email,
+    phone,
+    location,
+  }: joinForm) => {
+    if (loading) return;
+    if (phone) {
+      phone = phone.replace(/-/g, '');
+    }
+    console.log(typeof phone);
+    //
+    join({
+      username,
+      userId,
+      password,
+      confirmPassword,
+      email,
+      phone,
+      location,
+    });
   };
-
-  //API
-  const [join, { loading, data }] = useMutation('/api/users/join');
 
   //페이지 이동
   const router = useRouter();
   useEffect(() => {
     if (data?.ok) {
-      router.push('/login');
+      router.push('/join');
     }
   }, [data, router]);
 
@@ -48,6 +71,8 @@ export default function Join() {
   const getIsImage = (img: boolean) => {
     setIsImage(img);
   };
+
+  //
   return (
     <>
       <Title title="회원가입" />
@@ -61,6 +86,8 @@ export default function Join() {
           <>
             <form onSubmit={handleSubmit(onValid)}>
               <InputWrap>
+                {data?.message && <Message>{data?.message}</Message>}
+                {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
                 <JoinInput
                   register={register('username', {
                     required: '이름이 필요합니다.',
@@ -112,7 +139,12 @@ export default function Join() {
                 )}
 
                 <JoinInput
-                  register={register('email')}
+                  register={register('email', {
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: '이메일 형식이 올바르지 않습니다.',
+                    },
+                  })}
                   required={false}
                   name="email"
                   type="text"
@@ -122,7 +154,12 @@ export default function Join() {
                 {errors.email && <Error>{errors.email.message}</Error>}
 
                 <JoinInput
-                  register={register('phone')}
+                  register={register('phone', {
+                    pattern: {
+                      value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                      message: '휴대폰 입력이 올바르지 않습니다.',
+                    },
+                  })}
                   required={false}
                   name="phone"
                   type="text"
