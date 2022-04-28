@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
 import useSWR from 'swr';
+import { BrandsInformationPage } from 'twilio/lib/rest/preview/trusted_comms/brandsInformation';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
@@ -18,9 +19,11 @@ interface Todo {
 
 export const TodoList = () => {
 
-  const { data } = useSWR<Data>('/api/todo');
+  const { data, mutate } = useSWR<any>('/api/todo');
 
-  // console.log(data?.todo);
+  // console.log(data);
+  
+  const [tit, setTit] = useState("")
 
   const [item] = useMutation('/api/todo');
 
@@ -49,30 +52,36 @@ export const TodoList = () => {
     onValid({ title: todo, completed: false });
     setTodo('');
     setIsTodo(false);
+    mutate({...data, title: todo}, false);
+    // history.go('/my-page');
   };
 
   
   useEffect(() => {
-    // window.location.reload()
-    // router.push('/study');
-  }, [todo]);
+    if(data) {
+      setTit(data?.title)
+    }
+  }, [data]);
 
   return (
     <Container>
       <Title>오늘의 할일</Title>
       <SubTitle>Todo List</SubTitle>
       <ItemList todoList={todoList}>
+        <span>{data?.title}</span>
         <ul>
           {data?.todo?.map((todoItem: TodoData, index: number) => {
             return (
               <TodoItem
                 key={index}
+                tit={tit}
                 todoItem={todoItem}
                 todoList={data?.todo}
                 setTodoList={setTodoList}
               />
             );
           })}
+          {data?.title && <TodoItem tit={tit} todoItem={data.todo[0]} todoList={data.todo} setTodoList={setTodoList}/>}
         </ul>
       </ItemList>
       <Form onSubmit={onSubmit}>
