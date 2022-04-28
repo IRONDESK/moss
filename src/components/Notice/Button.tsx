@@ -1,11 +1,7 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
-export const Button = (props: {
-  text: string;
-  className: string;
-  type: string;
-}) => {
+export const Button = (props: { text: string; className: string }) => {
   return <Btn className={props.className}>{props.text}</Btn>;
 };
 

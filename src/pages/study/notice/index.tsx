@@ -17,10 +17,10 @@ export default function NoticePage(): JSX.Element {
       content: '',
     },
   ]);
+
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);
-    console.log(noticeList);
   }, [res]);
   return (
     <>
@@ -65,19 +65,22 @@ export default function NoticePage(): JSX.Element {
           </tr>
         </thead>
         <>
-          {noticeList?.noticeData?.map((notice: any, id: number) => {
-            return (
-              <tbody key={notice.id}>
-                <NoticeList
-                  num={notice.id}
-                  category={notice.category}
-                  title={notice.title}
-                  writer="#"
-                  date={notice.createdAt}
-                />
-              </tbody>
-            );
-          })}
+          {noticeList?.noticeData
+            ?.slice(0)
+            .reverse()
+            .map((notice: any, id: number) => {
+              return (
+                <tbody key={notice.id}>
+                  <NoticeList
+                    num={notice.id}
+                    category={notice.category}
+                    title={notice.title}
+                    writer="#"
+                    date={notice.createdAt}
+                  />
+                </tbody>
+              );
+            })}
         </>
       </Table>
       <Page>
@@ -97,7 +100,9 @@ export default function NoticePage(): JSX.Element {
       </Page>
       <BtnGroup>
         <Link href="/study/notice/write" passHref>
-          <Button type="#" text="글작성" className="write" />
+          <a>
+            <Button type="#" text="글작성" className="write" />
+          </a>
         </Link>
       </BtnGroup>
     </>
