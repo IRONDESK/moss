@@ -32,6 +32,10 @@ function Edit() {
   } = useForm<IEditForm>({ mode: 'onBlur' });
 
   const onValid = ({ userId, password, confirmPassword }: IEditForm) => {
+    if(loading)return
+    if (password !== confirmPassword) {
+      setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
+      //
     edit({ userId, password, confirmPassword });
   };
 
@@ -51,13 +55,34 @@ function Edit() {
         <form onSubmit={handleSubmit(onValid)}>
           <InputWrap>
             <input
-              {...register('userId')}
+              {...register('userId', {
+                pattern: {
+                  value: /^[a-z]+[a-z0-9]{5,19}$/g,
+                  message:
+                    '아이디는 영문자 또는 6~20자리 숫자를 포함해야합니다.',
+                },
+              })}
               name="userId"
               type="text"
               placeholder="새로운 아이디를 입력하세요."
             />
             <input
-              {...register('password')}
+              {...register('password', {
+                minLength: {
+                  value: 8,
+                  message: '비밀번호는 최소 8자리여야 합니다.',
+                },
+                maxLength: {
+                  value: 16,
+                  message: '비밀번호는 최대 16자리여야 합니다.',
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/,
+                  message:
+                    '비밀번호는 최소 1개이상의 숫자, 문자, 정의된 특수문자를 포함해야 합니다.',
+                },
+              })}
               name="password"
               type="password"
               placeholder="새로운 비밀번호를 입력하세요."

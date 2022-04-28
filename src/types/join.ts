@@ -7,6 +7,7 @@ export interface joinForm {
   phone?: string;
   location?: string;
   avatar?: string;
+  passwordMatch?: string;
 }
 export interface IJoinResponse {
   ok: boolean;
