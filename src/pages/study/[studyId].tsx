@@ -37,6 +37,7 @@ export default function StudyPage() {
     return (
     <>
         <StudyBanner
+        studyId={Number(studyId)}
         category="카테고리"
         title={data?.studyName}
         des={data?.introduce}
@@ -44,6 +45,7 @@ export default function StudyPage() {
         members={1}
         memberlimit={data?.membersLimit}
         link={data?.chatLink}
+        joinMsg={data?.joinMsg}
         />
         <StudyComponents />
     </>

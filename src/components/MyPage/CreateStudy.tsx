@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
-import { useSpring, animated } from 'react-spring';
 import { useEffect, useState } from 'react';
 import { FileUpload } from '../Join/FileUpload';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -34,9 +33,9 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const [study, {loading, data, error}] = useMutation('/api/study/create');
 
   const { isLoggedIn, loggedInUser } = useUser();
-  const [username, setUsername] = useState<any>("")
+  const [userid, setUserid] = useState<any>("")
   useEffect(() => {
-    setUsername(loggedInUser?.username);
+    setUserid(loggedInUser?.userId);
   }, [isLoggedIn, loggedInUser])
 
   useEffect(() => {
@@ -129,9 +128,9 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
               placeholder="오픈 채팅 URL을 넣어주세요"
             />
             <Input
-            {...register('joinMember')}
+            {...register('joinMember.0')}
               name="joinMember"
-              value={username}
+              value={userid}
               style={{display: "none"}}
             />
             <Label htmlFor="study-joinmsg">

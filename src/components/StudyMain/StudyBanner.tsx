@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { COLOR } from '../../constants';
-import { JoinStudyModal } from '../JoinStudy/JoinStudyModal';
+import { ApplyStudyModal } from './ApplyStudyModal';
 
 interface bannerType {
   logo?: string|undefined;
+  studyId?: number|undefined;
   category: string|undefined;
   title: string|undefined;
   des: string|undefined;
@@ -12,11 +13,12 @@ interface bannerType {
   members?: number|undefined;
   memberlimit: number|undefined;
   link: string|undefined;
+  joinMsg: string|undefined;
 }
 
 export const StudyBanner = ({
   logo = "/images/StudyLogo.png",
-  category, title, des, hashtag, members, memberlimit, link,
+  studyId, category, title, des, hashtag, members, memberlimit, link, joinMsg,
 }: bannerType) => {
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
@@ -44,7 +46,12 @@ export const StudyBanner = ({
           </Join>
         </StudyDescription>
       </StudyIntro>
-      <JoinStudyModal modal={modal} setModal={setModal} />
+      <ApplyStudyModal
+        modal={modal}
+        setModal={setModal}
+        studyid={studyId}
+        joinMsg={joinMsg}
+      />
     </Banner>
   );
 };
