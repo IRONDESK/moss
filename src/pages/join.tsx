@@ -1,5 +1,5 @@
 import { Title } from '../components/layouts';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
@@ -25,6 +25,7 @@ export default function Join() {
     handleSubmit,
     setError,
     formState: { errors },
+    watch,
   } = useForm<joinForm>({
     mode: 'onSubmit',
   });
@@ -37,7 +38,10 @@ export default function Join() {
     email,
     phone,
     location,
+    avatar,
   }: joinForm) => {
+    return;
+    //
     if (loading) return;
     if (phone) {
       phone = phone.replace(/-/g, '');
@@ -67,7 +71,16 @@ export default function Join() {
   }, [data, router]);
 
   //프로필 사진 업로드
+  const [avatarPreview, setAvatarPreview] = useState('');
 
+  const avatar = watch('avatar');
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+  console.log(avatarPreview);
   //
   return (
     <>
@@ -81,6 +94,7 @@ export default function Join() {
         ) : (
           <>
             <form onSubmit={handleSubmit(onValid)}>
+              <input {...register('avatar')} type="file" name="avatar" />
               <InputWrap>
                 {data?.message && <Message>{data?.message}</Message>}
                 {data?.errorMessage && <Error>{data?.errorMessage}</Error>}

@@ -6,7 +6,7 @@ export interface joinForm {
   email?: string;
   phone?: string;
   location?: string;
-  avatar?: string;
+  avatar?: FileList;
   passwordMatch?: string;
 }
 export interface IJoinResponse {
