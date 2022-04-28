@@ -24,10 +24,6 @@ export const Error = styled.div`
   padding: 12px;
   text-align: center;
   font-size: 14px;
-  margin-bottom: 10px;
-  &:first-of-type {
-    margin: 10px 0;
-  }
 `;
 
 export const Message = styled(Error)`

@@ -13,35 +13,19 @@ import {
   InputWrap,
   Message,
 } from 'src/styles/componentsStyles';
+import { IEditResponse } from 'src/types/editProfile';
+import { joinForm } from 'src/types/join';
 
-//ts
-interface IEditResponse {
-  ok: boolean;
-  errorMessage?: string;
-  message?: string;
-}
-
-export interface joinForm {
-  username?: string;
-  userId?: string;
-  password?: string;
-  password2?: string;
-  email?: string;
-  phone?: string;
-  location?: string;
-  avatar?: string;
-}
-
-function Profile() {
+export default function Profile() {
+  //GET
   const { loggedInUser } = useUser();
-
   const existingId = loggedInUser?.userId;
   const existingEmail = loggedInUser?.email;
   const existingPhone = loggedInUser?.phone;
 
+  //POST
   const [editProfile, { data, loading }] =
     useMutation<IEditResponse>(`/api/users/me`);
-  console.log(data);
 
   const {
     register,
@@ -59,6 +43,8 @@ function Profile() {
       return setError('email', {
         message: '이메일 또는 휴대폰 번호가 필요합니다.',
       });
+    } else if (phone) {
+      phone = phone.replace(/-/g, '');
     } else {
       editProfile({
         email,
@@ -81,12 +67,27 @@ function Profile() {
       <H1>
         <span>프로필 관리</span>
       </H1>
-      {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
-      {data?.message && <Message>{data?.message}</Message>}
       <form onSubmit={handleSubmit(onValid)}>
         <InputWrap>
+          {data?.message && <Message>{data?.message}</Message>}
+          {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
           <JoinInput
-            register={register('username')}
+            register={register('username', {
+              required: '이름이 필요합니다.',
+              minLength: {
+                value: 2,
+                message: '이름은 최소 2자리 이상이여야 합니다.',
+              },
+              maxLength: {
+                value: 15,
+                message: '이름의 최대길이는 15자리 입니다.',
+              },
+              pattern: {
+                value: /^[a-zA-Zㄱ-힣]{2,15}$/,
+                message:
+                  '이름은 기호를 제외한 한글 또는 영어를 사용할 수 있습니다.',
+              },
+            })}
             required={false}
             name="username"
             type="text"
@@ -94,7 +95,12 @@ function Profile() {
           />
 
           <JoinInput
-            register={register('email')}
+            register={register('email', {
+              pattern: {
+                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                message: '이메일 형식이 올바르지 않습니다.',
+              },
+            })}
             required={false}
             name="email"
             type="email"
@@ -102,7 +108,12 @@ function Profile() {
           />
 
           <JoinInput
-            register={register('phone')}
+            register={register('phone', {
+              pattern: {
+                value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                message: '휴대폰 입력이 올바르지 않습니다.',
+              },
+            })}
             required={false}
             name="phone"
             type="number"
@@ -128,5 +139,3 @@ function Profile() {
     </Container>
   );
 }
-
-export default Profile;

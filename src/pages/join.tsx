@@ -1,176 +1,218 @@
 import { Title } from '../components/layouts';
-import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
-import { FileUpload } from 'src/components/Join/FileUpload';
-import { COLOR } from 'src/constants';
 import { useRouter } from 'next/router';
-import { Error } from 'src/styles/componentsStyles';
-import { joinForm } from './profile/[id]';
+import {
+  Btn,
+  Container,
+  Error,
+  H1,
+  InputWrap,
+  Message,
+} from 'src/styles/componentsStyles';
+import JoinInput from 'src/components/Join/components/JoinInput';
+import { IJoinResponse, joinForm } from 'src/types/join';
 
 export default function Join() {
+  //POST
+  const [join, { loading, data }] =
+    useMutation<IJoinResponse>('/api/users/join');
+
   //Submit
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<joinForm>({
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
 
-  const onValid = (data: joinForm) => {
-    join(data);
+  const onValid = ({
+    username,
+    userId,
+    password,
+    confirmPassword,
+    email,
+    phone,
+    location,
+  }: joinForm) => {
+    if (loading) return;
+    if (phone) {
+      phone = phone.replace(/-/g, '');
+    }
+    if (password !== confirmPassword) {
+      setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
+    } else {
+      //
+      join({
+        username,
+        userId,
+        password,
+        confirmPassword,
+        email,
+        phone,
+        location,
+      });
+    }
   };
-
-  //API
-  const [join, { loading, data }] = useMutation('/api/users/join');
 
   //페이지 이동
   const router = useRouter();
   useEffect(() => {
     if (data?.ok) {
-      router.push('/login');
+      router.push('/join');
     }
   }, [data, router]);
 
-  //프로필사진 파일 업로드
-  const [isImage, setIsImage] = useState(false);
-  const getIsImage = (img: boolean) => {
-    setIsImage(img);
-  };
+  //프로필 사진 업로드
+
+  //
   return (
     <>
       <Title title="회원가입" />
       <Container>
-        <h1>
+        <H1>
           <span>회원가입</span>
-        </h1>
+        </H1>
         {loading ? (
-          <Loading>로딩중...</Loading>
+          <span>로딩중...</span>
         ) : (
-          <form onSubmit={handleSubmit(onValid)}>
-            {data?.error ? <Error>data?.error</Error> : null}
-            <FileUpload getIsImage={getIsImage} register={register('avatar')} />
-            <input
-              {...register('userId', { required: '아이디가 필요합니다!' })}
-              name="userId"
-              type="text"
-              placeholder="아이디"
-            />
-            <span>{errors.userId?.message}</span>
-            <input
-              {...register('password', { required: '비밀번호가 필요합니다!' })}
-              name="password"
-              type="password"
-              placeholder="비밀번호"
-            />
-            <span>{errors.password?.message}</span>
-            <input
-              {...register('password2', { required: '비밀번호가 필요합니다!' })}
-              name="password2"
-              type="password"
-              placeholder="비밀번호 재확인"
-            />
-            <span>{errors.password2?.message}</span>
-            <input
-              {...register('email', { required: '이메일이 필요합니다!' })}
-              name="email"
-              type="email"
-              placeholder="이메일"
-            />
-            <span>{errors.email?.message}</span>
-            <input
-              {...register('phone', { required: '전화번호가 필요합니다!' })}
-              name="phone"
-              type="number"
-              placeholder="전화번호"
-            />
-            <span>{errors.phone?.message}</span>
-            <input
-              {...register('username', { required: '이름이 필요합니다!' })}
-              name="username"
-              type="text"
-              placeholder="이름"
-            />
-            <span>{errors.username?.message}</span>
-            <input
-              {...register('location', { required: '거주지 필요합니다!' })}
-              name="location"
-              type="text"
-              placeholder="거주지"
-            />
-            <span>{errors.location?.message}</span>
+          <>
+            <form onSubmit={handleSubmit(onValid)}>
+              <InputWrap>
+                {data?.message && <Message>{data?.message}</Message>}
+                {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
+                <JoinInput
+                  register={register('username', {
+                    setValueAs: (value) => value.split(' ').join(''),
+                    required: '이름이 필요합니다.',
+                    minLength: {
+                      value: 2,
+                      message: '이름은 최소 2자리 이상이여야 합니다.',
+                    },
+                    maxLength: {
+                      value: 15,
+                      message: '이름의 최대길이는 15자리 입니다.',
+                    },
+                    pattern: {
+                      value: /^[a-zA-Zㄱ-힣 ]{2,15}$/,
+                      message:
+                        '이름은 기호를 제외한 한글 또는 영어를 사용할 수 있습니다.',
+                    },
+                  })}
+                  required={false}
+                  name="username"
+                  type="text"
+                  placeholer="이름을 입력해주세요."
+                />
 
-            <button type="submit">{loading ? '로딩중...' : '회원가입'}</button>
-          </form>
+                {errors.username && <Error>{errors.username.message}</Error>}
+
+                <JoinInput
+                  register={register('userId', {
+                    required: '아이디가 필요합니다.',
+                    pattern: {
+                      value: /^[a-z]+[a-z0-9]{5,19}$/g,
+                      message:
+                        '아이디는 기호를 제외한 영문자 또는 6~20자리 숫자를 포함해야합니다.',
+                    },
+                  })}
+                  required={false}
+                  name="userId"
+                  type="text"
+                  placeholer="아이디를 입력해주세요."
+                />
+
+                {errors.userId && <Error>{errors.userId.message}</Error>}
+
+                <JoinInput
+                  register={register('password', {
+                    required: '비밀번호가 필요합니다.',
+                    minLength: {
+                      value: 8,
+                      message: '비밀번호는 최소 8자리여야 합니다.',
+                    },
+                    maxLength: {
+                      value: 16,
+                      message: '비밀번호는 최대 16자리여야 합니다.',
+                    },
+                    pattern: {
+                      value:
+                        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/,
+                      message:
+                        '비밀번호는 최소 1개이상의 숫자, 문자, 정의된 특수문자를 포함해야 합니다.',
+                    },
+                  })}
+                  required={false}
+                  name="password"
+                  type="password"
+                  placeholer="비밀번호를 입력해주세요."
+                />
+
+                {errors.password && <Error>{errors.password.message}</Error>}
+
+                <JoinInput
+                  register={register('confirmPassword', {
+                    required: '재확인 비밀번호가 필요합니다.',
+                  })}
+                  required={false}
+                  name="confirmPassword"
+                  type="password"
+                  placeholer="비밀번호를 다시한번 입력해주세요."
+                />
+
+                {errors.confirmPassword && (
+                  <Error>{errors.confirmPassword.message}</Error>
+                )}
+
+                <JoinInput
+                  register={register('email', {
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: '이메일 형식이 올바르지 않습니다.',
+                    },
+                  })}
+                  required={false}
+                  name="email"
+                  type="text"
+                  placeholer="이메일을 입력해주세요."
+                />
+
+                {errors.email && <Error>{errors.email.message}</Error>}
+
+                <JoinInput
+                  register={register('phone', {
+                    pattern: {
+                      value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                      message: '휴대폰 입력이 올바르지 않습니다.',
+                    },
+                  })}
+                  required={false}
+                  name="phone"
+                  type="text"
+                  placeholer="휴대폰 번호를 입력해주세요."
+                />
+
+                {errors.phone && <Error>{errors.phone.message}</Error>}
+
+                <JoinInput
+                  register={register('location')}
+                  required={false}
+                  name="location"
+                  type="text"
+                  placeholer="위치를 입력해주세요."
+                />
+
+                {errors.location && <Error>{errors.location.message}</Error>}
+
+                <Btn>{loading ? '로딩중...' : '회원가입'}</Btn>
+              </InputWrap>
+            </form>
+          </>
         )}
       </Container>
     </>
   );
 }
-const Loading = styled.div`
-  font-size: 40px;
-  color: ${COLOR.main};
-  text-align: center;
-  margin-top: 100px;
-`;
-const Container = styled.section`
-  padding: 100px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  h1 {
-    display: flex;
-    justify-content: center;
-    width: 60px;
-    font-size: 30px;
-    margin: 10px auto;
-    border-bottom: 4px solid ${COLOR.main};
-    position: relative;
-    span {
-      width: 200px;
-      position: absolute;
-      bottom: 16px;
-      text-align: center;
-    }
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    input,
-    button,
-    span {
-      margin: 0 auto;
-      width: 30%;
-    }
-    input,
-    button {
-      margin: 0 auto;
-      width: 30%;
-      padding: 10px 20px;
-      height: 48px;
-      width: 340px;
-      color: ${COLOR.grayText};
-    }
-    input {
-      &::placeholder {
-        color: ${COLOR.grayText};
-      }
-      border: 1px solid ${COLOR.gray};
-      font-size: 14px;
-    }
-    button {
-      border: none;
-      font-size: 16px;
-      background-color: ${COLOR.gray};
-    }
-    span {
-      text-align: left;
-      font-size: 12px;
-      color: ${COLOR.error};
-    }
-  }
-`;

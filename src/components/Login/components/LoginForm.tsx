@@ -77,11 +77,11 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
         method === 'phone' ? (
           <InputWrap>
             <Input
-              type="number"
+              type="text"
               register={register('phone', {
-                maxLength: {
-                  value: 9,
-                  message: '휴대폰번호는 9자리를 넘을수 없습니다.',
+                pattern: {
+                  value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                  message: '휴대폰 입력이 올바르지 않습니다.',
                 },
                 required: '휴대폰 번호를 입력하세요!',
               })}
