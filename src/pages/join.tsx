@@ -3,16 +3,20 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
+import JoinInput from 'src/components/Join/components/JoinInput';
+import { IJoinResponse, joinForm } from 'src/types/join';
 import {
+  Avatar,
+  AvatarImg,
+  AvatarInput,
   Btn,
   Container,
   Error,
   H1,
+  ImgLabel,
   InputWrap,
   Message,
 } from 'src/styles/componentsStyles';
-import JoinInput from 'src/components/Join/components/JoinInput';
-import { IJoinResponse, joinForm } from 'src/types/join';
 
 export default function Join() {
   //POST
@@ -71,16 +75,15 @@ export default function Join() {
   }, [data, router]);
 
   //프로필 사진 업로드
-  const [avatarPreview, setAvatarPreview] = useState('');
-
+  const [blob, setBlob] = useState('');
   const avatar = watch('avatar');
   useEffect(() => {
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
-      setAvatarPreview(URL.createObjectURL(file));
+      setBlob(URL.createObjectURL(file));
     }
   }, [avatar]);
-  console.log(avatarPreview);
+
   //
   return (
     <>
@@ -94,7 +97,16 @@ export default function Join() {
         ) : (
           <>
             <form onSubmit={handleSubmit(onValid)}>
-              <input {...register('avatar')} type="file" name="avatar" />
+              <ImgLabel>
+                {avatar ? <Avatar src={blob} /> : <Avatar as="div" />}
+                <AvatarInput
+                  {...register('avatar')}
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                />
+              </ImgLabel>
+
               <InputWrap>
                 {data?.message && <Message>{data?.message}</Message>}
                 {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
