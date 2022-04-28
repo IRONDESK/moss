@@ -12,6 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       tag,
       membersLimit,
       chatLink,
+      joinMember,
       joinMsg,
     } = req.body;
     let study = await client.studyinfo.create({
@@ -23,6 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         tag,
         membersLimit,
         chatLink,
+        joinMember,
         joinMsg,
       },
     });

@@ -6,7 +6,7 @@ import { FileUpload } from '../Join/FileUpload';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
-import { color } from 'd3';
+import useUser from 'src/libs/client/useUser';
 
 interface StudyModal {
   modal: boolean;
@@ -21,6 +21,7 @@ interface studyForm {
   tag?: string;
   membersLimit?: number;
   chatLink: string;
+  joinMember?: string[]|undefined;
   joinMsg?: string;
 }
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
@@ -31,6 +32,12 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const [reqdata, setReqdata] = useState<any>()
   const [resdata, setResdata] = useState<any>();
   const [study, {loading, data, error}] = useMutation('/api/study/create');
+
+  const { isLoggedIn, loggedInUser } = useUser();
+  const [username, setUsername] = useState<any>("")
+  useEffect(() => {
+    setUsername(loggedInUser?.username);
+  }, [isLoggedIn, loggedInUser])
 
   useEffect(() => {
     setResdata(data);
@@ -120,6 +127,12 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
               id="study-chatlink"
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
+            />
+            <Input
+            {...register('joinMember')}
+              name="joinMember"
+              value={username}
+              style={{display: "none"}}
             />
             <Label htmlFor="study-joinmsg">
               가입 인사
