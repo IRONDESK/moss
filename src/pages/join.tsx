@@ -7,7 +7,6 @@ import JoinInput from 'src/components/Join/components/JoinInput';
 import { IJoinResponse, joinForm } from 'src/types/join';
 import {
   Avatar,
-  AvatarImg,
   AvatarInput,
   Btn,
   Container,
@@ -34,7 +33,7 @@ export default function Join() {
     mode: 'onSubmit',
   });
 
-  const onValid = ({
+  const onValid = async ({
     username,
     userId,
     password,
@@ -44,17 +43,45 @@ export default function Join() {
     location,
     avatar,
   }: joinForm) => {
-    return;
-    //
     if (loading) return;
     if (phone) {
       phone = phone.replace(/-/g, '');
     }
     if (password !== confirmPassword) {
       setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
+      //
+    } else if (avatar && avatar.length > 0) {
+      //1. Get UploadURL from CF
+      const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
+
+      console.log(uploadURL);
+
+      //2. Upload file to CF
+      const form = new FormData();
+      form.append('file', avatar[0]);
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: 'POST',
+          body: form,
+        })
+      ).json();
+      //
+      return join({
+        username,
+        userId,
+        password,
+        confirmPassword,
+        email,
+        phone,
+        location,
+        avatarId: id,
+      });
+      //
     } else {
       //
-      join({
+      return join({
         username,
         userId,
         password,
