@@ -4,7 +4,8 @@ import { COLOR } from 'src/constants';
 export const ImgLabel = styled.label`
   display: block;
   position: relative;
-  margin: 32px auto 20px;
+  margin: 0 auto;
+  margin-bottom: 20px;
   width: 120px;
   height: 120px;
   cursor: pointer;
@@ -20,13 +21,17 @@ export const ImgLabel = styled.label`
   }
 `;
 
-export const Avatar = styled.img`
-  background-image: url('/images/profile.svg');
+export const ProfileImg = styled.div`
+  background: url('/images/profile.svg');
   background-size: cover;
+  background-position: center;
+  border: none;
+  border-radius: 50%;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  border: none;
+`;
+export const Avatar = styled(ProfileImg)<{ src: string }>`
+  background-image: url('${(props) => props.src}');
 `;
 
 export const AvatarInput = styled.input`
@@ -38,7 +43,7 @@ export const H1 = styled.h1`
   justify-content: center;
   width: 60px;
   font-size: 25px;
-  margin: 10px auto 66px;
+  margin: 10px auto 32px;
   border-bottom: 4px solid ${COLOR.main};
   position: relative;
   span {

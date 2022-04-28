@@ -1,4 +1,4 @@
-import { Title } from '../components/layouts';
+import { Title } from '../../components/layouts';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
@@ -15,6 +15,7 @@ import {
   ImgLabel,
   InputWrap,
   Message,
+  ProfileImg,
 } from 'src/styles/componentsStyles';
 
 export default function Join() {
@@ -48,13 +49,14 @@ export default function Join() {
       phone = phone.replace(/-/g, '');
     }
     if (password !== confirmPassword) {
-      setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
+      return setError('confirmPassword', {
+        message: '비밀번호가 일치하지 않습니다.',
+      });
       //
-    } else if (avatar && avatar.length > 0) {
-      //1. Get UploadURL from CF
+    }
+    if (avatar && avatar.length > 0) {
+      //1. Get response from CF
       const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
-
-      console.log(uploadURL);
 
       //2. Upload file to CF
       const form = new FormData();
@@ -78,9 +80,7 @@ export default function Join() {
         location,
         avatarId: id,
       });
-      //
     } else {
-      //
       return join({
         username,
         userId,
@@ -93,24 +93,23 @@ export default function Join() {
     }
   };
 
-  //페이지 이동
-  const router = useRouter();
-  useEffect(() => {
-    if (data?.ok) {
-      router.push('/join');
-    }
-  }, [data, router]);
-
   //프로필 사진 업로드
-  const [blob, setBlob] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState('');
   const avatar = watch('avatar');
   useEffect(() => {
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
-      setBlob(URL.createObjectURL(file));
+      setAvatarPreview(URL.createObjectURL(file));
     }
   }, [avatar]);
 
+  //페이지 이동
+  const router = useRouter();
+  useEffect(() => {
+    if (data?.ok) {
+      router.push('/login');
+    }
+  }, [data, router]);
   //
   return (
     <>
@@ -125,7 +124,11 @@ export default function Join() {
           <>
             <form onSubmit={handleSubmit(onValid)}>
               <ImgLabel>
-                {avatar ? <Avatar src={blob} /> : <Avatar as="div" />}
+                {avatarPreview ? (
+                  <Avatar src={avatarPreview} />
+                ) : (
+                  <ProfileImg />
+                )}
                 <AvatarInput
                   {...register('avatar')}
                   type="file"
@@ -140,7 +143,7 @@ export default function Join() {
                 <JoinInput
                   register={register('username', {
                     setValueAs: (value) => value.split(' ').join(''),
-                    // required: '이름이 필요합니다.',
+                    required: '이름이 필요합니다.',
                     minLength: {
                       value: 2,
                       message: '이름은 최소 2자리 이상이여야 합니다.',
@@ -165,7 +168,7 @@ export default function Join() {
 
                 <JoinInput
                   register={register('userId', {
-                    // required: '아이디가 필요합니다.',
+                    required: '아이디가 필요합니다.',
                     pattern: {
                       value: /^[a-z]+[a-z0-9]{5,19}$/g,
                       message:
@@ -182,7 +185,7 @@ export default function Join() {
 
                 <JoinInput
                   register={register('password', {
-                    // required: '비밀번호가 필요합니다.',
+                    required: '비밀번호가 필요합니다.',
                     minLength: {
                       value: 8,
                       message: '비밀번호는 최소 8자리여야 합니다.',
@@ -208,7 +211,7 @@ export default function Join() {
 
                 <JoinInput
                   register={register('confirmPassword', {
-                    // required: '재확인 비밀번호가 필요합니다.',
+                    required: '재확인 비밀번호가 필요합니다.',
                   })}
                   required={false}
                   name="confirmPassword"
