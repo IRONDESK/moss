@@ -27,7 +27,7 @@ export default function StudyPage() {
         chatLink: '',
         joinMsg: '',
     }
-    const [data, setData] = useState<studyForm>(loading);
+    const [data, setData] = useState<studyForm>();
 
     const res = getInfo(studyId);
     useEffect(() => {
@@ -47,7 +47,9 @@ export default function StudyPage() {
         link={data?.chatLink}
         joinMsg={data?.joinMsg}
         />
-        <StudyComponents />
+        <StudyComponents
+        studyinfo={data}
+        />
     </>
     );
 }

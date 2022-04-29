@@ -22,7 +22,6 @@ export const ApplyStudyModal = ({ modal, setModal, joinMsg, studyid }: IModal) =
   const [userid, setUserid] = useState<any>("");
   useEffect(() => {
       setUserid(loggedInUser?.userId);
-      console.log(loggedInUser);
   }, [isLoggedIn, loggedInUser])
 
   const applyStudy = () => {

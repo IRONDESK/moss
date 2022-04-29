@@ -6,7 +6,7 @@ import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
 
-export const StudyComponents = () => {
+export const StudyComponents = ( { studyinfo }:any ) => {
   const [token, setToken] = useState(true);
   useEffect(() => {
     const Token = localStorage.getItem('Token');
@@ -25,7 +25,10 @@ export const StudyComponents = () => {
           <Record />
           <TodoList />
           <Notice />
-          <Member />
+          <Member
+          memberslimit={studyinfo?.membersLimit}
+          memberlist={studyinfo?.joinMember}
+          />
         </Container>
       ) : (
         <>
