@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
@@ -5,6 +6,7 @@ import useUser from 'src/libs/client/useUser';
 import {
   Btn,
   Container,
+  EditBtn,
   Error,
   H1,
   InputWrap,
@@ -18,7 +20,7 @@ interface IEditForm {
   passwordError?: string;
 }
 
-function Edit() {
+export default function User() {
   const { loggedInUser } = useUser();
 
   const [edit, { data, loading }] = useMutation(`/api/users/me/edit`);
@@ -32,17 +34,17 @@ function Edit() {
   } = useForm<IEditForm>({ mode: 'onBlur' });
 
   const onValid = ({ userId, password, confirmPassword }: IEditForm) => {
-    if(loading)return
+    if (loading) return;
     if (password !== confirmPassword) {
       setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
       //
-    edit({ userId, password, confirmPassword });
+      edit({ userId, password, confirmPassword });
+    }
   };
-
+  //초기세팅
   useEffect(() => {
-    loggedInUser?.userId && setValue('userId', loggedInUser.userId);
+    if (loggedInUser?.userId) setValue('userId', loggedInUser.userId);
   }, [loggedInUser, setValue]);
-
   //
   return (
     <>
@@ -98,9 +100,12 @@ function Edit() {
             </Btn>
           </InputWrap>
         </form>
+        <EditBtn>
+          <Link href={`/profile/${loggedInUser?.id}/edit/userInfo`}>
+            <a>&larr; 프로필 관리페이지 돌아가기</a>
+          </Link>
+        </EditBtn>
       </Container>
     </>
   );
 }
-
-export default Edit;

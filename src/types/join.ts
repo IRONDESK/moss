@@ -8,6 +8,7 @@ export interface joinForm {
   location?: string;
   avatar?: FileList;
   passwordMatch?: string;
+  blank?: string;
 }
 export interface IJoinResponse {
   ok: boolean;

@@ -1,17 +1,21 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import JoinInput from 'src/components/Join/components/JoinInput';
 import useMutation from 'src/libs/client/useMutation';
 import useUser from 'src/libs/client/useUser';
 import {
+  Avatar,
+  AvatarInput,
   Btn,
   Container,
   EditBtn,
   Error,
   H1,
+  ImgLabel,
   InputWrap,
   Message,
+  ProfileImg,
 } from 'src/styles/componentsStyles';
 import { IEditResponse } from 'src/types/editProfile';
 import { joinForm } from 'src/types/join';
@@ -19,12 +23,9 @@ import { joinForm } from 'src/types/join';
 export default function Profile() {
   //GET
   const { loggedInUser } = useUser();
-  const existingId = loggedInUser?.userId;
-  const existingEmail = loggedInUser?.email;
-  const existingPhone = loggedInUser?.phone;
 
   //POST
-  const [editProfile, { data, loading }] =
+  const [editUserInfo, { data, loading }] =
     useMutation<IEditResponse>(`/api/users/me`);
 
   const {
@@ -33,20 +34,59 @@ export default function Profile() {
     setValue,
     setError,
     formState: { errors },
+    watch,
   } = useForm<joinForm>({
     mode: 'onBlur',
   });
 
-  const onValid = ({ email, phone, username, location }: joinForm) => {
+  const onValid = async ({
+    email,
+    phone,
+    username,
+    location,
+    avatar,
+  }: joinForm) => {
     if (loading) return;
-    if (!email && !phone && !existingId && !existingEmail && !existingPhone) {
-      return setError('email', {
+    //휴대폰 '-' 제거
+    if (phone) {
+      phone = phone.replace(/-/g, '');
+    }
+    //유저 확인가능한 정보가 없을시 -> error
+    if (
+      !email &&
+      !phone &&
+      loggedInUser?.username &&
+      !loggedInUser?.userId &&
+      !loggedInUser?.email &&
+      !loggedInUser?.phone
+    ) {
+      return setError('blank', {
         message: '이메일 또는 휴대폰 번호가 필요합니다.',
       });
-    } else if (phone) {
-      phone = phone.replace(/-/g, '');
+    }
+    //프로필사진 업로드
+    if (avatar && avatar.length > 0 && loggedInUser?.id) {
+      const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
+      const form = new FormData();
+      form.append('file', avatar[0], loggedInUser?.id + '');
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: 'POST',
+          body: form,
+        })
+      ).json();
+      return editUserInfo({
+        email,
+        phone,
+        username,
+        location,
+        avatarId: id,
+      });
     } else {
-      editProfile({
+      //프로필 사진 없이 유저정보 수정할시
+      return editUserInfo({
         email,
         phone,
         username,
@@ -55,25 +95,51 @@ export default function Profile() {
     }
   };
 
+  //프로필 사진 업로드
+  const [avatarPreview, setAvatarPreview] = useState('');
+  const avatar = watch('avatar');
   useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
+  //초기세팅
+  useEffect(() => {
+    if (loggedInUser?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${loggedInUser?.avatar}/avatar`,
+      );
     if (loggedInUser?.username) setValue('username', loggedInUser.username);
     if (loggedInUser?.email) setValue('email', loggedInUser.email);
     if (loggedInUser?.phone) setValue('phone', loggedInUser.phone);
     if (loggedInUser?.location) setValue('location', loggedInUser.location);
   }, [loggedInUser, setValue]);
 
+  //
   return (
     <Container>
       <H1>
         <span>프로필 관리</span>
       </H1>
       <form onSubmit={handleSubmit(onValid)}>
+        <ImgLabel>
+          {avatarPreview ? <Avatar src={avatarPreview} /> : <ProfileImg />}
+          <AvatarInput
+            {...register('avatar')}
+            type="file"
+            name="avatar"
+            accept="image/*"
+          />
+        </ImgLabel>
+
         <InputWrap>
+          {errors.blank && <Error>{errors.blank.message}</Error>}
           {data?.message && <Message>{data?.message}</Message>}
           {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
           <JoinInput
             register={register('username', {
-              required: '이름이 필요합니다.',
               minLength: {
                 value: 2,
                 message: '이름은 최소 2자리 이상이여야 합니다.',
@@ -83,7 +149,7 @@ export default function Profile() {
                 message: '이름의 최대길이는 15자리 입니다.',
               },
               pattern: {
-                value: /^[a-zA-Zㄱ-힣]{2,15}$/,
+                value: /^[a-zA-Zㄱ-힣 ]{2,15}$/,
                 message:
                   '이름은 기호를 제외한 한글 또는 영어를 사용할 수 있습니다.',
               },
@@ -132,7 +198,7 @@ export default function Profile() {
         </InputWrap>
       </form>
       <EditBtn>
-        <Link href={`/profile/${loggedInUser?.id}/edit`}>
+        <Link href={`/profile/${loggedInUser?.id}/edit/userId_pw`}>
           <a>아이디 및 비밀번호 수정 &rarr;</a>
         </Link>
       </EditBtn>

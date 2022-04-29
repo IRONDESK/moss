@@ -52,13 +52,10 @@ export default function Join() {
       return setError('confirmPassword', {
         message: '비밀번호가 일치하지 않습니다.',
       });
-      //
     }
+    //프로필사진 업로드
     if (avatar && avatar.length > 0) {
-      //1. Get response from CF
       const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
-
-      //2. Upload file to CF
       const form = new FormData();
       form.append('file', avatar[0]);
       const {
