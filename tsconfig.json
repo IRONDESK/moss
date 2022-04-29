@@ -24,7 +24,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/login/login.tsx",
+    "src/pages/login/index.tsx",
     "src/components/Join/Join.tsx",
     "src/components/layouts/partials/Header.jsx"
   ],

@@ -29,7 +29,14 @@ async function handler(
   }
 
   if (req.method === 'POST') {
-    const { email, phone, username, location } = req.body;
+    const { email, phone, username, location, avatarId } = req.body;
+
+    //아바타 수정
+    if (avatarId)
+      await client.user.update({
+        where: { id: loggedInUser?.id },
+        data: { avatar: avatarId },
+      });
 
     //이름 수정
     if (username)

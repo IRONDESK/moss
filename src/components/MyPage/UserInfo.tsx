@@ -1,17 +1,20 @@
 import styled from '@emotion/styled';
+import useUser from 'src/libs/client/useUser';
 
-//ts
-interface IUserInfo {
-  image?: string;
-  name?: string;
-}
-
-export const UserInfo = ({ image, name }: IUserInfo) => {
+export const UserInfo = () => {
+  const { loggedInUser } = useUser();
   return (
     <UserInfos>
-      <UserImg src="./images/studyLogo.png" alt="user-image" />
+      {loggedInUser?.avatar ? (
+        <UserImg
+          src={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${loggedInUser?.avatar}/avatar`}
+          alt="user-image"
+        />
+      ) : (
+        <UserImg src="./images/studyLogo.png" alt="user-image" />
+      )}
       <p className="title">할수있다!</p>
-      <p className="user-name">{name}</p>
+      <p className="user-name">{loggedInUser?.username}</p>
     </UserInfos>
   );
 };
