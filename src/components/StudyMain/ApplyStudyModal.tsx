@@ -14,20 +14,14 @@ interface IModal {
 
 export const ApplyStudyModal = ({ modal, setModal, joinMsg, studyid }: IModal) => {
   const { data } = useSWR(`/api/study/create?id=${studyid}`);
-  const [memberList, setMemberList] = useState([data?.joinMember]);
-
   const [studyset] = useMutation('/api/study/apply');
-
   const { isLoggedIn, loggedInUser } = useUser();
-  const [userid, setUserid] = useState<any>("");
-  useEffect(() => {
-      setUserid(loggedInUser?.userId);
-  }, [isLoggedIn, loggedInUser])
 
-  const applyStudy = () => {
-    console.log(userid);
-    setMemberList([...memberList, userid]);
-    studyset({memberList, studyid})
+  const applyStudy = (
+    memberlist: string[],
+    userid: string|null|undefined
+    ) => {
+    studyset({memberList: [...memberlist, userid], studyid})
     setModal((prev: boolean) => !prev);
   };
   
@@ -45,7 +39,13 @@ export const ApplyStudyModal = ({ modal, setModal, joinMsg, studyid }: IModal) =
               {joinMsg}
             </JoinMsg>
               이 스터디에 신청하시겠습니까?
-              <Button onClick={applyStudy}>확인</Button>
+              <Button onClick={() => {
+                applyStudy(
+                  data?.joinMember,
+                  loggedInUser?.userId
+                )
+                window.location.reload();
+              }}>확인</Button>
           </Container>
       ) : null}
     </>
