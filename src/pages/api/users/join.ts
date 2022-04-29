@@ -11,7 +11,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     email,
     phone,
     location,
-    avatar,
+    avatarId,
   } = req.body;
 
   if (username && userId && password && confirmPassword) {
@@ -76,7 +76,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         email: email ? email.toString() : null,
         phone: phone ? phone.toString() : null,
         location,
-        avatar,
+        avatar: avatarId,
       },
     });
 

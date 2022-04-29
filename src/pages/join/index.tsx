@@ -1,18 +1,22 @@
-import { Title } from '../components/layouts';
-import React, { useEffect } from 'react';
+import { Title } from '../../components/layouts';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
+import JoinInput from 'src/components/Join/components/JoinInput';
+import { IJoinResponse, joinForm } from 'src/types/join';
 import {
+  Avatar,
+  AvatarInput,
   Btn,
   Container,
   Error,
   H1,
+  ImgLabel,
   InputWrap,
   Message,
+  ProfileImg,
 } from 'src/styles/componentsStyles';
-import JoinInput from 'src/components/Join/components/JoinInput';
-import { IJoinResponse, joinForm } from 'src/types/join';
 
 export default function Join() {
   //POST
@@ -25,11 +29,12 @@ export default function Join() {
     handleSubmit,
     setError,
     formState: { errors },
+    watch,
   } = useForm<joinForm>({
     mode: 'onSubmit',
   });
 
-  const onValid = ({
+  const onValid = async ({
     username,
     userId,
     password,
@@ -37,16 +42,43 @@ export default function Join() {
     email,
     phone,
     location,
+    avatar,
   }: joinForm) => {
     if (loading) return;
     if (phone) {
       phone = phone.replace(/-/g, '');
     }
     if (password !== confirmPassword) {
-      setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
-    } else {
+      return setError('confirmPassword', {
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+    }
+    //프로필사진 업로드
+    if (avatar && avatar.length > 0) {
+      const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
+      const form = new FormData();
+      form.append('file', avatar[0]);
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: 'POST',
+          body: form,
+        })
+      ).json();
       //
-      join({
+      return join({
+        username,
+        userId,
+        password,
+        confirmPassword,
+        email,
+        phone,
+        location,
+        avatarId: id,
+      });
+    } else {
+      return join({
         username,
         userId,
         password,
@@ -58,16 +90,23 @@ export default function Join() {
     }
   };
 
+  //프로필 사진 업로드
+  const [avatarPreview, setAvatarPreview] = useState('');
+  const avatar = watch('avatar');
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
   //페이지 이동
   const router = useRouter();
   useEffect(() => {
     if (data?.ok) {
-      router.push('/join');
+      router.push('/login');
     }
   }, [data, router]);
-
-  //프로필 사진 업로드
-
   //
   return (
     <>
@@ -81,6 +120,20 @@ export default function Join() {
         ) : (
           <>
             <form onSubmit={handleSubmit(onValid)}>
+              <ImgLabel>
+                {avatarPreview ? (
+                  <Avatar src={avatarPreview} />
+                ) : (
+                  <ProfileImg />
+                )}
+                <AvatarInput
+                  {...register('avatar')}
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                />
+              </ImgLabel>
+
               <InputWrap>
                 {data?.message && <Message>{data?.message}</Message>}
                 {data?.errorMessage && <Error>{data?.errorMessage}</Error>}
