@@ -1,12 +1,49 @@
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
 
+export const ImgLabel = styled.label`
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 25px;
+    background: ${COLOR.main} url('/images/image.svg') no-repeat center;
+  }
+`;
+
+export const ProfileImg = styled.div`
+  background: url('/images/profile.svg');
+  background-size: cover;
+  background-position: center;
+  border: none;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+`;
+export const Avatar = styled(ProfileImg)<{ src: string }>`
+  background-image: url('${(props) => props.src}');
+`;
+
+export const AvatarInput = styled.input`
+  display: none;
+`;
+
 export const H1 = styled.h1`
   display: flex;
   justify-content: center;
   width: 60px;
   font-size: 25px;
-  margin: 10px auto 66px;
+  margin: 10px auto 32px;
   border-bottom: 4px solid ${COLOR.main};
   position: relative;
   span {

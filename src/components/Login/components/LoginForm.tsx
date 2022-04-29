@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
+import useMutation from 'src/libs/client/useMutation';
 import { Btn, Error, InputWrap } from 'src/styles/componentsStyles';
+import { IJoinResponse } from 'src/types/join';
 import Input from './LoginInput';
 
 //TS
@@ -32,8 +34,6 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
     <>
       <form onSubmit={handleSubmit(onValid)}>
         {errMsg ? <Error>{errMsg}</Error> : null}
-
-        {/*  */}
 
         {method === 'userId' ? (
           <InputWrap>
