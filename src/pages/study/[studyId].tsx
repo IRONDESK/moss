@@ -12,6 +12,7 @@ interface studyForm {
     tag?: string;
     membersLimit?: number;
     chatLink: string;
+    joinMember?: string[]|undefined;
     joinMsg?: string;
 }
 
@@ -24,6 +25,7 @@ export default function StudyPage() {
         introduce: '',
         tag: '',
         membersLimit: 0,
+        joinMember: [],
         chatLink: '',
         joinMsg: '',
     }
@@ -42,7 +44,7 @@ export default function StudyPage() {
         title={data?.studyName}
         des={data?.introduce}
         hashtag={data?.tag}
-        members={1}
+        joinMember={data?.joinMember}
         memberlimit={data?.membersLimit}
         link={data?.chatLink}
         joinMsg={data?.joinMsg}

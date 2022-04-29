@@ -36,6 +36,7 @@ export const Member = ( {
 const Container = styled.section`
   position: relative;
   padding: 48px 24px 16px;
+  min-height: 250px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
     content: '';
@@ -104,6 +105,7 @@ const MemberLength = styled.p`
 const MemberDetail = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 32px;
   @media (max-width: 1024px) {
     justify-content: space-evenly;

@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
+import useUser from 'src/libs/client/useUser';
 
 interface bannerType {
   logo?: string|undefined;
@@ -10,7 +11,7 @@ interface bannerType {
   title: string|undefined;
   des: string|undefined;
   hashtag: string|undefined;
-  members?: number|undefined;
+  joinMember?: string[]|undefined;
   memberlimit: number|undefined;
   link: string|undefined;
   joinMsg: string|undefined;
@@ -18,10 +19,21 @@ interface bannerType {
 
 export const StudyBanner = ({
   logo = "/images/StudyLogo.png",
-  studyId, category, title, des, hashtag, members, memberlimit, link, joinMsg,
+  studyId, category, title, des, hashtag, joinMember, memberlimit, link, joinMsg,
 }: bannerType) => {
   const [modal, setModal] = useState(false);
+  const [joinCheck, setJoinCheck] = useState(false);
   const openModal = () => setModal((prev) => !prev);
+
+  const { isLoggedIn, loggedInUser } = useUser();
+  const [userid, setUserid] = useState<any>("");
+  useEffect(() => {
+      setUserid(loggedInUser?.userId);
+      if ( joinMember?.indexOf(userid) !== -1 ) {
+        setJoinCheck(true);
+      }
+  }, [isLoggedIn, loggedInUser])
+
   return (
     <Banner>
       <StudyIntro>
@@ -36,13 +48,23 @@ export const StudyBanner = ({
             <Des>{des}</Des>
           </StudyDetail>
           <Join>
-            <Member>{members}/{memberlimit}</Member>
-            <StudyBtn
-              onClick={openModal}
-              // href={link}
+            <Member>{joinMember?.length}/{memberlimit}</Member>
+            {joinCheck ? (
+              <StudyBtn
+              joincheck={joinCheck}
+              href={link}
               >
-              스터디 신청하기
-            </StudyBtn>
+                오픈채팅 참여하기
+              </StudyBtn>
+            ) : (
+              <StudyBtn
+              joincheck={joinCheck}
+              onClick={openModal}
+              >
+                스터디 신청하기
+              </StudyBtn>
+            )}
+            
           </Join>
         </StudyDescription>
       </StudyIntro>
@@ -144,9 +166,10 @@ const Hashtag = styled.div`
   };
 `;
 const Title = styled.h2`
+  width: 470px;
   margin-bottom: 16px;
-  font-size: 40px;
-  line-height: 50px;
+  font-size: 38px;
+  line-height: 45px;
   font-weight: 700;
   @media (max-width: 1024px) {
     margin: 7px 0;
@@ -198,12 +221,15 @@ const Member = styled.span`
     height: 15px;
   }
 `;
-const StudyBtn = styled.a`
+const StudyBtn = styled.a<{joincheck: boolean}>`
+  display: flex;
+  padding-top: 2px;
   width: 260px;
   height: 48px;
-  background-color: ${COLOR.main};
-  color: #fff;
-  text-align: center;
-  padding-top: 16px;
-  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 400;
+  background-color: ${(props) => props.joincheck ? COLOR.point : COLOR.main};
+  color: ${(props) => props.joincheck ? COLOR.black : COLOR.white};
 `;
