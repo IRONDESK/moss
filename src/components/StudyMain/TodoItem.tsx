@@ -11,12 +11,13 @@ interface Todo {
 }
 
 interface TodoList {
+  tit: string
   todoItem: TodoData
   todoList: TodoData[]
   setTodoList: (todoList: Todo[]) => void
 }
 
-export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
+export const TodoItem = ({tit, todoItem, todoList, setTodoList}: TodoList) => {
 
   const [del] = useMutation('/api/todo/delTodo');
   const [edit] = useMutation('/api/todo/editTodo');
@@ -56,6 +57,7 @@ export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
   }
 
   return (
+    <>
     <Item >
       <TitBox>
         <DoneBtn onClick={() => todoCompleted(todoItem.id)} todoDone={todoItem.completed}/>
@@ -69,7 +71,13 @@ export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
             autoFocus
           />
         ) : (
-          <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+          <>
+          {tit ? (
+            <ItemTit todoDone={todoItem.completed}>{tit}</ItemTit>
+            ) : (
+            <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+          )}
+          </>
         )}
       </TitBox>
       <BtnBox>
@@ -77,6 +85,7 @@ export const TodoItem = ({todoItem, todoList, setTodoList}: TodoList) => {
         <UtilBtn util={'/images/delete.svg'} onClick={() => todoDelete(todoItem.id)}></UtilBtn>
       </BtnBox>
     </Item>
+    </>
   );
 };
 

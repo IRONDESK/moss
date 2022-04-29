@@ -10,6 +10,7 @@ export const Notice = () => {
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     { category: '', title: '', content: '' },
   ]);
+
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);
@@ -23,7 +24,9 @@ export const Notice = () => {
       <article>
         <ul>
           {noticeList?.noticeData
-            ?.slice(0, 3)
+            ?.slice(0)
+            .reverse()
+            .slice(0, 3)
             .map((notice: any, id: number) => {
               return (
                 <NoticeList key={notice.id}>
