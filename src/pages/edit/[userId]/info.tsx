@@ -17,7 +17,7 @@ import {
   Message,
   ProfileImg,
 } from 'src/styles/componentsStyles';
-import { IEditResponse } from 'src/types/editProfile';
+import { IEditResponse } from 'src/types/edit';
 import { joinForm } from 'src/types/join';
 
 export default function Profile() {
@@ -198,7 +198,7 @@ export default function Profile() {
         </InputWrap>
       </form>
       <EditBtn>
-        <Link href={`/profile/${loggedInUser?.id}/edit/userId_pw`}>
+        <Link href={`/edit/${loggedInUser?.id}/id_pw`}>
           <a>아이디 및 비밀번호 수정 &rarr;</a>
         </Link>
       </EditBtn>

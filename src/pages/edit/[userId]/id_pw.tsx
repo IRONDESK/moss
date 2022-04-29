@@ -12,19 +12,16 @@ import {
   InputWrap,
   Message,
 } from 'src/styles/componentsStyles';
-
-interface IEditForm {
-  userId?: string;
-  password?: string;
-  confirmPassword?: string;
-  passwordError?: string;
-}
+import { IEditForm } from 'src/types/edit';
 
 export default function User() {
+  //GET
   const { loggedInUser } = useUser();
 
+  //POST
   const [edit, { data, loading }] = useMutation(`/api/users/me/edit`);
 
+  //SUBMIT
   const {
     register,
     handleSubmit,
@@ -36,10 +33,12 @@ export default function User() {
   const onValid = ({ userId, password, confirmPassword }: IEditForm) => {
     if (loading) return;
     if (password !== confirmPassword) {
-      setError('confirmPassword', { message: '비밀번호가 일치하지 않습니다.' });
+      return setError('passwordMatch', {
+        message: '비밀번호가 일치하지 않습니다.',
+      });
       //
-      edit({ userId, password, confirmPassword });
     }
+    return edit({ userId, password, confirmPassword });
   };
   //초기세팅
   useEffect(() => {
@@ -58,6 +57,7 @@ export default function User() {
           <InputWrap>
             <input
               {...register('userId', {
+                required: '아이디를 입력해주세요.',
                 pattern: {
                   value: /^[a-z]+[a-z0-9]{5,19}$/g,
                   message:
@@ -68,8 +68,11 @@ export default function User() {
               type="text"
               placeholder="새로운 아이디를 입력하세요."
             />
+            {errors.userId && <Error>{errors.userId.message}</Error>}
+
             <input
               {...register('password', {
+                required: '비밀번호를 입력해주세요.',
                 minLength: {
                   value: 8,
                   message: '비밀번호는 최소 8자리여야 합니다.',
@@ -89,19 +92,30 @@ export default function User() {
               type="password"
               placeholder="새로운 비밀번호를 입력하세요."
             />
+            {errors.password && <Error>{errors.password.message}</Error>}
+
             <input
-              {...register('confirmPassword')}
+              {...register('confirmPassword', {
+                required: '비밀번호를 재입력해주세요.',
+              })}
               name="confirmPassword"
               type="password"
               placeholder="비밀번호를 재입력하세요."
             />
+            {errors.confirmPassword && (
+              <Error>{errors.confirmPassword.message}</Error>
+            )}
+            {errors.passwordMatch && (
+              <Error>{errors.passwordMatch.message}</Error>
+            )}
+
             <Btn type="submit">
               {loading ? '로딩중...' : '아이디 및 비밀번호 수정하기'}
             </Btn>
           </InputWrap>
         </form>
         <EditBtn>
-          <Link href={`/profile/${loggedInUser?.id}/edit/userInfo`}>
+          <Link href={`/edit/${loggedInUser?.id}/info`}>
             <a>&larr; 프로필 관리페이지 돌아가기</a>
           </Link>
         </EditBtn>

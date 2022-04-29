@@ -15,6 +15,7 @@ async function handler(
     select: { id: true, userId: true, password: true },
   });
   const { userId, password, confirmPassword } = req.body;
+  console.log(userId, password, confirmPassword);
 
   //아이디 수정
   if (userId && userId !== loggedInUser?.userId) {
