@@ -22,17 +22,9 @@ export const StudyBanner = ({
   studyId, category, title, des, hashtag, joinMember, memberlimit, link, joinMsg,
 }: bannerType) => {
   const [modal, setModal] = useState(false);
-  const [joinCheck, setJoinCheck] = useState(false);
   const openModal = () => setModal((prev) => !prev);
-
   const { isLoggedIn, loggedInUser } = useUser();
-  const [userid, setUserid] = useState<any>("");
-  useEffect(() => {
-      setUserid(loggedInUser?.userId);
-      if ( joinMember?.indexOf(userid) !== -1 ) {
-        setJoinCheck(true);
-      }
-  }, [isLoggedIn, loggedInUser])
+  const userid: any = loggedInUser?.userId;
 
   return (
     <Banner>
@@ -49,16 +41,16 @@ export const StudyBanner = ({
           </StudyDetail>
           <Join>
             <Member>{joinMember?.length}/{memberlimit}</Member>
-            {joinCheck ? (
+            {joinMember?.indexOf(userid) !== -1 ? (
               <StudyBtn
-              joincheck={joinCheck}
+              joincheck={joinMember?.indexOf(userid) !== -1}
               href={link}
               >
                 오픈채팅 참여하기
               </StudyBtn>
             ) : (
               <StudyBtn
-              joincheck={joinCheck}
+              joincheck={joinMember?.indexOf(userid) !== -1}
               onClick={openModal}
               >
                 스터디 신청하기
