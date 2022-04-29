@@ -13,19 +13,19 @@ interface DataProps {
 }
 
 export const StudyList = () => {
-  const [data, setData] = useState<any>();
+  const [allstudy, setAllstudy] = useState<any>();
   const res = getInfo('many');
   useEffect(() => {
-    setData(res);
-    console.log(data);
+    setAllstudy(res);
   }, [res]);
-
+  
   return (
     <>
       <List>
-        {data?.map((value: DataProps) => {
+        {allstudy ? (allstudy?.map((value: DataProps) => {
           return (
             <StudyCard
+              key={'card' + value.studyId}
               category={value.category}
               title={value.studyName}
               hashtag={value.tag}
@@ -35,7 +35,7 @@ export const StudyList = () => {
               leader={true}
             />
           );
-        })}
+        })) : null}
       </List>
     </>
   );
