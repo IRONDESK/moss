@@ -1,18 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
 import { StudyCard } from './StudyCard';
-import getInfo from 'src/pages/api/study/getInfo';
 import useSWR from 'swr';
 import { IStudyResponse } from 'src/types/study';
-
-interface DataProps {
-  studyId: number;
-  studyName: string;
-  leader?: number;
-  category?: string;
-  tag?: string;
-  membersLimit?: number;
-}
 
 export const StudyList = () => {
   const { data } = useSWR<IStudyResponse>(`/api/study/total_study`);
@@ -25,6 +14,7 @@ export const StudyList = () => {
           <StudyCard
             bgImg={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${studyInfo?.image}/public`}
             key={studyInfo.id}
+            studyId={studyInfo.id}
             category={studyInfo.category}
             title={studyInfo.studyName}
             hashtag={studyInfo.tag}

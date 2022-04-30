@@ -47,7 +47,8 @@ model Study {
   tag           String?
   membersLimit  String?
   chatLink      String?  
-  image         String?  
+  image         String?
+  joinMember    Json?  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
