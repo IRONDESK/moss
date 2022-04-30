@@ -4,11 +4,9 @@ import useSWR from 'swr';
 export interface IUser {
   ok: boolean;
   loggedInUser: User;
-  users: User[];
-  userCount: number;
 }
 
-export default function useUser() {
+export default function () {
   const { data, error } = useSWR<IUser>('/api/users/loggedInUser');
   //
   return {
