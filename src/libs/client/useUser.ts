@@ -9,13 +9,11 @@ export interface IUser {
 }
 
 export default function useUser() {
-  const { data, error } = useSWR<IUser>('/api/users/me');
+  const { data, error } = useSWR<IUser>('/api/users/loggedInUser');
   //
   return {
-    users: data?.users,
     loading: !data && !error,
     isLoggedIn: data?.ok,
     loggedInUser: data?.loggedInUser,
-    userCount: data?.userCount,
   };
 }

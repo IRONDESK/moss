@@ -25,8 +25,9 @@ export default function Profile() {
   const { loggedInUser } = useUser();
 
   //POST
-  const [editUserInfo, { data, loading }] =
-    useMutation<IEditResponse>(`/api/users/me`);
+  const [editUserInfo, { data, loading }] = useMutation<IEditResponse>(
+    `/api/users/loggedInUser/edit_info`,
+  );
 
   const {
     register,
@@ -182,7 +183,7 @@ export default function Profile() {
             })}
             required={false}
             name="phone"
-            type="number"
+            type="text"
             placeholer="수정할 휴대폰 번호를 적어주세요."
           />
 
