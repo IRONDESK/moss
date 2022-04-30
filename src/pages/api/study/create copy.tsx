@@ -4,20 +4,27 @@ import withHandler from 'src/libs/server/withHandler';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { user } = req.session;
-    const { studyName, introduce, category, tag, membersLimit, chatLink } =
-      req.body;
-    const study = await client.study.create({
+    const {
+      studyName,
+      image,
+      introduce,
+      category,
+      tag,
+      membersLimit,
+      chatLink,
+      joinMsg,
+    } = req.body;
+    let study = await client.studyinfo.create({
       data: {
         studyName,
+        image,
         introduce,
         category,
         tag,
         membersLimit,
         chatLink,
-        user: {
-          connect: { id: user?.id },
-        },
+        joinMsg,
+        ㅕ,
       },
     });
     return res.json({ ok: true, data: study });
@@ -27,14 +34,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const queryid = req.query.id;
 
     if (queryid !== 'many') {
-      let studydata = await client.study.findUnique({
+      let studydata = await client.studyinfo.findUnique({
         where: {
-          id: +queryid,
+          studyId: Number(queryid),
         },
       });
       return res.json(studydata);
     } else {
-      let studydata = await client.study.findMany();
+      let studydata = await client.studyinfo.findMany();
       return res.json(studydata);
     }
   }

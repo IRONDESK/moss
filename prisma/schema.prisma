@@ -23,6 +23,7 @@ model User {
   avatar    String?
   location  String?
   Token     Token[]
+  Study     Study[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }
@@ -36,27 +37,26 @@ model Token {
   updatedAt   DateTime @updatedAt
 }
 
+model Study {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId        Int
+  studyName     String
+  introduce     String?
+  category      String?
+  tag           String?
+  membersLimit  String?
+  chatLink      String?  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
 model Todo {
   id        Int       @id @default(autoincrement())
   title     String    @db.VarChar(100)
   completed Boolean   @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
-}
-
-model Studyinfo {
-  studyId      Int      @id @default(autoincrement())
-  studyName    String
-  image        Json?
-  introduce    String?
-  category     String?
-  tag          String?
-  membersLimit String?
-  chatLink     String?
-  joinMember   Json?
-  joinMsg      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 }
 
 model Notice {
