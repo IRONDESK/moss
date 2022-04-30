@@ -22,6 +22,7 @@ export const StudyList = () => {
       <StudyLists>
         {data?.createdStudy.map((studyInfo) => (
           <StudyCard
+            bgImg={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${studyInfo?.image}/avatar`}
             key={studyInfo.id}
             category={studyInfo.category}
             title={studyInfo.studyName}

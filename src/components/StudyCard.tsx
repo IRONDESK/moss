@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { COLOR } from '../constants';
+import { Backgroud } from './StyleComponents';
 
 interface CardProps {
   category: string | null;
@@ -10,6 +11,7 @@ interface CardProps {
   membersLimit: string | null;
   link: string | null;
   leader?: boolean;
+  bgImg?: string;
 }
 
 export const StudyCard = ({
@@ -20,21 +22,37 @@ export const StudyCard = ({
   membersLimit,
   link,
   leader = false,
+  bgImg,
 }: CardProps) => {
   return (
     <CardWrap>
-      <Thumbnail>
-        <Header>
-          <StudyTag>
-            <Category>{category}</Category>
-            <LeaderTag default={leader}>
-              <img src="/images/crown.svg" alt="스터디장" />
-            </LeaderTag>
-          </StudyTag>
-          <Title>{title}</Title>
-          <Hashtag>{hashtag}</Hashtag>
-        </Header>
-      </Thumbnail>
+      {bgImg ? (
+        <ThumbnailWithImage bgImg={bgImg}>
+          <Header>
+            <StudyTag>
+              <Category>{category}</Category>
+              <LeaderTag default={leader}>
+                <img src="/images/crown.svg" alt="스터디장" />
+              </LeaderTag>
+            </StudyTag>
+            <Title>{title}</Title>
+            <Hashtag>{hashtag}</Hashtag>
+          </Header>
+        </ThumbnailWithImage>
+      ) : (
+        <Thumbnail>
+          <Header>
+            <StudyTag>
+              <Category>{category}</Category>
+              <LeaderTag default={leader}>
+                <img src="/images/crown.svg" alt="스터디장" />
+              </LeaderTag>
+            </StudyTag>
+            <Title>{title}</Title>
+            <Hashtag>{hashtag}</Hashtag>
+          </Header>
+        </Thumbnail>
+      )}
       <Join>
         <Detail>
           <MemberIcon src="/images/login.svg" />
@@ -65,6 +83,11 @@ const Thumbnail = styled.div`
   position: relative;
   height: 180px;
   background: skyblue;
+  background-size: cover;
+  background-position: center;
+`;
+const ThumbnailWithImage = styled(Thumbnail)<{ bgImg: string | undefined }>`
+  background-image: url('${(props) => props.bgImg}');
 `;
 
 const Header = styled.div`
