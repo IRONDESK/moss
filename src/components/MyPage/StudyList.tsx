@@ -1,28 +1,22 @@
 import styled from '@emotion/styled';
-import { Study } from '@prisma/client';
 import { useState } from 'react';
+import { IStudyResponse } from 'src/types/study';
 import useSWR from 'swr';
 import { StudyCard } from '../StudyCard';
 import { CreateStudy } from './CreateStudy';
 
-interface IStudyResponse {
-  ok: boolean;
-  createdStudy: Study[];
-}
-
 export const StudyList = () => {
   const [modal, setModal] = useState(false);
-
-  //GET
-  const { data } = useSWR<IStudyResponse>(`api/study/created_study`);
+  const { data } = useSWR<IStudyResponse>(`api/study/my_study`);
+  //내가 만든 스터디를 화면에 표시합니다.
   //
   return (
     <MyPageStudy>
       <Title className="title">참여 중인 스터디</Title>
       <StudyLists>
-        {data?.createdStudy.map((studyInfo) => (
+        {data?.myStudy.map((studyInfo) => (
           <StudyCard
-            bgImg={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${studyInfo?.image}/avatar`}
+            bgImg={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${studyInfo?.image}/public`}
             key={studyInfo.id}
             category={studyInfo.category}
             title={studyInfo.studyName}
@@ -30,7 +24,8 @@ export const StudyList = () => {
             members={studyInfo.membersLimit}
             membersLimit={studyInfo.membersLimit}
             link={studyInfo.chatLink}
-            leader={true}
+            studyId={studyInfo.id}
+            leader={Boolean(data?.ok)}
           />
         ))}
       </StudyLists>

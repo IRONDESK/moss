@@ -1,3 +1,5 @@
+import { Study } from '@prisma/client';
+
 export interface StudyModal {
   modal: boolean;
   setModal: Function;
@@ -14,4 +16,9 @@ export interface studyForm {
   image?: FileList;
   studyImage?: FileList;
   avatar?: FileList;
+}
+export interface IStudyResponse {
+  ok: boolean;
+  myStudy: Study[];
+  totalStudies: Study[];
 }

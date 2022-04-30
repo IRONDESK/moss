@@ -55,7 +55,7 @@ export default function Join() {
     }
     //프로필사진 업로드
     if (avatar && avatar.length > 0) {
-      const { uploadURL } = await (await fetch(`/api/upload/avatar`)).json();
+      const { uploadURL } = await (await fetch(`/api/upload/image`)).json();
       const form = new FormData();
       form.append('file', avatar[0]);
       const {

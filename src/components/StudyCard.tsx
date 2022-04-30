@@ -12,6 +12,7 @@ interface CardProps {
   link: string | null;
   leader?: boolean;
   bgImg?: string;
+  studyId?: number;
 }
 
 export const StudyCard = ({
@@ -23,6 +24,7 @@ export const StudyCard = ({
   link,
   leader = false,
   bgImg,
+  studyId,
 }: CardProps) => {
   return (
     <CardWrap>
@@ -61,7 +63,7 @@ export const StudyCard = ({
           </Member>
         </Detail>
 
-        <Link href={link}>
+        <Link href={`/study/${studyId}`}>
           <StudyBtn>
             <EnterImg src="/images/ArrowGreen.svg" alt="스터디 자세히 보기" />
           </StudyBtn>

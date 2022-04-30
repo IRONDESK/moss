@@ -33,24 +33,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     });
     return res.json({ ok: true, study });
   }
-
-  if (req.method === 'GET') {
-    const queryid = req.query.id;
-
-    if (queryid !== 'many') {
-      let studydata = await client.study.findUnique({
-        where: {
-          id: +queryid,
-        },
-      });
-      return res.json(studydata);
-    } else {
-      let studydata = await client.study.findMany();
-      return res.json(studydata);
-    }
-  }
 }
 
-export default withApiSession(
-  withHandler({ methods: ['GET', 'POST'], handler }),
-);
+export default withApiSession(withHandler({ methods: ['POST'], handler }));
