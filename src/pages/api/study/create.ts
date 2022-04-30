@@ -1,12 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
+import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { user } = req.session;
+
   if (req.method === 'POST') {
-    const { user } = req.session;
-    const { studyName, introduce, category, tag, membersLimit, chatLink } =
-      req.body;
+    const {
+      studyName,
+      introduce,
+      category,
+      tag,
+      membersLimit,
+      chatLink,
+      imageId,
+    } = req.body;
+
     const study = await client.study.create({
       data: {
         studyName,
@@ -15,12 +25,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         tag,
         membersLimit,
         chatLink,
+        image: imageId,
         user: {
           connect: { id: user?.id },
         },
       },
     });
-    return res.json({ ok: true, data: study });
+    return res.json({ ok: true, study });
   }
 
   if (req.method === 'GET') {
@@ -40,8 +51,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withHandler({
-  methods: ['GET', 'POST'],
-  handler,
-  isPrivate: false,
-});
+export default withApiSession(
+  withHandler({ methods: ['GET', 'POST'], handler }),
+);

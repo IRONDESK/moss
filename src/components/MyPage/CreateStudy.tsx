@@ -17,14 +17,10 @@ import useUser from 'src/libs/client/useUser';
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
   const [checkmodal, setCheckmodal] = useState(false);
-  const [reqdata, setReqdata] = useState<any>();
-  const [resdata, setResdata] = useState<any>();
-  //GET
   const { loggedInUser } = useUser();
 
   //POST API
   const [study, { loading, data }] = useMutation('/api/study/create');
-  console.log(data);
 
   //useForm
   const {
@@ -41,12 +37,10 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
     tag,
     membersLimit,
     chatLink,
-    joinMsg,
     image,
   }) => {
     if (loading) return;
-
-    //스터디 사진 업로드
+    //스터디 사진 업로드 + 스터디생성
     if (image && image.length > 0 && loggedInUser?.id) {
       const { uploadURL } = await (await fetch(`/api/upload/image`)).json();
       const form = new FormData();
@@ -60,54 +54,38 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         })
       ).json();
       //
-      study({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-        joinMsg,
-        image: id,
-      });
-      setReqdata({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-        joinMsg,
-      });
       setModal(false);
       setCheckmodal(true);
+      return study({
+        studyName,
+        introduce,
+        category,
+        tag,
+        membersLimit,
+        chatLink,
+        imageId: id,
+      });
     } else {
-      study({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-        joinMsg,
-      });
-      setReqdata({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-        joinMsg,
-      });
+      //사진업로드 없이 스터디생성
       setModal(false);
       setCheckmodal(true);
+      return study({
+        studyName,
+        introduce,
+        category,
+        tag,
+        membersLimit,
+        chatLink,
+      });
     }
   };
 
+  //페이지 이동
   const MoveToStudyPage = () => {
-    setCheckmodal(!checkmodal);
-    router.push(`/study/${resdata.data.studyId}`);
+    if (data?.ok) {
+      setCheckmodal(!checkmodal);
+      return router.push(`/study/${data?.study.id}`);
+    }
   };
 
   //스터디 사진 업로드
@@ -229,15 +207,15 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             <ul>
               <li>
                 <dt>스터디명</dt>
-                <dd>{reqdata.studyName}</dd>
+                <dd>{data?.study.studyName}</dd>
               </li>
               <li>
                 <dt>인원</dt>
-                <dd>{reqdata.membersLimit}명</dd>
+                <dd>{data?.study.membersLimit}</dd>
               </li>
               <li>
                 <dt>오픈채팅</dt>
-                <dd>{reqdata.chatLink}</dd>
+                <dd>{data?.study.chatLink}</dd>
               </li>
             </ul>
             스터디 페이지로 이동하시겠습니까?
