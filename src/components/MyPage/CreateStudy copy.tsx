@@ -1,189 +1,138 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
+import { useSpring, animated } from 'react-spring';
 import { useEffect, useState } from 'react';
+import { FileUpload } from '../Join/FileUpload';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useMutation from 'src/libs/client/useMutation';
+import useMutation, { IMutation } from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
-import {
-  Avatar,
-  AvatarInput,
-  Error,
-  ImgLabel,
-  ProfileImg,
-} from 'src/styles/componentsStyles';
-import { studyForm, StudyModal } from 'src/types/study';
-import useUser from 'src/libs/client/useUser';
+import { color } from 'd3';
 
+interface StudyModal {
+  modal: boolean;
+  setModal: Function;
+}
+interface studyForm {
+  studyName?: string;
+  leader?: number;
+  image: string;
+  introduce?: string;
+  category?: string;
+  tag?: string;
+  membersLimit?: number;
+  chatLink: string;
+  joinMsg?: string;
+}
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
+  const [isImage, setIsImage] = useState(false);
   const [checkmodal, setCheckmodal] = useState(false);
-  const { loggedInUser } = useUser();
-  //POST API
-  const [study, { loading, data }] = useMutation('/api/study/create');
-  //useForm
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<studyForm>();
-  const onSubmit: SubmitHandler<studyForm> = async ({
-    studyName,
-    introduce,
-    category,
-    tag,
-    membersLimit,
-    chatLink,
-    image,
-  }) => {
-    if (loading) return;
-    //스터디 사진 업로드 + 스터디생성
-    if (image && image.length > 0 && loggedInUser?.id) {
-      const { uploadURL } = await (await fetch(`/api/upload/image`)).json();
-      const form = new FormData();
-      form.append('file', image[0], loggedInUser?.id + '');
-      const {
-        result: { id },
-      } = await (
-        await fetch(uploadURL, {
-          method: 'POST',
-          body: form,
-        })
-      ).json();
-      //
-      setModal(false);
-      setCheckmodal(true);
-      return study({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-        imageId: id,
-      });
-    } else {
-      //사진업로드 없이 스터디생성
-      setModal(false);
-      setCheckmodal(true);
-      return study({
-        studyName,
-        introduce,
-        category,
-        tag,
-        membersLimit,
-        chatLink,
-      });
-    }
-  };
 
-  //페이지 이동
-  const MoveToStudyPage = () => {
-    if (data?.ok) {
-      setCheckmodal(!checkmodal);
-      return router.push(`/study/${data?.study.id}`);
-    }
-  };
+  const [reqdata, setReqdata] = useState<any>()
+  const [resdata, setResdata] = useState<any>();
+  const [study, {loading, data, error}] = useMutation('/api/study/create');
 
-  //스터디 사진 업로드
-  const [imagePreview, setImagePreview] = useState('');
-  const previewArray = watch('image');
   useEffect(() => {
-    if (previewArray && previewArray.length > 0) {
-      const previewObject = previewArray[0];
-      setImagePreview(URL.createObjectURL(previewObject));
-    }
-  }, [previewArray]);
+    setResdata(data);
+  }, [data?.ok]);
+
+  //useForm
+  const { register, handleSubmit } = useForm<studyForm>();
+  const onSubmit: SubmitHandler<studyForm> = async (inputValue) => {
+    await study(inputValue);
+    await setReqdata(inputValue);
+    await setModal(false);
+    await setCheckmodal(true);
+  };
+
+  const MoveToStudyPage = () => {
+    setCheckmodal(!checkmodal);
+    router.push(`/study/${resdata.data.studyId}`);
+  };
+
+  const getIsImage = (img: boolean) => {
+    setIsImage(img);
+  };
 
   return (
     <>
-      <StudyWrap>
-        <StudySetBtn onClick={() => setModal((prev: boolean) => !prev)}>
-          스터디 개설
-        </StudySetBtn>
-      </StudyWrap>
+    <StudyWrap>
+      <StudySetBtn onClick={() => setModal((prev: boolean) => !prev)}>
+        스터디 개설
+      </StudySetBtn>
+    </StudyWrap>
       {modal ? (
         <Container size="large">
           <CloseBtn onClick={() => setModal((prev: boolean) => !prev)} />
           <h1>
             <div>스터디 개설</div>
           </h1>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <ImgLabel>
-              {imagePreview ? <Avatar src={imagePreview} /> : <ProfileImg />}
-              <AvatarInput
-                {...register('image')}
-                type="file"
-                name="image"
-                accept="image/*"
-              />
-            </ImgLabel>
-
+          <Form method="POST" onSubmit={handleSubmit(onSubmit)}>
+            <FileUpload
+              getIsImage={getIsImage}
+              register={register('image')}
+            />
             <Label htmlFor="study-name">스터디 이름</Label>
             <Input
-              {...register('studyName', {
-                required: '스터디 이름을 작성해주세요.',
-              })}
+              {...register('studyName')}
               name="studyName"
               id="study-name"
               type="text"
               placeholder="스터디 이름을 작성해주세요"
             />
-            {errors.studyName && <Error>{errors.studyName.message}</Error>}
-
             <Label htmlFor="study-des">소개</Label>
             <Input
-              {...register('introduce')}
+            {...register('introduce')}
               name="introduce"
               id="study-des"
               type="text"
               placeholder="스터디 소개를 작성해주세요"
             />
-
             <Label htmlFor="study-category">카테고리</Label>
             <Input
-              {...register('category')}
+            {...register('category')}
               name="category"
               id="study-category"
               type="text"
               placeholder="스터디에 해당하는 카테고리를 작성해주세요"
             />
-
             <Label htmlFor="study-tag">태그</Label>
             <Input
-              {...register('tag')}
+            {...register('tag')}
               name="tag"
               id="study-tag"
               type="text"
               placeholder="스터디에 해당하는 태그를 작성해주세요"
             />
-
             <Label htmlFor="study-members">스터디 인원</Label>
             <Input
-              {...register('membersLimit')}
+            {...register('membersLimit')}
               name="membersLimit"
               id="study-members"
               type="number"
               min={3}
               placeholder="최소 3인 이상의 인원을 설정해주세요"
             />
-
             <Label htmlFor="study-chatlink">카카오톡 오픈채팅 링크</Label>
             <Input
-              {...register('chatLink')}
+            {...register('chatLink')}
               name="chatLink"
               id="study-chatlink"
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
             />
-
-            <Label htmlFor="study-joinmsg">가입 인사</Label>
-            <Select {...register('joinMsg')} name="joinMsg" id="study-joinmsg">
-              <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
-              <option value="Welcome😃">Welcome😃</option>
-              <option value="반갑습니다🥰">반갑습니다🥰</option>
-            </Select>
-
+            <Label htmlFor="study-joinmsg">
+              가입 인사
+            </Label>
+              <Select 
+              {...register('joinMsg')}
+                name="joinMsg"
+                id="study-joinmsg"
+              >
+                <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
+                <option value="Welcome😃">Welcome😃</option>
+                <option value="반갑습니다🥰">반갑습니다🥰</option>
+              </Select>
             <CreateButton
               type="submit"
               // disabled={!(isName && isDes && isMember && isHi)}
@@ -192,7 +141,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             </CreateButton>
           </Form>
         </Container>
-      ) : null}
+    ) : null}
       {checkmodal ? (
         <Container size="small">
           <CloseBtn onClick={() => setCheckmodal((prev: boolean) => !prev)} />
@@ -200,31 +149,18 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             <div>스터디 개설</div>
           </h1>
           <AlretMsg>
-            스터디가 개설되었습니다.
-            <ul>
-              <li>
-                <dt>스터디명</dt>
-                <dd>{data?.study.studyName}</dd>
-              </li>
-              <li>
-                <dt>인원</dt>
-                <dd>{data?.study.membersLimit}</dd>
-              </li>
-              <li>
-                <dt>오픈채팅</dt>
-                <dd>{data?.study.chatLink}</dd>
-              </li>
-            </ul>
-            스터디 페이지로 이동하시겠습니까?
+          스터디가 개설되었습니다.
+          <ul>
+            <li><dt>스터디명</dt><dd>{reqdata.studyName}</dd></li>
+            <li><dt>인원</dt><dd>{reqdata.membersLimit}명</dd></li>
+            <li><dt>오픈채팅</dt><dd>{reqdata.chatLink}</dd></li>
+          </ul>
+          스터디 페이지로 이동하시겠습니까?
           </AlretMsg>
-          <ButtonArray>
-            <CreateButton onClick={MoveToStudyPage}>예</CreateButton>
-            <CreateButton
-              onClick={() => setCheckmodal((prev: boolean) => !prev)}
-            >
-              아니오
-            </CreateButton>
-          </ButtonArray>
+        <ButtonArray>
+          <CreateButton onClick={MoveToStudyPage}>예</CreateButton>
+          <CreateButton onClick={() => setCheckmodal((prev: boolean) => !prev)}>아니오</CreateButton>
+        </ButtonArray>
         </Container>
       ) : null}
     </>
@@ -251,7 +187,7 @@ const StudySetBtn = styled.button`
   }
 `;
 
-const Container = styled.section<{ size: string }>`
+const Container = styled.section<{size: string}>`
   position: absolute;
   top: 15vh;
   left: 50%;
@@ -260,7 +196,7 @@ const Container = styled.section<{ size: string }>`
   border: 1px solid ${COLOR.gray};
   padding: 90px 50px;
   width: 500px;
-  height: ${(props) => (props.size == 'large' ? '1019px' : '550px')};
+  height: ${props => props.size == "large" ? "1019px" : "550px"};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -333,7 +269,6 @@ const Select = styled.select`
 `;
 
 const Form = styled.form`
-  padding-top: 20px;
 `;
 
 const CreateButton = styled.button`

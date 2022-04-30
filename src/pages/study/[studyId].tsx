@@ -5,40 +5,40 @@ import getInfo from '../api/study/getInfo';
 import { useEffect, useState } from 'react';
 
 interface studyForm {
-    studyName?: string;
-    leader?: number;
-    image: string;
-    introduce?: string;
-    tag?: string;
-    membersLimit?: number;
-    chatLink: string;
-    joinMember?: string[]|undefined;
-    joinMsg?: string;
+  studyName?: string;
+  leader?: number;
+  image: string;
+  introduce?: string;
+  tag?: string;
+  membersLimit?: number;
+  chatLink: string;
+  joinMember?: string[] | undefined;
+  joinMsg?: string;
 }
 
 export default function StudyPage() {
-    const router = useRouter();
-    const { studyId } = router.query;
-    const loading: studyForm = {
-        studyName: '',
-        image: '',
-        introduce: '',
-        tag: '',
-        membersLimit: 0,
-        joinMember: [],
-        chatLink: '',
-        joinMsg: '',
-    }
-    const [data, setData] = useState<studyForm>();
+  const router = useRouter();
+  const { studyId } = router.query;
+  const loading: studyForm = {
+    studyName: '',
+    image: '',
+    introduce: '',
+    tag: '',
+    membersLimit: 0,
+    joinMember: [],
+    chatLink: '',
+    joinMsg: '',
+  };
+  const [data, setData] = useState<studyForm>();
 
-    const res = getInfo(studyId);
-    useEffect(() => {
-        setData(res);
-    }, [res]);
-    
-    return (
+  const res = getInfo(studyId);
+  useEffect(() => {
+    setData(res);
+  }, [res]);
+
+  return (
     <>
-        <StudyBanner
+      <StudyBanner
         studyId={Number(studyId)}
         category="카테고리"
         title={data?.studyName}
@@ -48,10 +48,8 @@ export default function StudyPage() {
         memberlimit={data?.membersLimit}
         link={data?.chatLink}
         joinMsg={data?.joinMsg}
-        />
-        <StudyComponents
-        studyinfo={data}
-        />
+      />
+      <StudyComponents studyinfo={data} />
     </>
-    );
+  );
 }

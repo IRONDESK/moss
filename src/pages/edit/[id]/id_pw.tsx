@@ -19,7 +19,9 @@ export default function User() {
   const { loggedInUser } = useUser();
 
   //POST
-  const [edit, { data, loading }] = useMutation(`/api/users/me/edit`);
+  const [edit, { data, loading }] = useMutation(
+    `/api/users/loggedInUser/edit_idpw`,
+  );
 
   //SUBMIT
   const {

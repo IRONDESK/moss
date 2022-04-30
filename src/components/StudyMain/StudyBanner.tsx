@@ -3,33 +3,49 @@ import { useEffect, useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
 import useUser from 'src/libs/client/useUser';
+import useSWR from 'swr';
 
 interface bannerType {
-  logo?: string|undefined;
-  studyId?: number|undefined;
-  category: string|undefined;
-  title: string|undefined;
-  des: string|undefined;
-  hashtag: string|undefined;
-  joinMember?: string[]|undefined;
-  memberlimit: number|undefined;
-  link: string|undefined;
-  joinMsg: string|undefined;
+  logo?: string | undefined;
+  studyId?: number | undefined;
+  category: string | undefined;
+  title: string | undefined;
+  des: string | undefined;
+  hashtag: string | undefined;
+  joinMember?: string[] | undefined;
+  memberlimit: number | undefined;
+  link: string | undefined;
+  joinMsg: string | undefined;
 }
 
 export const StudyBanner = ({
-  logo = "/images/StudyLogo.png",
-  studyId, category, title, des, hashtag, joinMember, memberlimit, link, joinMsg,
+  logo = '/images/StudyLogo.png',
+  studyId,
+  category,
+  title,
+  des,
+  hashtag,
+  joinMember,
+  memberlimit,
+  link,
+  joinMsg,
 }: bannerType) => {
+  //현재 스터디 데이터 소환
+  const { data } = useSWR(`/api/study/${studyId}`);
+  const logoImg = `https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${data?.study?.image}/avatar`;
+  //
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
   const { isLoggedIn, loggedInUser } = useUser();
   const userid: any = loggedInUser?.userId;
-
   return (
     <Banner>
       <StudyIntro>
-        <StudyImg src={logo} alt="study-logo" />
+        {data?.study ? (
+          <StudyImg src={logoImg} alt="study-logo" />
+        ) : (
+          <StudyImg src={logo} alt="study-logo" />
+        )}
         <StudyDescription>
           <StudyDetail>
             <TagWrap>
@@ -40,23 +56,24 @@ export const StudyBanner = ({
             <Des>{des}</Des>
           </StudyDetail>
           <Join>
-            <Member>{joinMember?.length}/{memberlimit}</Member>
+            <Member>
+              {joinMember?.length}/{memberlimit}
+            </Member>
             {joinMember?.indexOf(userid) !== -1 ? (
               <StudyBtn
-              joincheck={joinMember?.indexOf(userid) !== -1}
-              href={link}
+                joincheck={joinMember?.indexOf(userid) !== -1}
+                href={link}
               >
                 오픈채팅 참여하기
               </StudyBtn>
             ) : (
               <StudyBtn
-              joincheck={joinMember?.indexOf(userid) !== -1}
-              onClick={openModal}
+                joincheck={joinMember?.indexOf(userid) !== -1}
+                onClick={openModal}
               >
                 스터디 신청하기
               </StudyBtn>
             )}
-            
           </Join>
         </StudyDescription>
       </StudyIntro>
@@ -80,7 +97,7 @@ const Banner = styled.section`
   padding: 24px;
   @media (max-width: 1024px) {
     flex-direction: column;
-  };
+  } ;
 `;
 
 const StudyIntro = styled.section`
@@ -97,16 +114,17 @@ const StudyIntro = styled.section`
     height: auto;
     padding: 18px;
     flex-direction: column;
-  };
+  } ;
 `;
 
 const StudyImg = styled.img`
+  border-radius: 100%;
   width: 102px;
   height: 102px;
   margin: 40px 48px 130px 0;
   @media (max-width: 1024px) {
     margin: 0;
-  };
+  } ;
 `;
 const StudyDescription = styled.article`
   width: 100%;
@@ -119,14 +137,14 @@ const StudyDetail = styled.div`
   @media (max-width: 1024px) {
     margin: 19px 0;
     align-items: center;
-  };
+  } ;
 `;
 
 const TagWrap = styled.div`
   @media (max-width: 1024px) {
     display: flex;
     gap: 8px;
-  };
+  } ;
 `;
 const Category = styled.div`
   width: 81px;
@@ -155,7 +173,7 @@ const Hashtag = styled.div`
     margin: 0;
     position: static;
     border: 1px solid ${COLOR.boxBorder};
-  };
+  } ;
 `;
 const Title = styled.h2`
   width: 470px;
@@ -169,7 +187,7 @@ const Title = styled.h2`
     line-height: 32px;
     text-align: center;
     word-break: keep-all;
-  };
+  } ;
 `;
 
 const Des = styled.div`
@@ -180,7 +198,7 @@ const Des = styled.div`
     text-align: center;
     line-height: 1.2rem;
     word-break: keep-all;
-  };
+  } ;
 `;
 
 const Join = styled.div`
@@ -193,7 +211,7 @@ const Join = styled.div`
     margin: 0;
     flex-direction: column;
     gap: 9px;
-  };
+  } ;
 `;
 
 const Member = styled.span`
@@ -213,7 +231,7 @@ const Member = styled.span`
     height: 15px;
   }
 `;
-const StudyBtn = styled.a<{joincheck: boolean}>`
+const StudyBtn = styled.a<{ joincheck: boolean }>`
   display: flex;
   padding-top: 2px;
   width: 260px;
@@ -222,6 +240,6 @@ const StudyBtn = styled.a<{joincheck: boolean}>`
   align-items: center;
   font-size: 17px;
   font-weight: 400;
-  background-color: ${(props) => props.joincheck ? COLOR.point : COLOR.main};
-  color: ${(props) => props.joincheck ? COLOR.black : COLOR.white};
+  background-color: ${(props) => (props.joincheck ? COLOR.point : COLOR.main)};
+  color: ${(props) => (props.joincheck ? COLOR.black : COLOR.white)};
 `;

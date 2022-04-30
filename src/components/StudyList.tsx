@@ -1,41 +1,29 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
 import { StudyCard } from './StudyCard';
-import getInfo from 'src/pages/api/study/getInfo';
-
-interface DataProps {
-  studyId: number;
-  studyName: string;
-  leader?: number;
-  category?: string;
-  tag?: string;
-  membersLimit?: number;
-}
+import useSWR from 'swr';
+import { IStudyResponse } from 'src/types/study';
 
 export const StudyList = () => {
-  const [allstudy, setAllstudy] = useState<any>();
-  const res = getInfo('many');
-  useEffect(() => {
-    setAllstudy(res);
-  }, [res]);
-  
+  const { data } = useSWR<IStudyResponse>(`/api/study/total_study`);
+  //존재하는 모든 스터디를 화면에 표시합니다.
+  //
   return (
     <>
       <List>
-        {allstudy ? (allstudy?.map((value: DataProps) => {
-          return (
-            <StudyCard
-              key={'card' + value.studyId}
-              category={value.category}
-              title={value.studyName}
-              hashtag={value.tag}
-              members={2}
-              membersLimit={value.membersLimit}
-              link={`/study/` + value.studyId}
-              leader={true}
-            />
-          );
-        })) : null}
+        {data?.totalStudies?.map((studyInfo) => (
+          <StudyCard
+            bgImg={`https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${studyInfo?.image}/public`}
+            key={studyInfo.id}
+            studyId={studyInfo.id}
+            category={studyInfo.category}
+            title={studyInfo.studyName}
+            hashtag={studyInfo.tag}
+            members={studyInfo.membersLimit}
+            membersLimit={studyInfo.membersLimit}
+            link={studyInfo.chatLink}
+            leader={Boolean(data?.ok)}
+          />
+        ))}
       </List>
     </>
   );
