@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { COLOR } from '../constants';
 
 interface CardProps {
-  category: string|undefined;
-  title: string|undefined;
-  hashtag: string|undefined;
-  members: number|undefined;
-  membersLimit: number|undefined;
-  link: string;
-  leader: boolean|undefined;
+  category: string | null;
+  title: string;
+  hashtag: string | null;
+  members: string | null;
+  membersLimit: string | null;
+  link: string | null;
+  leader?: boolean;
 }
 
 export const StudyCard = ({
@@ -38,7 +38,9 @@ export const StudyCard = ({
       <Join>
         <Detail>
           <MemberIcon src="/images/login.svg" />
-          <Member>{members}/{membersLimit}</Member>
+          <Member>
+            {members}/{membersLimit}
+          </Member>
         </Detail>
 
         <Link href={link}>
