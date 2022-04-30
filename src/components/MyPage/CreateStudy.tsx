@@ -18,10 +18,8 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
   const [checkmodal, setCheckmodal] = useState(false);
   const { loggedInUser } = useUser();
-
   //POST API
   const [study, { loading, data }] = useMutation('/api/study/create');
-
   //useForm
   const {
     register,
@@ -29,7 +27,6 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
     watch,
     formState: { errors },
   } = useForm<studyForm>();
-
   const onSubmit: SubmitHandler<studyForm> = async ({
     studyName,
     introduce,

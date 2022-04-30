@@ -1,31 +1,31 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { IUser } from 'src/libs/client/useUser';
-import useSWR from 'swr';
+import getUserName from '../../pages/api/study/getUserName';
 import { COLOR } from '../../constants';
 
-export const Member = () => {
-  const { data } = useSWR<IUser>('/api/users');
-  const maxNumber = 10;
-  //
+interface props {
+  memberlist?: any;
+  memberslimit?: number|string;
+}
+
+export const Member = ( {
+  memberlist,
+  memberslimit }: props ) => {
+
   return (
     <Container>
       <Title>스터디원</Title>
-      <SubTitle>People</SubTitle>
+      <SubTitle>Members</SubTitle>
       <Contents>
         <MemberLength>
-          <strong>{data?.userCount}</strong>/{maxNumber}
+          <strong>{memberlist?.length}</strong>/{memberslimit}
         </MemberLength>
         <MemberDetail>
-          {data?.users?.map((member) => (
-            <Link key={member.id} href={`/users/profile/${member.id}`}>
-              <a>
-                <MemberList>
-                  <Img src="/images/profile.svg" alt="스터디원 이미지" />
-                  <p>{member.username}</p>
-                </MemberList>
-              </a>
-            </Link>
+          {memberlist?.map((member: string) => (
+            <MemberList key={member}>
+              <Img src="/images/profile.svg" alt="스터디원 이미지" />
+              <p>{member}</p>
+            </MemberList>
           ))}
         </MemberDetail>
       </Contents>
@@ -36,6 +36,7 @@ export const Member = () => {
 const Container = styled.section`
   position: relative;
   padding: 48px 24px 16px;
+  min-height: 250px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
     content: '';
@@ -104,6 +105,7 @@ const MemberLength = styled.p`
 const MemberDetail = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 32px;
   @media (max-width: 1024px) {
     justify-content: space-evenly;
