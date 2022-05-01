@@ -1,24 +1,31 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
+import useSWR from 'swr';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { title, completed } = req.body;
+  const { title, studyId } = req.body;
   
   if (req.method === 'GET') {
-    const todo = await client.todo.findMany();
-    return res.json({ ok: true, todo });
+    const studyTodo = await client.studyTodo.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return res.json({ ok: true, studyTodo });
   }
 
   if (req.method === 'POST') {
-    const todo = await client.todo.create({
+    const studyTodo = await client.studyTodo.create({
       data: {
         title,
-        completed,
+        study: {
+          connect: { id: studyId },
+        },
+        // user: {
+        //   connect: { id: userid},
+        // }
       },
     });
-
-    return res.json({ ok: true, todo });
+    return res.json({ ok: true, studyTodo });
   }
 }
 
