@@ -4,7 +4,7 @@ import { Btn, Error, H1, InputWrap, ModalCont } from 'src/styles/components';
 
 interface IScheduleForm {
   title: string;
-  date?: string;
+  date: string;
   content?: string;
 }
 export const ScheduleModal = () => {
@@ -39,7 +39,13 @@ export const ScheduleModal = () => {
               <Error className="error">{errors.title.message}</Error>
             )}
 
-            <input {...register('date')} type="date" />
+            <input
+              {...register('date', { required: '날짜를 선택해주세요.' })}
+              type="date"
+            />
+            {errors.date && (
+              <Error className="error">{errors.date.message}</Error>
+            )}
 
             <textarea
               {...register('content')}
