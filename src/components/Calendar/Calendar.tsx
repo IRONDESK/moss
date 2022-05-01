@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import { ScheduleModal } from './ScheduleModal';
 
 export const Calendar = ({ studyData }: any) => {
   const [date, setdate] = useState<moment.Moment>(() => moment());
+  //일정모달
+  const [modal, setModal] = useState(false);
+  const handleDayClick = (current: moment.Moment) => {
+    setdate(current);
+    setModal((value) => !value);
+  };
 
-  const handleDayClick = (current: moment.Moment) => setdate(current);
   const returnToday = () => setdate(moment());
   const jumpToMonth = (num: number) =>
     num
@@ -88,6 +94,7 @@ export const Calendar = ({ studyData }: any) => {
 
   return (
     <>
+      {modal ? <ScheduleModal /> : null}
       <div>
         <CalendarHead>
           <div className="head">

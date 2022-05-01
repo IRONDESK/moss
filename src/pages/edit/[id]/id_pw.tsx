@@ -11,7 +11,7 @@ import {
   H1,
   InputWrap,
   Message,
-} from 'src/styles/componentsStyles';
+} from 'src/styles/components';
 import { IEditForm } from 'src/types/edit';
 
 export default function User() {

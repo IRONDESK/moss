@@ -75,6 +75,7 @@ export const InputWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  textarea,
   input {
     padding: 16px;
     width: 100%;
@@ -91,7 +92,7 @@ export const InputWrap = styled.div`
   }
 `;
 
-export const Container = styled.section`
+export const DefaultCont = styled.section`
   padding: 10px;
   margin: 100px auto;
   width: 400px;
@@ -102,6 +103,40 @@ export const Container = styled.section`
     margin: 10px auto;
     padding: 0 20px;
   }
+`;
+
+export const ModalCont = styled(DefaultCont)`
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+  width: 500px;
+  /* height: 400px; */
+  padding-top: 50px;
+  padding-bottom: 10px;
+  padding: 50px 20px 20px;
+  border: 2px solid ${COLOR.gray};
+  background-color: white;
+
+  div {
+    input,
+    textarea,
+    button {
+      font-size: 18px;
+    }
+    input,
+    textarea {
+      border: 1px solid ${COLOR.darkergray};
+      font-family: 'Gmarket Sans';
+    }
+    textarea {
+      height: 150px;
+    }
+  }
+`;
+
+export const Container = styled(DefaultCont)`
   select {
     height: 48px;
     text-align: center;

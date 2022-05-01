@@ -16,7 +16,7 @@ import {
   InputWrap,
   Message,
   ProfileImg,
-} from 'src/styles/componentsStyles';
+} from 'src/styles/components';
 
 export default function Join() {
   //POST

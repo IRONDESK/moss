@@ -6,6 +6,7 @@ export const COLOR = {
   white: '#FFF',
   grayText: '#B7B6B3',
   gray: '#E7E6E2',
+  darkergray: '#bdc3c7',
   deepGray: '#666',
   placeHolderText: '#AAA',
   error: '#FF3636',
