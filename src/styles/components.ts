@@ -63,6 +63,14 @@ export const Error = styled.div`
   font-size: 14px;
 `;
 
+export const Blank = styled(Error)`
+  &:first-of-type {
+    display: block;
+  }
+  font-size: 20px;
+  display: none;
+`;
+
 export const Message = styled(Error)`
   background: none;
   color: ${COLOR.main};
@@ -75,6 +83,7 @@ export const InputWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  textarea,
   input {
     padding: 16px;
     width: 100%;
@@ -91,7 +100,7 @@ export const InputWrap = styled.div`
   }
 `;
 
-export const Container = styled.section`
+export const DefaultCont = styled.section`
   padding: 10px;
   margin: 100px auto;
   width: 400px;
@@ -102,6 +111,142 @@ export const Container = styled.section`
     margin: 10px auto;
     padding: 0 20px;
   }
+`;
+
+export const CloseBtn = styled.button`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+export const BtnWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  button {
+    width: 100%;
+  }
+`;
+
+export const SelectBtn = styled.button`
+  margin-top: 25px;
+  font-size: 20px;
+  position: relative;
+`;
+
+export const Circle = styled.div`
+  position: absolute;
+  right: 50%;
+  bottom: -30%;
+  transform: translate(-50%);
+  //
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: ${COLOR.main};
+`;
+
+const Modal = styled.article`
+  border: 2px solid ${COLOR.gray};
+  background-color: white;
+  width: 600px;
+  padding: 20px;
+`;
+
+export const SchCont = styled(Modal)`
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  transform: translate(-350px, 350px);
+  //
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  //
+`;
+
+export const AfterModal = styled(SchCont)`
+  gap: 10px;
+  div {
+    font-size: 30px;
+  }
+`;
+
+export const CreatedSch = styled.article`
+  width: 100%;
+  padding-top: 30px;
+  h1 {
+    margin: 0 auto 10px;
+  }
+`;
+
+export const CreateSch = styled(CreatedSch)`
+  form {
+    width: 100%;
+    div {
+      .error,
+      input,
+      textarea,
+      button {
+        font-size: 18px;
+      }
+      input,
+      textarea {
+        border: 1px solid ${COLOR.darkergray};
+        font-family: 'Gmarket Sans';
+      }
+      textarea {
+        height: 150px;
+      }
+    }
+  }
+`;
+
+export const ScheduleWrap = styled.div`
+  ul {
+    margin-bottom: 20px;
+  }
+`;
+
+export const ScheduleList = styled.ul`
+  border: 2px solid ${COLOR.darkergray};
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  h3 {
+    padding-left: 10px;
+    font-size: 20px;
+    font-style: italic;
+  }
+  li {
+    border-radius: 10px;
+    background-color: ${COLOR.gray};
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p {
+      font-size: 16px;
+      color: ${COLOR.deepGray};
+      span {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+  }
+`;
+
+export const Container = styled(DefaultCont)`
   select {
     height: 48px;
     text-align: center;

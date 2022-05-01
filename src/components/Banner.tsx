@@ -46,7 +46,7 @@ const BannerPage = styled.section`
     color: ${COLOR.black};
   }
   .banner-des {
-    font-family: 'Noto Sans KR';
+    font-family: 'Noto Sans KR', sans-serif;
     line-height: 23px;
     color: ${COLOR.deepGray};
   }

@@ -31,7 +31,7 @@
 }
 
 @font-face {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: '', sans-serif;
   font-style: normal;
   font-weight: 400;
   src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap')
@@ -39,17 +39,16 @@
 }
 
 @font-face {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: '', sans-serif;
   font-style: bold;
   font-weight: 700;
   src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap')
     format('woff2');
 }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
 html,
 body {
-  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
   font-family: 'Gmarket Sans';
 }
 

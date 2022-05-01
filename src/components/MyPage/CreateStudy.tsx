@@ -10,7 +10,7 @@ import {
   Error,
   ImgLabel,
   ProfileImg,
-} from 'src/styles/componentsStyles';
+} from 'src/styles/components';
 import { studyForm, StudyModal } from 'src/types/study';
 import useUser from 'src/libs/client/useUser';
 

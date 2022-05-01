@@ -1,5 +1,5 @@
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { Error } from '../../../styles/componentsStyles';
+import { Error } from '../../../styles/components';
 
 export default function Input({
   name,

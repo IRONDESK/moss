@@ -16,7 +16,7 @@ import {
   InputWrap,
   Message,
   ProfileImg,
-} from 'src/styles/componentsStyles';
+} from 'src/styles/components';
 import { IEditResponse } from 'src/types/edit';
 import { joinForm } from 'src/types/join';
 
