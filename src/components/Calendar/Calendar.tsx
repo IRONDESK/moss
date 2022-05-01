@@ -5,14 +5,18 @@ import { COLOR } from 'src/constants';
 import { ScheduleModal } from './ScheduleModal';
 
 export const Calendar = ({ studyData }: any) => {
-  const [date, setdate] = useState<moment.Moment>(() => moment());
+  const [date, setdate] = useState<moment.Moment>(moment());
+  const [onDate, setOnDate] = useState('');
+
   //일정모달
   const [modal, setModal] = useState(false);
   const handleDayClick = (current: moment.Moment) => {
     setdate(current);
     setModal((value) => !value);
+    setOnDate(date.format('YYYY-MM-DD'));
   };
-
+  console.log(onDate);
+  //달력
   const returnToday = () => setdate(moment());
   const jumpToMonth = (num: number) =>
     num
@@ -91,10 +95,10 @@ export const Calendar = ({ studyData }: any) => {
 
     return calendar;
   }
-
+  //
   return (
     <>
-      {modal ? <ScheduleModal /> : null}
+      {modal ? <ScheduleModal date={onDate} /> : null}
       <div>
         <CalendarHead>
           <div className="head">

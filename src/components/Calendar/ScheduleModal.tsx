@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { Schedule } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
@@ -15,13 +15,21 @@ import {
   SchCont,
   SelectBtn,
 } from 'src/styles/components';
+import useSWR from 'swr';
 
 interface IScheduleForm {
   title: string;
   date: string;
   content?: string;
 }
-export const ScheduleModal = () => {
+interface IScheduleModal {
+  date?: string;
+}
+interface IScheduleRes {
+  ok: boolean;
+  chosenSchedule: Schedule[];
+}
+export const ScheduleModal = ({ date }: IScheduleModal) => {
   //Toggle
   const [toggle, setToggle] = useState(false);
   const [type, setType] = useState('나의일정');
@@ -35,9 +43,9 @@ export const ScheduleModal = () => {
     setType('나의일정');
   };
 
-  //POST
-  const [createSch, { data, loading }] = useMutation(`/api/schedule/create`);
-  console.log(data);
+  //API
+  const [createSch, { data, loading }] = useMutation(`/api/schedule`);
+  const { data: getData } = useSWR<IScheduleRes>(`/api/schedule`);
 
   //FORM SUBMIT
   const {
@@ -45,9 +53,10 @@ export const ScheduleModal = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IScheduleForm>();
-  const onValid = (data: IScheduleForm) => {
+
+  const onValid = (formData: IScheduleForm) => {
     if (loading) return;
-    return createSch(data);
+    return createSch(formData);
   };
   //
   return (
@@ -73,6 +82,19 @@ export const ScheduleModal = () => {
               <H1>
                 <span>나의 일정</span>
               </H1>
+              {getData?.chosenSchedule?.map((info) => (
+                <ul key={info.id}>
+                  <li>
+                    <h2>{info.date}</h2>
+                  </li>
+                  <li>
+                    <p>{info.title}</p>
+                  </li>
+                  <li>
+                    <p>{info.content}</p>
+                  </li>
+                </ul>
+              ))}
             </CreatedSch>
           ) : (
             <CreateSch>
@@ -81,6 +103,7 @@ export const ScheduleModal = () => {
               </H1>
               <form onSubmit={handleSubmit(onValid)}>
                 <InputWrap>
+                  <input {...register('date')} type="date" value={date} />
                   <input
                     {...register('title', { required: '제목을 입력해주세요.' })}
                     type="text"
@@ -89,15 +112,6 @@ export const ScheduleModal = () => {
                   {errors.title && (
                     <Error className="error">{errors.title.message}</Error>
                   )}
-
-                  <input
-                    {...register('date', { required: '날짜를 선택해주세요.' })}
-                    type="date"
-                  />
-                  {errors.date && (
-                    <Error className="error">{errors.date.message}</Error>
-                  )}
-
                   <textarea
                     {...register('content')}
                     placeholder="일정내용을 입력하세요"

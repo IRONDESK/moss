@@ -32,7 +32,7 @@ model User {
 model Schedule {
   id          Int         @id @default(autoincrement())  
   title       String
-  date        String?     
+  date        String     
   content     String?
   user        User        @relation(fields: [UserId], references: [id], onDelete: Cascade)
   UserId      Int
