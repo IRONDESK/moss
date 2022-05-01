@@ -28,17 +28,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.json({ ok: false, error: '필수데이터가 미입력 되었습니다.' });
   }
   if (req.method === 'GET') {
-    const chosenSchedule = await client.schedule.findMany({
+    //유저가 만든 모든 스케줄
+    const dailySchedule = await client.schedule.findMany({
       where: {
         user: { id: user?.id },
-        date,
       },
       include: {
         user: { select: { id: true, username: true } },
       },
     });
 
-    return res.json({ ok: true, chosenSchedule });
+    if (dailySchedule) {
+      return res.json({ ok: true, dailySchedule });
+    }
+
+    //
+    return res.json({ ok: false, message: '생성된 일정이 없습니다.' });
   }
 }
 

@@ -15,7 +15,7 @@ export const Calendar = ({ studyData }: any) => {
     setModal((value) => !value);
     setOnDate(date.format('YYYY-MM-DD'));
   };
-  console.log(onDate);
+
   //달력
   const returnToday = () => setdate(moment());
   const jumpToMonth = (num: number) =>

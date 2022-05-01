@@ -63,6 +63,14 @@ export const Error = styled.div`
   font-size: 14px;
 `;
 
+export const Blank = styled(Error)`
+  &:first-of-type {
+    display: block;
+  }
+  font-size: 20px;
+  display: none;
+`;
+
 export const Message = styled(Error)`
   background: none;
   color: ${COLOR.main};
@@ -145,8 +153,8 @@ export const Circle = styled.div`
 const Modal = styled.article`
   border: 2px solid ${COLOR.gray};
   background-color: white;
-  width: 500px;
-  padding: 30px;
+  width: 600px;
+  padding: 20px;
 `;
 
 export const SchCont = styled(Modal)`
@@ -154,20 +162,22 @@ export const SchCont = styled(Modal)`
   z-index: 100;
   top: 0;
   left: 0;
-  transform: translate(-50%, 50%);
+  transform: translate(-350px, 350px);
   //
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
   //
 `;
 
 export const CreatedSch = styled.article`
   width: 100%;
-  height: 400px;
   padding-top: 30px;
+  h1 {
+    margin: 0 auto 10px;
+  }
 `;
 
 export const CreateSch = styled(CreatedSch)`
@@ -187,6 +197,43 @@ export const CreateSch = styled(CreatedSch)`
       }
       textarea {
         height: 150px;
+      }
+    }
+  }
+`;
+
+export const ScheduleWrap = styled.div`
+  ul {
+    margin-bottom: 20px;
+  }
+`;
+
+export const ScheduleList = styled.ul`
+  border: 2px solid ${COLOR.darkergray};
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  h3 {
+    padding-left: 10px;
+    font-size: 20px;
+    font-style: italic;
+  }
+  li {
+    border-radius: 10px;
+    background-color: ${COLOR.gray};
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    p {
+      font-size: 16px;
+      color: ${COLOR.deepGray};
+      span {
+        font-size: 18px;
+        font-weight: 500;
       }
     }
   }

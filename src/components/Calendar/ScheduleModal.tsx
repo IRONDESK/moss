@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import {
+  Blank,
   Btn,
   BtnWrap,
   Circle,
@@ -13,6 +14,8 @@ import {
   H1,
   InputWrap,
   SchCont,
+  ScheduleList,
+  ScheduleWrap,
   SelectBtn,
 } from 'src/styles/components';
 import useSWR from 'swr';
@@ -27,7 +30,7 @@ interface IScheduleModal {
 }
 interface IScheduleRes {
   ok: boolean;
-  chosenSchedule: Schedule[];
+  dailySchedule: Schedule[];
 }
 export const ScheduleModal = ({ date }: IScheduleModal) => {
   //Toggle
@@ -44,8 +47,9 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
   };
 
   //API
-  const [createSch, { data, loading }] = useMutation(`/api/schedule`);
-  const { data: getData } = useSWR<IScheduleRes>(`/api/schedule`);
+  const [createSchedule, { data, loading }] = useMutation(`/api/schedule`);
+
+  const { data: givenData } = useSWR<IScheduleRes>(`/api/schedule`);
 
   //FORM SUBMIT
   const {
@@ -56,9 +60,9 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
 
   const onValid = (formData: IScheduleForm) => {
     if (loading) return;
-    return createSch(formData);
+    return createSchedule(formData);
   };
-  //
+
   return (
     <>
       {!toggle && (
@@ -79,22 +83,29 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
 
           {type === '나의일정' ? (
             <CreatedSch>
-              <H1>
-                <span>나의 일정</span>
-              </H1>
-              {getData?.chosenSchedule?.map((info) => (
-                <ul key={info.id}>
-                  <li>
-                    <h2>{info.date}</h2>
-                  </li>
-                  <li>
-                    <p>{info.title}</p>
-                  </li>
-                  <li>
-                    <p>{info.content}</p>
-                  </li>
-                </ul>
-              ))}
+              <ScheduleWrap>
+                <H1>
+                  <span>{date}</span>
+                </H1>
+                {givenData?.dailySchedule?.map((info) => (
+                  <div key={info.id}>
+                    {info.date === date && (
+                      <ScheduleList>
+                        <h3>
+                          <span>제목: </span>
+                          {info.title}
+                        </h3>
+                        <li>
+                          <p>
+                            <span>내용: </span>
+                            {info.content}
+                          </p>
+                        </li>
+                      </ScheduleList>
+                    )}
+                  </div>
+                ))}
+              </ScheduleWrap>
             </CreatedSch>
           ) : (
             <CreateSch>
