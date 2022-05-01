@@ -172,6 +172,13 @@ export const SchCont = styled(Modal)`
   //
 `;
 
+export const AfterModal = styled(SchCont)`
+  gap: 10px;
+  div {
+    font-size: 30px;
+  }
+`;
+
 export const CreatedSch = styled.article`
   width: 100%;
   padding-top: 30px;

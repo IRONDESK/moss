@@ -1,9 +1,8 @@
-import { Schedule } from '@prisma/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import {
-  Blank,
+  AfterModal,
   Btn,
   BtnWrap,
   Circle,
@@ -13,31 +12,29 @@ import {
   Error,
   H1,
   InputWrap,
+  Message,
   SchCont,
   ScheduleList,
   ScheduleWrap,
   SelectBtn,
 } from 'src/styles/components';
+import {
+  IScheduleForm,
+  IScheduleModal,
+  IScheduleRes,
+} from 'src/types/schedule';
 import useSWR from 'swr';
 
-interface IScheduleForm {
-  title: string;
-  date: string;
-  content?: string;
-}
-interface IScheduleModal {
-  date?: string;
-}
-interface IScheduleRes {
-  ok: boolean;
-  dailySchedule: Schedule[];
-}
 export const ScheduleModal = ({ date }: IScheduleModal) => {
   //Toggle
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
+  const [afterModal, setAfterModal] = useState(false);
   const [type, setType] = useState('나의일정');
   const closeModal = () => {
     setToggle((value) => !value);
+  };
+  const closeAfterModal = () => {
+    setAfterModal((value) => !value);
   };
   const createNew = () => {
     setType('새로운일정');
@@ -48,7 +45,6 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
 
   //API
   const [createSchedule, { data, loading }] = useMutation(`/api/schedule`);
-
   const { data: givenData } = useSWR<IScheduleRes>(`/api/schedule`);
 
   //FORM SUBMIT
@@ -60,12 +56,29 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
 
   const onValid = (formData: IScheduleForm) => {
     if (loading) return;
-    return createSchedule(formData);
+    //api 전송하고
+    createSchedule(formData);
+    //모달창 닫고
+
+    //확인메시지 모달창 열고
   };
+
+  useEffect(() => {
+    if (data?.ok) {
+      setToggle(false);
+      setAfterModal(true);
+    }
+  }, [data]);
 
   return (
     <>
-      {!toggle && (
+      {afterModal && (
+        <AfterModal>
+          <Message>{data?.message}</Message>
+          <Btn onClick={closeAfterModal}>확인</Btn>
+        </AfterModal>
+      )}
+      {toggle && (
         <SchCont>
           <CloseBtn onClick={closeModal}>
             <img src="images/close.svg" alt="x 버튼" />
@@ -127,7 +140,7 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
                     {...register('content')}
                     placeholder="일정내용을 입력하세요"
                   />
-                  <Btn>일정 기록하기</Btn>
+                  <Btn>{loading ? '로딩중...' : '일정 기록하기'}</Btn>
                 </InputWrap>
               </form>
             </CreateSch>
