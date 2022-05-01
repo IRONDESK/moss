@@ -105,6 +105,16 @@ export const DefaultCont = styled.section`
   }
 `;
 
+export const CloseBtn = styled.button`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
 export const ModalCont = styled(DefaultCont)`
   position: absolute;
   z-index: 999;
