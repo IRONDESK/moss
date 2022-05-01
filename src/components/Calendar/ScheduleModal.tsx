@@ -1,9 +1,26 @@
 import { useForm } from 'react-hook-form';
-import { Btn, H1, InputWrap, ModalCont } from 'src/styles/components';
+import useMutation from 'src/libs/client/useMutation';
+import { Btn, Error, H1, InputWrap, ModalCont } from 'src/styles/components';
 
+interface IScheduleForm {
+  title: string;
+  date?: string;
+  content?: string;
+}
 export const ScheduleModal = () => {
-  const { register } = useForm();
-
+  //POST
+  const [createSch, { data, loading, error }] =
+    useMutation(`/api/schedule/create`);
+  //
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IScheduleForm>();
+  const onValid = (data: IScheduleForm) => {
+    console.log(data);
+    createSch(data);
+  };
   //
   return (
     <>
@@ -11,14 +28,19 @@ export const ScheduleModal = () => {
         <H1>
           <span>캘린더 일정</span>
         </H1>
-        <form>
+        <form onSubmit={handleSubmit(onValid)}>
           <InputWrap>
-            <input {...register('date')} type="date" />
             <input
-              {...register('title')}
+              {...register('title', { required: '제목을 입력해주세요.' })}
               type="text"
               placeholder="제목을 입력하세요"
             />
+            {errors.title && (
+              <Error className="error">{errors.title.message}</Error>
+            )}
+
+            <input {...register('date')} type="date" />
+
             <textarea
               {...register('content')}
               placeholder="일정내용을 입력하세요"

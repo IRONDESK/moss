@@ -112,14 +112,11 @@ export const ModalCont = styled(DefaultCont)`
   left: 0;
   transform: translate(-50%, 50%);
   width: 500px;
-  /* height: 400px; */
-  padding-top: 50px;
-  padding-bottom: 10px;
-  padding: 50px 20px 20px;
+  padding: 70px 10px 30px;
   border: 2px solid ${COLOR.gray};
   background-color: white;
-
   div {
+    .error,
     input,
     textarea,
     button {
