@@ -115,30 +115,79 @@ export const CloseBtn = styled.button`
   }
 `;
 
-export const ModalCont = styled(DefaultCont)`
+export const BtnWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  button {
+    width: 100%;
+  }
+`;
+
+export const SelectBtn = styled.button`
+  margin-top: 25px;
+  font-size: 20px;
+  position: relative;
+`;
+
+export const Circle = styled.div`
   position: absolute;
-  z-index: 999;
+  right: 50%;
+  bottom: -30%;
+  transform: translate(-50%);
+  //
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: ${COLOR.main};
+`;
+
+const Modal = styled.article`
+  border: 2px solid ${COLOR.gray};
+  background-color: white;
+  width: 500px;
+  padding: 30px;
+`;
+
+export const SchCont = styled(Modal)`
+  position: absolute;
+  z-index: 100;
   top: 0;
   left: 0;
   transform: translate(-50%, 50%);
-  width: 500px;
-  padding: 70px 10px 30px;
-  border: 2px solid ${COLOR.gray};
-  background-color: white;
-  div {
-    .error,
-    input,
-    textarea,
-    button {
-      font-size: 18px;
-    }
-    input,
-    textarea {
-      border: 1px solid ${COLOR.darkergray};
-      font-family: 'Gmarket Sans';
-    }
-    textarea {
-      height: 150px;
+  //
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  //
+`;
+
+export const CreatedSch = styled.article`
+  width: 100%;
+  height: 400px;
+  padding-top: 30px;
+`;
+
+export const CreateSch = styled(CreatedSch)`
+  form {
+    width: 100%;
+    div {
+      .error,
+      input,
+      textarea,
+      button {
+        font-size: 18px;
+      }
+      input,
+      textarea {
+        border: 1px solid ${COLOR.darkergray};
+        font-family: 'Gmarket Sans';
+      }
+      textarea {
+        height: 150px;
+      }
     }
   }
 `;
