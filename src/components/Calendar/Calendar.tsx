@@ -110,16 +110,16 @@ export const Calendar = ({ studyData }: any) => {
             <div className="util-button">
               <button onClick={returnToday}>Today</button>
               <button className="prev" onClick={() => jumpToMonth(0)}>
-                &lt;
+                <span>이전</span>
               </button>
               <button className="next" onClick={() => jumpToMonth(1)}>
-                &gt;
+                <span>이후</span>
               </button>
             </div>
           </div>
         </CalendarHead>
         <CalendarBody>
-          <div className="row">
+          <div className="row week">
             {['일', '월', '화', '수', '목', '금', '토'].map((el) => (
               <div className="box" key={el}>
                 <span className="text">{el}</span>
@@ -137,6 +137,7 @@ const CalendarHead = styled.div`
   .head {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 16px;
   }
   .title {
     font-size: 24px;
@@ -144,16 +145,45 @@ const CalendarHead = styled.div`
       font-weight: bold;
     }
   }
+  .prev,
+  .next {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    font-size: 10px;
+    padding: 0;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+  .prev::before {
+    background: #fff url(./images/arrow-left.svg) no-repeat 50% 50% / cover;
+  }
+  .next::before {
+    background: #fff url(./images/arrow-right.svg) no-repeat 50% 50% / cover;
+  }
 `;
 const CalendarBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  .week {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
   .row {
     display: flex;
     justify-content: space-around;
     align-items: center;
     gap: 8px;
+    font-size: 14px;
     .box {
       display: flex;
       align-items: center;
@@ -163,6 +193,7 @@ const CalendarBody = styled.div`
       border-radius: 50%;
       position: relative;
       border: 1px solid transparent;
+
       &.selected {
         border: 1px solid ${COLOR.main};
       }
