@@ -6,7 +6,7 @@ import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
 
-export const StudyComponents = ( { studyinfo }:any ) => {
+export const StudyComponents = ({ studyinfo }: any) => {
   const [token, setToken] = useState(true);
   useEffect(() => {
     const Token = localStorage.getItem('Token');
@@ -16,19 +16,18 @@ export const StudyComponents = ( { studyinfo }:any ) => {
   });
   const getToken = (Token: string) => {
     setToken(true);
-    console.log(Token);
   };
-  
+
   return (
     <>
       {token ? (
         <Container>
           <Record />
-          <TodoList studyId={studyinfo?.id}/>
-          <Notice />
+          <TodoList studyId={studyinfo?.id} />
+          <Notice studyId={studyinfo?.id} />
           <Member
-          memberslimit={studyinfo?.membersLimit}
-          memberlist={studyinfo?.joinMember}
+            memberslimit={studyinfo?.membersLimit}
+            memberlist={studyinfo?.joinMember}
           />
         </Container>
       ) : (
@@ -42,7 +41,7 @@ export const StudyComponents = ( { studyinfo }:any ) => {
           <Blur>
             <Container>
               <Record />
-              <TodoList studyId={studyinfo?.id}/>
+              <TodoList studyId={studyinfo?.id} />
               <Notice />
               <Member />
             </Container>
