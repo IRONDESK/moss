@@ -7,14 +7,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {id, title, completed} = req.body
 
   if(req.method === 'POST') {
-    const todo = await client.todo.findUnique({
+    const todo = await client.studyTodo.findUnique({
       where: {
         id: id
       }
     })
 
     if(todo) {
-      const editTodo = await client.todo.update({
+      const editTodo = await client.studyTodo.update({
         where: {
           id: todo.id,
         },

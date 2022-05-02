@@ -6,14 +6,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.body;
 
   if (req.method === 'POST') {
-    const todo = await client.todo.findUnique({
+    const todo = await client.studyTodo.findUnique({
       where: {
         id: id,
       },
     });
 
     if (todo) {
-      const delTodo = await client.todo.delete({
+      const delTodo = await client.studyTodo.delete({
         where: {
           id: todo.id,
         },

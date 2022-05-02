@@ -1,36 +1,35 @@
 import styled from '@emotion/styled';
+import { css } from "@emotion/react";
+import { Study } from '@prisma/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
 import useSWR from 'swr';
-import { BrandsInformationPage } from 'twilio/lib/rest/preview/trusted_comms/brandsInformation';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
+import useUser from 'src/libs/client/useUser';
 
-interface Data {
-  [todo: string] : TodoData[]
-}
-
-interface Todo {
-  title: string,
-  completed: boolean
-}
-
-export const TodoList = () => {
-
-  const { data, mutate } = useSWR<any>('/api/todo');
-
-  // console.log(data);
+export const TodoList = ({studyId}: number | any ) => {
   
-  const [tit, setTit] = useState("")
+  const router = useRouter()
+
+  // const { loggedInUser } = useUser();
 
   const [item] = useMutation('/api/todo');
+  const { data, mutate } = useSWR<any>('/api/todo');
+  // const { data } = useSWR(`api/study/my_study`);
 
-  const [todoList, setTodoList] = useState<Todo[]>([
+  console.log(data);
+
+  const [todoList, setTodoList] = useState<TodoData[]>([
     {
+      id: 0,
       title: "",
       completed: false,
+      createdAt: "",
+      updatedAt: "",
+      studyId: 0
     },
   ]);
 
@@ -42,48 +41,63 @@ export const TodoList = () => {
     setIsTodo(true);
   };
 
-  const onValid = (todoItem: Todo) => {
-    item(todoItem);
+  const createTodo = (todo: any) => {
+    item(todo);
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTodoList([...todoList, { title: todo, completed: false }]);
-    onValid({ title: todo, completed: false });
+    createTodo({title: todo, studyId: studyId});
+    // createTodo({title: todo, studyId: studyId, userId: loggedInUser});
     setTodo('');
     setIsTodo(false);
-    mutate({...data, title: todo}, false);
-    // history.go('/my-page');
+    router.reload();
   };
 
   
   useEffect(() => {
     if(data) {
-      setTit(data?.title)
+      setTodoList(data.studyTodo)
     }
   }, [data]);
 
   return (
-    <Container>
-      <Title>오늘의 할일</Title>
-      <SubTitle>Todo List</SubTitle>
-      <ItemList todoList={todoList}>
-        <span>{data?.title}</span>
-        <ul>
-          {data?.todo?.map((todoItem: TodoData, index: number) => {
+    <>
+    {!studyId && <MyPageTitle>오늘의 할 일</MyPageTitle>}
+    <Container studyId={studyId}>
+      {studyId ? (
+        <>
+          <Title>오늘의 할일</Title>
+          <SubTitle>Todo List</SubTitle>
+        </>
+      ) : (
+        <>
+          <TagBox>
+          {data?.studyTodo?.map((todoItem: TodoData) => {
             return (
-              <TodoItem
-                key={index}
-                tit={tit}
-                todoItem={todoItem}
-                todoList={data?.todo}
-                setTodoList={setTodoList}
-              />
-            );
+              <ItemTag>{todoItem.studyId}</ItemTag>
+            )
           })}
-          {data?.title && <TodoItem tit={tit} todoItem={data.todo[0]} todoList={data.todo} setTodoList={setTodoList}/>}
-        </ul>
-      </ItemList>
+          </TagBox>
+        </>
+      )}
+      {data && (
+        <ItemList todoList={data?.studyTodo}>
+          <ul>
+            {/* {data?.title && <TodoItem todoItem={tit} todoList={data.todo} setTodoList={setTodoList}/>} */}
+            {data?.studyTodo?.map((todoItem: TodoData, index: number) => {
+              return (
+                <TodoItem
+                  key={index}
+                  studyId={studyId}
+                  todoItem={todoItem}
+                  todoList={data?.studyTodo}
+                />
+              );
+            })}
+          </ul>
+        </ItemList>
+      )}
       <Form onSubmit={onSubmit}>
         <label>
           <Input
@@ -98,22 +112,42 @@ export const TodoList = () => {
         </Btn>
       </Form>
     </Container>
+    </>
   );
 };
 
-const Container = styled.section`
-  position: relative;
-  padding: 48px 24px 16px;
-  border: 1px solid ${COLOR.boxBorder};
-  &::after {
+const MyPageTitle = styled.h2`
+  display: flex;
+  margin: 35px 0 0 0;
+  font-size: 24px;
+  &:before {
     content: '';
-    position: absolute;
-    top: 0;
-    left: 32px;
-    width: 40px;
-    height: 48px;
-    background: ${COLOR.main} url('/images/todoCheck.svg') no-repeat 50% 70%;
+    display: block;
+    margin-right: 11px;
+    width: 5px;
+    height: 28px;
+    background: url('./images/icons/titleBar.png');
   }
+`
+
+const Container = styled.section<{ studyId: number }>`
+  position: relative;
+  padding: 16px 24px 16px;
+  border: 1px solid ${COLOR.boxBorder};
+  ${props => props.studyId && (
+    css`
+      padding: 48px 24px 16px;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 32px;
+        width: 40px;
+        height: 48px;
+        background: ${COLOR.main} url('/images/todoCheck.svg') no-repeat 50% 70%;
+      }
+    `
+  )}
 `;
 
 const Title = styled.h2`
@@ -130,6 +164,20 @@ const SubTitle = styled.span`
   line-height: 24px;
 `;
 
+const TagBox = styled.div`
+  display: flex;
+`
+
+const ItemTag = styled.span`
+  display: block;
+  padding: 2px 11px;
+  border: 1px solid ${COLOR.placeHolderText};
+  border-radius: 13px;
+  margin-right: 8px;
+  text-align: start;
+  font-size: 14px;
+`
+
 const Form = styled.form`
   display: flex;
   gap: 8px;
@@ -142,7 +190,7 @@ const Form = styled.form`
   }
 `;
 
-const ItemList = styled.article<{ todoList: Todo[] }>`
+const ItemList = styled.article<{ todoList: TodoData[] }>`
   padding-right: 10px;
   height: 200px;
   overflow-y: scroll;
@@ -155,7 +203,7 @@ const ItemList = styled.article<{ todoList: Todo[] }>`
     border-radius: 6px;
   }
   &::-webkit-scrollbar-track {
-    background: ${(props) => props.todoList.length > 3 && COLOR.gray};
+    background: ${(props) => props.todoList?.length > 3 && COLOR.gray};
     border-radius: 6px;
   }
   ul li {
