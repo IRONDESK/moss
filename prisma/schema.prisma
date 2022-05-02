@@ -40,7 +40,7 @@ model Schedule {
   UserId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+}
 
 model Token {
   id        Int      @id @default(autoincrement())
@@ -67,7 +67,7 @@ model Study {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   StudyTodo    StudyTodo[]
-
+}
 
 model Todo {
   id        Int       @id @default(autoincrement())
