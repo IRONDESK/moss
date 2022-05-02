@@ -4,4 +4,5 @@ export interface TodoData {
   completed: boolean
   createdAt: string
   updatedAt: string
+  studyId: number
 }

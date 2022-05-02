@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
-import useSWR from 'swr';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 
@@ -11,17 +11,17 @@ interface Todo {
 }
 
 interface TodoList {
-  tit: string
+  studyId: number
   todoItem: TodoData
   todoList: TodoData[]
-  setTodoList: (todoList: Todo[]) => void
 }
 
-export const TodoItem = ({tit, todoItem, todoList, setTodoList}: TodoList) => {
+export const TodoItem = ({studyId, todoItem, todoList}: TodoList) => {
+
+   const router = useRouter() 
 
   const [del] = useMutation('/api/todo/delTodo');
   const [edit] = useMutation('/api/todo/editTodo');
-  
 
   const [editTodo, setEditTodo] = useState(todoItem.title)
   const [isEdit, setIsEdit] = useState(false)
@@ -33,65 +33,100 @@ export const TodoItem = ({tit, todoItem, todoList, setTodoList}: TodoList) => {
   }
 
   const todoCompleted = (id: number) => {
-    setTodoList(todoList.map(v => v.id === id ? {...v, completed: !v.completed} : v))
+    // setTodoList(todoList.map(v => v.id === id ? {...v, completed: !v.completed} : v))
     edit({id: id, title: editTodo, completed: !(todoList.filter(v => v.id === id && {...v, completed: !v.completed})[0].completed)})
+    router.reload();
   }
 
   const todoEdit = (id: number) => {
-    setTodoList(todoList.map(v => v.id === id ? {...v, title: editTodo} : v))
+    // setTodoList(todoList.map(v => v.id === id ? {...v, title: editTodo} : v))
     setIsEdit(!isEdit)
     edit({id: id, title: editTodo, completed: todoItem.completed})
-    if(editRef.current !== null) editRef.current.focus()
+    if(editRef.current !== null) {
+      editRef.current.focus()
+      router.reload();
+    }
   }
 
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
     if(e.key === 'Enter') {
       todoEdit(id)
       setIsEdit(false)
+      router.reload();
     }
   }
 
   const todoDelete = (id: number) => {
-    setTodoList(todoList.filter(v => v.id !== id))
+    // setTodoList(todoList.filter(v => v.id !== id))
     del(id)
+    router.reload();
   }
 
-  return (
-    <>
-    <Item >
-      <TitBox>
-        <DoneBtn onClick={() => todoCompleted(todoItem.id)} todoDone={todoItem.completed}/>
-        {isEdit ? (
-          <InputEdit 
-            type="text"
-            value={editTodo}
-            onChange={onChangeEdit}
-            ref={editRef}
-            onKeyPress={e => onKeyPress(e, todoItem.id)}
-            autoFocus
-          />
-        ) : (
-          <>
-          {tit ? (
-            <ItemTit todoDone={todoItem.completed}>{tit}</ItemTit>
-            ) : (
-            <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
-          )}
-          </>
+  useEffect(() => {
+  }, [])
+
+  if(studyId) {
+    return (
+      <>
+        {todoItem.studyId === studyId && (
+          <Item >
+            <TitBox>
+              <DoneBtn onClick={() => todoCompleted(todoItem.id)} todoDone={todoItem.completed}/>
+              {isEdit ? (
+                <InputEdit 
+                  type="text"
+                  value={editTodo}
+                  onChange={onChangeEdit}
+                  ref={editRef}
+                  onKeyPress={e => onKeyPress(e, todoItem.id)}
+                  autoFocus
+                />
+              ) : (
+                <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+              )}
+            </TitBox>
+            <BtnBox>
+              <UtilBtn util={'/images/edit.svg'} onClick={() => todoEdit(todoItem.id)}></UtilBtn>
+              <UtilBtn util={'/images/delete.svg'} onClick={() => todoDelete(todoItem.id)}></UtilBtn>
+            </BtnBox>
+          </Item>
         )}
-      </TitBox>
-      <BtnBox>
-        <UtilBtn util={'/images/edit.svg'} onClick={() => todoEdit(todoItem.id)}></UtilBtn>
-        <UtilBtn util={'/images/delete.svg'} onClick={() => todoDelete(todoItem.id)}></UtilBtn>
-      </BtnBox>
-    </Item>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Item >
+          <TitBox>
+            <DoneBtn onClick={() => todoCompleted(todoItem.id)} todoDone={todoItem.completed}/>
+            {isEdit ? (
+              <InputEdit 
+                type="text"
+                value={editTodo}
+                onChange={onChangeEdit}
+                ref={editRef}
+                onKeyPress={e => onKeyPress(e, todoItem.id)}
+                autoFocus
+              />
+            ) : (
+              <>
+              <ItemTag>{todoItem.studyId}</ItemTag>
+              <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+              </>
+            )}
+          </TitBox>
+          <BtnBox>
+            <UtilBtn util={'/images/edit.svg'} onClick={() => todoEdit(todoItem.id)}></UtilBtn>
+            <UtilBtn util={'/images/delete.svg'} onClick={() => todoDelete(todoItem.id)}></UtilBtn>
+          </BtnBox>
+        </Item>
+      </>
+    );
+  }
 };
 
-
 const Item = styled.li`
-  width: 626px;
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -117,7 +152,9 @@ const DoneBtn = styled.button<{todoDone: boolean}>`
 `
 
 const InputEdit = styled.input`
-  width: 512px;
+  /* width: 80%; */
+  word-break: break-all;
+  padding: 14px 5px;
   height: 48px;
   background: none;
   border: none;
@@ -130,15 +167,28 @@ const InputEdit = styled.input`
 
 const ItemTit = styled.span<{todoDone: boolean}>`
   display: block;
-  padding: 14px 0;
+  /* width: 80%; */
+  word-break: break-all;
+  padding: 14px 5px;
   text-align: start;
   font-size: 14px;
   color: ${props => props.todoDone && COLOR.placeHolderText};
   text-decoration: ${props => props.todoDone && `line-through`};
 `
 
+const ItemTag = styled.span`
+  display: block;
+  padding: 2px 11px;
+  border: 1px solid ${COLOR.placeHolderText};
+  border-radius: 13px;
+  margin-right: 8px;
+  text-align: start;
+  font-size: 14px;
+`
+
 const BtnBox = styled.div`
   margin: 6px;
+  width: 52px;
 `
 
 const UtilBtn = styled.button<{util: string}>`

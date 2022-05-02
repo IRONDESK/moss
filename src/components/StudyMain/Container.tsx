@@ -18,12 +18,13 @@ export const StudyComponents = ( { studyinfo }:any ) => {
     setToken(true);
     console.log(Token);
   };
+  
   return (
     <>
       {token ? (
         <Container>
           <Record />
-          <TodoList />
+          <TodoList studyId={studyinfo?.id}/>
           <Notice />
           <Member
           memberslimit={studyinfo?.membersLimit}
@@ -41,7 +42,7 @@ export const StudyComponents = ( { studyinfo }:any ) => {
           <Blur>
             <Container>
               <Record />
-              <TodoList />
+              <TodoList studyId={studyinfo?.id}/>
               <Notice />
               <Member />
             </Container>
