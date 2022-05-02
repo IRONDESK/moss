@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { COLOR } from 'src/constants';
 import { Button } from './Button';
 import { H } from './Title';
 
-export const Schedule = ({ onClick }: any) => {
+export const StudySchedule = ({ onClick }: any) => {
   return (
     <>
       <Modal className="modal">

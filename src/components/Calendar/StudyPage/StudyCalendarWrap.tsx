@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-
 import { useState } from 'react';
 import { COLOR } from 'src/constants';
-import { Calendar } from './Calendar';
 import { CalendarList } from './CalendarList';
-import { Schedule } from './Schedule';
+import { StudyCalendar } from './StudyCalendar';
+import { StudySchedule } from './StudySchedule';
 
 const studyData = [
   {
@@ -65,14 +64,14 @@ const studyData = [
   },
 ];
 
-export const CalendarComponents = () => {
+export const StudyCalendarWrap = () => {
   const [click, setClick] = useState(false);
   function onClick() {
     click ? setClick(false) : setClick(true);
   }
   return (
-    <Wrapper>
-      <Calendar studyData={studyData} />
+    <Container>
+      <StudyCalendar studyData={studyData} />
       <StudyListWrap>
         <h3>
           스터디 일정 <span>Calendar</span>
@@ -80,18 +79,20 @@ export const CalendarComponents = () => {
         <button type="button" className="btn" onClick={onClick}>
           일정 등록
         </button>
-        {click && <Schedule onClick={onClick} />}
+        {click && <StudySchedule onClick={onClick} />}
         <CalendarList studyData={studyData} />
       </StudyListWrap>
-    </Wrapper>
+    </Container>
   );
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
   gap: 24px;
   border: 1px solid #ddd;
   padding: 40px;
+  grid-column-start: 1;
+  grid-column-end: 3;
 
   & > div:first-child {
     padding-right: 24px;

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { StudyBanner } from '../../components/StudyMain/StudyBanner';
-import { StudyComponents } from '../../components/StudyMain/Container';
+import { StudyComponents } from '../../components/StudyMain/StudyComponents';
 import getInfo from '../api/study/getInfo';
 import { useEffect, useState } from 'react';
 

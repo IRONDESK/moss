@@ -5,8 +5,9 @@ import { Record } from './Record';
 import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
+import { StudyCalendarWrap } from '../Calendar/StudyPage/StudyCalendarWrap';
 
-export const StudyComponents = ( { studyinfo }:any ) => {
+export const StudyComponents = ({ studyinfo }: any) => {
   const [token, setToken] = useState(true);
   useEffect(() => {
     const Token = localStorage.getItem('Token');
@@ -18,18 +19,19 @@ export const StudyComponents = ( { studyinfo }:any ) => {
     setToken(true);
     console.log(Token);
   };
-  
+
   return (
     <>
       {token ? (
         <Container>
           <Record />
-          <TodoList studyId={studyinfo?.id}/>
+          <TodoList studyId={studyinfo?.id} />
           <Notice />
           <Member
-          memberslimit={studyinfo?.membersLimit}
-          memberlist={studyinfo?.joinMember}
+            memberslimit={studyinfo?.membersLimit}
+            memberlist={studyinfo?.joinMember}
           />
+          <StudyCalendarWrap />
         </Container>
       ) : (
         <>
@@ -42,7 +44,7 @@ export const StudyComponents = ( { studyinfo }:any ) => {
           <Blur>
             <Container>
               <Record />
-              <TodoList studyId={studyinfo?.id}/>
+              <TodoList studyId={studyinfo?.id} />
               <Notice />
               <Member />
             </Container>

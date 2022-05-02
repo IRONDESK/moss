@@ -3,7 +3,7 @@ import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
 
-export const Calendar = ({ studyData }: any) => {
+export const StudyCalendar = ({ studyData }: any) => {
   const [date, setdate] = useState<moment.Moment>(() => moment());
 
   const handleDayClick = (current: moment.Moment) => setdate(current);
