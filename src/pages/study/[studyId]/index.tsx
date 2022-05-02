@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { StudyBanner } from '../../components/StudyMain/StudyBanner';
-import { StudyComponents } from '../../components/StudyMain/Container';
-import getInfo from '../api/study/getInfo';
+import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
+import { StudyComponents } from '../../../components/StudyMain/Container';
+import getInfo from '../../api/study/getInfo';
 import { useEffect, useState } from 'react';
 
 interface studyForm {
@@ -19,6 +19,7 @@ interface studyForm {
 export default function StudyPage() {
   const router = useRouter();
   const { studyId } = router.query;
+  console.log(studyId);
   const loading: studyForm = {
     studyName: '',
     image: '',

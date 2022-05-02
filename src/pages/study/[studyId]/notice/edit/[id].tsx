@@ -1,26 +1,45 @@
 import styled from '@emotion/styled';
-import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
-import { COLOR } from '../../../constants';
+import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
+import { COLOR } from 'src/constants';
 import dynamic from 'next/dynamic';
 import useMutation from 'src/libs/client/useMutation';
-import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
-import { Button } from '../../../components/Notice/Button';
-import { NoticeData } from 'src/types/Notice';
-import React, { useState } from 'react';
+import { NoticeTitle } from 'src/components/Notice/NoticeTitle';
+import { Button } from 'src/components/Notice/Button';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import view from '../../../../api/notice/view';
 
 const PostEditor = dynamic(
-  () => import('../../../components/Notice/PostEditor'),
+  () => import('../../../../../components/Notice/PostEditor'),
   {
     ssr: false,
   },
 );
 
+interface NoticeData {
+  id: number;
+  category: string;
+  title: string;
+  content: string;
+}
+
 export default function NoticePage(): JSX.Element {
-  const [notice, { loading, data, error }] = useMutation('/api/notice');
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const router = useRouter();
+  const { id } = router.query;
+  const [beforeNotice, setBeforeNotice] = useState<NoticeData[]>([]);
+  const beforeNoticeData = view(id);
+  useEffect(() => {
+    setBeforeNotice(beforeNoticeData);
+  }, [beforeNoticeData]);
+
+  const [category, setCategory] = useState(
+    beforeNoticeData?.noticeData?.category,
+  );
+  const [title, setTitle] = useState(beforeNoticeData?.noticeData?.title);
+  const [content, setContent] = useState(beforeNoticeData?.noticeData?.content);
+
+  const [edit] = useMutation('/api/notice/edit');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -38,14 +57,14 @@ export default function NoticePage(): JSX.Element {
     setContent(editor);
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: any) => {
     setNoticeList(
-      (noticeList = [{ category: category, title: title, content: content }]),
+      (noticeList = [
+        { id: +id, category: category, title: title, content: content },
+      ]),
     );
-    console.log(noticeList);
     const data = noticeList;
-    notice(data);
-    reset();
+    edit(data);
   };
 
   const reset = () => {
@@ -53,7 +72,6 @@ export default function NoticePage(): JSX.Element {
     setCategory('');
     setTitle('');
     setContent('');
-    history.go('/study/notice');
   };
 
   return (
@@ -68,7 +86,7 @@ export default function NoticePage(): JSX.Element {
         link="#"
       />
       <NoticeTitle />
-      <NoticeForm onSubmit={onSubmit} action="/study/notice">
+      <NoticeForm onSubmit={onSubmit} action="/study/notice/">
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input
@@ -76,13 +94,8 @@ export default function NoticePage(): JSX.Element {
             list="category-list"
             id="input-category"
             name="category"
-            placeholder="최대 4자까지 입력할 수 있습니다."
+            placeholder={`${beforeNoticeData?.noticeData?.category}`}
           />
-          {/* <datalist id="category-list">
-            <option value="장소" />
-            <option value="미션" />
-            <option value="일반공지" />
-          </datalist> */}
         </div>
         <div className="list">
           <label htmlFor="input-title">제목</label>
@@ -92,6 +105,7 @@ export default function NoticePage(): JSX.Element {
             type="text"
             id="input-title"
             className="w100"
+            placeholder={`${beforeNoticeData?.noticeData?.title}`}
           />
         </div>
         <div className="list">
