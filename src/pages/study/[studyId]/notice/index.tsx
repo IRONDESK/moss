@@ -1,15 +1,18 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
-import { Button } from '../../../components/Notice/Button';
-import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
-import { COLOR } from '../../../constants';
-import { NoticeList } from '../../../components/Notice/NoticeList';
-import { NoticeData } from '../../../types/Notice';
+import { StudyBanner } from '../../../../components/StudyMain/StudyBanner';
+import { Button } from '../../../../components/Notice/Button';
+import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
+import { COLOR } from '../../../../constants';
+import { NoticeList } from '../../../../components/Notice/NoticeList';
+import { NoticeData } from '../../../../types/Notice';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import view from 'src/pages/api/notice/view';
 
 export default function NoticePage(): JSX.Element {
+  const router = useRouter();
+  const { studyId } = router.query;
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     {
       category: '',
@@ -75,7 +78,7 @@ export default function NoticePage(): JSX.Element {
                     num={notice.id}
                     category={notice.category}
                     title={notice.title}
-                    writer="#"
+                    writer={notice.author}
                     date={notice.createdAt}
                   />
                 </tbody>
@@ -99,9 +102,13 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        <Link href="/study/notice/write" passHref>
+        <Link
+          href={{
+            pathname: `/study/${studyId}/notice/write`,
+          }}
+        >
           <a>
-            <Button type="#" text="글작성" className="write" />
+            <Button text="글작성" className="write" />
           </a>
         </Link>
       </BtnGroup>

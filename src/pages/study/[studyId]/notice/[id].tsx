@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { StudyBanner } from '../../../components/StudyMain/StudyBanner';
-import { COLOR } from '../../../constants';
-import { NoticeTitle } from '../../../components/Notice/NoticeTitle';
-import { Button } from '../../../components/Notice/Button';
+import { StudyBanner } from '../../../../components/StudyMain/StudyBanner';
+import { COLOR } from '../../../../constants';
+import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
+import { Button } from '../../../../components/Notice/Button';
 import { useRouter } from 'next/router';
-import view from '../../api/notice/view';
+import view from '../../../api/notice/view';
 import Link from 'next/link';
 import useMutation from 'src/libs/client/useMutation';
 

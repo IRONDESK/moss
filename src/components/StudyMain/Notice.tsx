@@ -6,7 +6,8 @@ import useSWR from 'swr';
 import { useEffect, useState } from 'react';
 import view from 'src/pages/api/notice/view';
 
-export const Notice = () => {
+export const Notice = ({ studyId }: any) => {
+  console.log(studyId);
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     { category: '', title: '', content: '' },
   ]);
@@ -14,7 +15,6 @@ export const Notice = () => {
   const res = view('many');
   useEffect(() => {
     setNoticeList(res);
-    console.log(noticeList);
   }, [res]);
 
   return (
@@ -42,7 +42,7 @@ export const Notice = () => {
             })}
         </ul>
       </article>
-      <Link href="/study/notice" passHref>
+      <Link href={`/study/${studyId}/notice`} passHref>
         <Button>더보기</Button>
       </Link>
     </Container>
