@@ -1,20 +1,38 @@
 import styled from '@emotion/styled';
+import { useForm } from 'react-hook-form';
 import { COLOR } from 'src/constants';
 import { Button } from './Button';
 import { H } from './Title';
 
+interface IStudySchedule {
+  date: string;
+  time: number;
+  time2: number;
+  content: string;
+}
+
 export const StudySchedule = ({ onClick }: any) => {
+  const { register, handleSubmit } = useForm<IStudySchedule>();
+  const onValid = (formData: IStudySchedule) => {
+    console.log(formData);
+  };
+  //
   return (
     <>
       <Modal className="modal">
         <H>스터디 일정 등록</H>
-        <form>
+        <form onSubmit={handleSubmit(onValid)}>
           <ul>
             <li>
               <label htmlFor="date" className="label-text">
                 날짜
               </label>
-              <input type="date" id="date" required />
+              <input
+                {...register('date', { required: '날짜를 선택해주세요.' })}
+                type="date"
+                id="date"
+                required
+              />
             </li>
 
             <li>
@@ -23,20 +41,34 @@ export const StudySchedule = ({ onClick }: any) => {
                 <label htmlFor="time" className="a11y-hidden">
                   시작 시간
                 </label>
-                <input type="time" id="time" />
+                <input
+                  {...register('time', {
+                    required: '시작시간을 선택해주세요.',
+                  })}
+                  type="time"
+                  id="time"
+                />
                 <label htmlFor="time" className="a11y-hidden">
                   종료 시간
                 </label>
-                <input type="time" id="time2" />
+                <input
+                  {...register('time2', {
+                    required: '종료시간을 선택해주세요.',
+                  })}
+                  type="time"
+                  id="time2"
+                />
               </div>
             </li>
+
             <li>
-              <label htmlFor="day-content" className="label-text">
+              <label htmlFor="content" className="label-text">
                 일정 내용
               </label>
               <input
+                {...register('content', { required: '내용을 입력해 주세요.' })}
                 type="text"
-                id="day-content"
+                id="content"
                 placeholder="내용을 입력해 주세요"
                 required
               />
@@ -44,7 +76,7 @@ export const StudySchedule = ({ onClick }: any) => {
           </ul>
           <Button type="submit">일정 등록</Button>
           <button type="button" className="btn-close" onClick={onClick}>
-            <img src="./images/close.svg" alt="닫기" />
+            <img src="/images/close.svg" alt="닫기" />
           </button>
         </form>
       </Modal>
