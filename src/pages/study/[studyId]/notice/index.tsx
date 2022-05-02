@@ -12,7 +12,8 @@ import view from 'src/pages/api/notice/view';
 
 export default function NoticePage(): JSX.Element {
   const router = useRouter();
-  const { studyId } = router.query;
+  const url = router.query;
+  console.log(url);
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     {
       category: '',
@@ -102,7 +103,7 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        <Link
+        {/* <Link
           href={{
             pathname: `/study/${studyId}/notice/write`,
           }}
@@ -110,7 +111,7 @@ export default function NoticePage(): JSX.Element {
           <a>
             <Button text="글작성" className="write" />
           </a>
-        </Link>
+        </Link> */}
       </BtnGroup>
     </>
   );

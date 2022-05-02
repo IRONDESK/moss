@@ -5,8 +5,11 @@ import { Record } from './Record';
 import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
+import useSWR from 'swr';
 
 export const StudyComponents = ({ studyinfo }: any) => {
+  const { data } = useSWR(`/api/study/{}`);
+  //
   const [token, setToken] = useState(true);
   useEffect(() => {
     const Token = localStorage.getItem('Token');
@@ -17,7 +20,7 @@ export const StudyComponents = ({ studyinfo }: any) => {
   const getToken = (Token: string) => {
     setToken(true);
   };
-
+  //
   return (
     <>
       {token ? (

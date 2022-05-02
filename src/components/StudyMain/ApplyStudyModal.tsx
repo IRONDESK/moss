@@ -8,45 +8,48 @@ import useSWR from 'swr';
 interface IModal {
   modal: boolean;
   setModal: Function;
-  joinMsg: string|undefined;
-  studyid: number|undefined;
+  joinMsg?: string | null;
+  studyid: number;
 }
 
-export const ApplyStudyModal = ({ modal, setModal, joinMsg, studyid }: IModal) => {
+export const ApplyStudyModal = ({
+  modal,
+  setModal,
+  joinMsg,
+  studyid,
+}: IModal) => {
   const { data } = useSWR(`/api/study/create?id=${studyid}`);
   const [studyset] = useMutation('/api/study/apply');
   const { isLoggedIn, loggedInUser } = useUser();
 
   const applyStudy = (
     memberlist: string[],
-    userid: string|null|undefined
-    ) => {
-    studyset({memberList: [...memberlist, userid], studyid})
+    userid: string | null | undefined,
+  ) => {
+    studyset({ memberList: [...memberlist, userid], studyid });
     setModal((prev: boolean) => !prev);
   };
-  
+
   return (
     <>
       {modal ? (
-          <Container>
-            <Close onClick={() => setModal((prev: boolean) => !prev)}>
-              <img src="/images/icons/close.png" alt="창 닫기" />
-            </Close>
-            <Title>
-              <div>스터디 신청</div>
-            </Title>
-            <JoinMsg>
-              {joinMsg}
-            </JoinMsg>
-              이 스터디에 신청하시겠습니까?
-              <Button onClick={() => {
-                applyStudy(
-                  data?.joinMember,
-                  loggedInUser?.userId
-                )
-                window.location.reload();
-              }}>확인</Button>
-          </Container>
+        <Container>
+          <Close onClick={() => setModal((prev: boolean) => !prev)}>
+            <img src="/images/icons/close.png" alt="창 닫기" />
+          </Close>
+          <Title>
+            <div>스터디 신청</div>
+          </Title>
+          <JoinMsg>{joinMsg}</JoinMsg>이 스터디에 신청하시겠습니까?
+          <Button
+            onClick={() => {
+              applyStudy(data?.joinMember, loggedInUser?.userId);
+              window.location.reload();
+            }}
+          >
+            확인
+          </Button>
+        </Container>
       ) : null}
     </>
   );

@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import view from 'src/pages/api/notice/view';
 
 export const Notice = ({ studyId }: any) => {
-  console.log(studyId);
   const [noticeList, setNoticeList] = useState<NoticeData[]>([
     { category: '', title: '', content: '' },
   ]);
