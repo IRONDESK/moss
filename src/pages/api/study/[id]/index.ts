@@ -5,7 +5,6 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  console.log(id);
   const study = await client.study.findUnique({
     where: {
       id: +id.toString(),

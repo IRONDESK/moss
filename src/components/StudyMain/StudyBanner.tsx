@@ -6,14 +6,7 @@ import useUser from 'src/libs/client/useUser';
 import useSWR from 'swr';
 import { Study, User } from '@prisma/client';
 import { useRouter } from 'next/router';
-
-interface IStudyResponse {
-  ok: boolean;
-  study: IStudyWithUser;
-}
-interface IStudyWithUser extends Study {
-  user: User;
-}
+import { IStudyResponse } from 'src/types/study';
 
 export const StudyBanner = () => {
   //현재 스터디 페이지에있는 study 데이터 소환

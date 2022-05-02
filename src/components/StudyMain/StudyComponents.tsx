@@ -6,31 +6,38 @@ import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
 import useSWR from 'swr';
+import { useRouter } from 'next/router';
+import { IStudyResponse } from 'src/types/study';
+import useUser from 'src/libs/client/useUser';
 
-export const StudyComponents = ({ studyinfo }: any) => {
-  const { data } = useSWR(`/api/study/{}`);
-  //
-  const [token, setToken] = useState(true);
+export const StudyComponents = () => {
+  const router = useRouter();
+  const { studyId } = router.query;
+  const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
+
+  //내가 만든 스터디 이거나 (===loggedInUser의 고유id와 study안의 user의 고유id가 일치!)
+  // 또는 신청한 스터디이면 UI표시 (joinMember는 후작업)
+
+  //1. 내가 만든 스터디인 경우
+  const [myStudy, setMyStudy] = useState(false);
+  const { loggedInUser } = useUser();
   useEffect(() => {
-    const Token = localStorage.getItem('Token');
-    if (Token) {
-      getToken(`${Token}`);
+    if (loggedInUser?.id === data?.study?.user?.id) {
+      setMyStudy(true);
     }
-  });
-  const getToken = (Token: string) => {
-    setToken(true);
-  };
+  }, [data]);
+
   //
   return (
     <>
-      {token ? (
+      {myStudy ? (
         <Container>
           <Record />
-          <TodoList studyId={studyinfo?.id} />
-          <Notice studyId={studyinfo?.id} />
+          <TodoList studyId={data?.study?.id} />
+          <Notice studyId={data?.study?.id} />
           <Member
-            memberslimit={studyinfo?.membersLimit}
-            memberlist={studyinfo?.joinMember}
+            memberslimit={data?.study?.membersLimit}
+            memberlist={data?.study?.joinMember}
           />
         </Container>
       ) : (
@@ -44,7 +51,7 @@ export const StudyComponents = ({ studyinfo }: any) => {
           <Blur>
             <Container>
               <Record />
-              <TodoList studyId={studyinfo?.id} />
+              <TodoList studyId={data?.study?.id} />
               <Notice />
               <Member />
             </Container>
