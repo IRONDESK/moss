@@ -7,6 +7,7 @@ import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
 import { Button } from '../../../../components/Notice/Button';
 import { NoticeData } from 'src/types/Notice';
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const PostEditor = dynamic(
   () => import('../../../../components/Notice/PostEditor'),
@@ -16,6 +17,10 @@ const PostEditor = dynamic(
 );
 
 export default function NoticePage(): JSX.Element {
+  const router = useRouter();
+  const { studyId } = router.query;
+  console.log(studyId);
+  //
   const [notice, { loading, data, error }] = useMutation('/api/notice');
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
@@ -44,7 +49,7 @@ export default function NoticePage(): JSX.Element {
       (noticeList = [{ category: category, title: title, content: content }]),
     );
     const data = noticeList;
-    notice(data);
+    notice({ data, studyId });
     reset();
   };
 

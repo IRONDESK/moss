@@ -6,30 +6,36 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { category, title, content } = req.body;
+    const { category, title, content, studyId } = req.body;
     const { user } = req.session;
-    let noticeData = await client.notice.create({
-      data: {
-        category: category,
-        title: title,
-        content: content,
-        author: {
-          connect: {
-            id: user?.id,
+
+    if (category && title && content && studyId) {
+      const noticeData = await client.notice.create({
+        data: {
+          category: category,
+          title: title,
+          content: content,
+          author: {
+            connect: {
+              id: user?.id,
+            },
+          },
+          study: {
+            connect: {
+              id: studyId,
+            },
           },
         },
-        study: {
-          connect,
-        },
-      },
-    });
-    return res.json({
-      ok: true,
-      noticeData,
-    });
+      });
+      return res.json({
+        ok: true,
+        noticeData,
+      });
+    }
   }
 
   if (req.method === 'GET') {
+    return;
     const queryid = req.query.id;
     console.log(queryid);
     if (queryid !== 'many') {
@@ -50,8 +56,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withHandler({
-  methods: ['POST', 'GET'],
-  handler,
-  isPrivate: false,
-});
+export default withApiSession(
+  withHandler({ methods: ['POST', 'GET'], handler, isPrivate: false }),
+);
