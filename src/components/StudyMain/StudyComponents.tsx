@@ -7,10 +7,9 @@ import { Notice } from './Notice';
 import { Member } from './Member';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { IStudyResponse } from 'src/types/study';
 import useUser from 'src/libs/client/useUser';
-import { StudyBanner } from './StudyBanner';
 import { StudyCalendarWrap } from '../Calendar/StudyPage/StudyCalendarWrap';
+import { IStudyResponse } from 'src/types/Study';
 
 export const StudyComponents = () => {
   const router = useRouter();
@@ -55,8 +54,12 @@ export const StudyComponents = () => {
             <Container>
               <Record />
               <TodoList studyId={data?.study?.id} />
-              <Notice />
-              <Member />
+              <Notice studyId={data?.study?.id} />
+              <Member
+                memberslimit={data?.study?.membersLimit}
+                memberlist={data?.study?.joinMember}
+              />
+              <StudyCalendarWrap />
             </Container>
           </Blur>
         </>

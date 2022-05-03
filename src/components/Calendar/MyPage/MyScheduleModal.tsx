@@ -23,6 +23,7 @@ import {
   IScheduleModal,
   IScheduleRes,
 } from 'src/types/schedule';
+
 import useSWR from 'swr';
 
 export const ScheduleModal = ({ date }: IScheduleModal) => {

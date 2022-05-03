@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { StudyCard } from './StudyCard';
 import useSWR from 'swr';
-import { IStudyResponse } from 'src/types/study';
+import { IStudyResponse } from 'src/types/Study';
 
 export const StudyList = () => {
   const { data } = useSWR<IStudyResponse>(`/api/study/total_study`);

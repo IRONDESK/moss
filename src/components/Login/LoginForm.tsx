@@ -1,17 +1,7 @@
 import { useForm } from 'react-hook-form';
-import useMutation from 'src/libs/client/useMutation';
 import { Btn, Error, InputWrap } from 'src/styles/components';
-import { IJoinResponse } from 'src/types/join';
+import { ILoginForm } from 'src/types/Login';
 import Input from './LoginInput';
-
-//TS
-export interface ILoginForm {
-  email?: string;
-  phone?: string;
-  userId?: string;
-  password?: string;
-  token?: string;
-}
 
 export const LoginForm = ({ method, login, loading, errMsg }: any) => {
   //

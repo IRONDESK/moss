@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import { COLOR } from 'src/constants';
+import { Error } from 'src/styles/components';
 import { Button } from './Button';
 import { H } from './Title';
 
@@ -12,7 +13,11 @@ interface IStudySchedule {
 }
 
 export const StudySchedule = ({ onClick }: any) => {
-  const { register, handleSubmit } = useForm<IStudySchedule>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IStudySchedule>();
   const onValid = (formData: IStudySchedule) => {
     console.log(formData);
   };
@@ -31,8 +36,8 @@ export const StudySchedule = ({ onClick }: any) => {
                 {...register('date', { required: '날짜를 선택해주세요.' })}
                 type="date"
                 id="date"
-                required
               />
+              {errors.date && <Error>{errors.date.message}</Error>}
             </li>
 
             <li>
@@ -59,6 +64,8 @@ export const StudySchedule = ({ onClick }: any) => {
                   id="time2"
                 />
               </div>
+              {errors.time && <Error>{errors.time.message}</Error>}
+              {errors.time2 && <Error>{errors.time2.message}</Error>}
             </li>
 
             <li>
@@ -70,8 +77,8 @@ export const StudySchedule = ({ onClick }: any) => {
                 type="text"
                 id="content"
                 placeholder="내용을 입력해 주세요"
-                required
               />
+              {errors.content && <Error>{errors.content.message}</Error>}
             </li>
           </ul>
           <Button type="submit">일정 등록</Button>

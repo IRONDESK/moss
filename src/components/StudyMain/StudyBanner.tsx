@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
-import useUser from 'src/libs/client/useUser';
 import useSWR from 'swr';
-import { Study, User } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { IStudyResponse } from 'src/types/study';
 

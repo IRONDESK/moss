@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
-import JoinInput from 'src/components/Join/components/JoinInput';
-import { IJoinResponse, joinForm } from 'src/types/join';
+import JoinInput from 'src/components/Join/JoinInput';
+import { IJoinResponse, joinForm } from 'src/types/Join';
 import {
   Avatar,
   AvatarInput,
