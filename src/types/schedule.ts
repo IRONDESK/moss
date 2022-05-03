@@ -1,4 +1,4 @@
-import { Schedule } from '@prisma/client';
+import { Schedule, StudySchedule } from '@prisma/client';
 
 export interface IScheduleForm {
   title: string;
@@ -14,7 +14,13 @@ export interface IScheduleRes {
 }
 export interface IStudySchedule {
   date: string;
-  time: number;
-  time2: number;
+  startTime: string;
+  endTime: string;
   content: string;
+}
+export interface IStudyScheduleRes {
+  ok: boolean;
+  studySchedule: StudySchedule;
+  message: string;
+  error: string;
 }

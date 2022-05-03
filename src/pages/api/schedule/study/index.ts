@@ -5,10 +5,26 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
-  const { date, time, time2, content } = req.body;
-  console.log(date, time, time2, content);
-  return;
-  return res.json({ ok: true });
+  const { date, startTime, endTime, content } = req.body;
+
+  if (user && date && startTime && endTime && content) {
+    const studySchedule = await client.studySchedule.create({
+      data: {
+        date,
+        startTime,
+        endTime,
+        content,
+        user: { connect: { id: user?.id } },
+      },
+    });
+    //
+    return res.json({
+      ok: true,
+      studySchedule,
+      message: '새로운 스터디 일정이 등록되었습니다.',
+    });
+  }
+  return res.json({ ok: false, error: '스터디 일정등록을 실패했습니다.' });
 }
 
 export default withApiSession(withHandler({ methods: ['POST'], handler }));
