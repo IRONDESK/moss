@@ -12,3 +12,9 @@ export interface IScheduleRes {
   ok: boolean;
   dailySchedule: Schedule[];
 }
+export interface IStudySchedule {
+  date: string;
+  time: number;
+  time2: number;
+  content: string;
+}

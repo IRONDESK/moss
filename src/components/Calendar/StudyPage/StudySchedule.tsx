@@ -1,25 +1,27 @@
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import { COLOR } from 'src/constants';
+import useMutation from 'src/libs/client/useMutation';
 import { Error } from 'src/styles/components';
+import { IStudySchedule } from 'src/types/Schedule';
 import { Button } from './Button';
 import { H } from './Title';
 
-interface IStudySchedule {
-  date: string;
-  time: number;
-  time2: number;
-  content: string;
-}
-
 export const StudySchedule = ({ onClick }: any) => {
+  //POST
+  const [recordSchedule, { loading, data, error }] =
+    useMutation(`/api/schedule/study`);
+
+  //FORM SUBMIT
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IStudySchedule>();
+
   const onValid = (formData: IStudySchedule) => {
-    console.log(formData);
+    if (loading) return;
+    return recordSchedule(formData);
   };
   //
   return (
@@ -81,7 +83,7 @@ export const StudySchedule = ({ onClick }: any) => {
               {errors.content && <Error>{errors.content.message}</Error>}
             </li>
           </ul>
-          <Button type="submit">일정 등록</Button>
+          <Button type="submit">{loading ? '로딩중...' : '일정 등록'}</Button>
           <button type="button" className="btn-close" onClick={onClick}>
             <img src="/images/close.svg" alt="닫기" />
           </button>

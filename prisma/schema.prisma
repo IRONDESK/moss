@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -14,32 +13,45 @@ datasource db {
 
 //Schemas
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String
-  userId    String?    @unique
-  password  String?
-  email     String?    @unique
-  phone     String?    @unique
-  avatar    String?
-  location  String?
-  Token     Token[]
-  Study     Study[]
-  Schedule  Schedule[]
-  Notice    Notice[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id                Int        @id @default(autoincrement())
+  username          String
+  userId            String?    @unique
+  password          String?
+  email             String?    @unique
+  phone             String?    @unique
+  avatar            String?
+  location          String?
+  Token             Token[]
+  Study             Study[]
+  Schedule          Schedule[]
+  StudySchedule     StudySchedule[]
+  Notice            Notice[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
   // StudyTodo StudyTodo[]
 }
 
 model Schedule {
-  id        Int      @id @default(autoincrement())
-  title     String
-  date      String
-  content   String?
-  user      User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  title       String
+  date        String
+  content     String?
+  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model StudySchedule {
+  id          Int      @id @default(autoincrement())
+  title       String
+  date        String
+  time        String
+  time2       String
+  content     String
+  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Token {
