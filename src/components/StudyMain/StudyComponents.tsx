@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { IStudyResponse } from 'src/types/study';
 import useUser from 'src/libs/client/useUser';
 import { StudyBanner } from './StudyBanner';
+import { StudyCalendarWrap } from '../Calendar/StudyPage/StudyCalendarWrap';
 
 export const StudyComponents = () => {
   const router = useRouter();

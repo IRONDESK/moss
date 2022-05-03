@@ -94,14 +94,14 @@ const Container = styled.div`
   grid-column-start: 1;
   grid-column-end: 3;
 
-  & > div:first-child {
+  & > div:first-of-type {
     padding-right: 24px;
     border-right: 1px solid #eee;
   }
   @media (max-width: 1024px) {
     flex-direction: column;
 
-    & > div:first-child {
+    & > div:first-of-type {
       padding-right: 0;
       border-right: 0;
       border-bottom: 1px solid #eee;

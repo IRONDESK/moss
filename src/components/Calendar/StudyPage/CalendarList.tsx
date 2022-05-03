@@ -34,7 +34,7 @@ const StudyList = styled.ul`
     display: flex;
     align-items: center;
     gap: 16px;
-    &:nth-child(odd) {
+    &:nth-of-type(odd) {
       background: #f9f9f9;
     }
     &.today .date {
