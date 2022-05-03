@@ -4,7 +4,13 @@ import withHandler from 'src/libs/server/withHandler';
 import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const allNotice = await client.notice.findMany({
+  const { id } = req.query;
+
+  //현재 보고있는 일정데이터를 찾습니다.
+  const notice = await client.notice.findUnique({
+    where: {
+      id: +id.toString(),
+    },
     include: {
       author: {
         select: {
@@ -19,10 +25,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       },
     },
-    orderBy: { createdAt: 'desc' },
   });
   //
-  return res.json({ ok: true, allNotice });
+  if (!notice) {
+    return res.json({ ok: false, message: '생성된 공지사항이 없습니다.' });
+  }
+  //
+  return res.json({ ok: true, notice });
 }
 
 export default withApiSession(withHandler({ methods: ['GET'], handler }));

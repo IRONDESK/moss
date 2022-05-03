@@ -13,8 +13,9 @@ export default function NoticePage(): JSX.Element {
   //ROUTER
   const router = useRouter();
   const { studyId } = router.query;
+
   //GET DATA
-  const { data } = useSWR<INoticeRes>(`/api/notice/all_notice`);
+  const { data } = useSWR<INoticeRes>(`/api/notice/${Number(studyId)}/total`);
 
   //
   return (

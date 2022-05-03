@@ -6,7 +6,7 @@ import useMutation from 'src/libs/client/useMutation';
 import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
 import { Button } from '../../../../components/Notice/Button';
 import { NoticeData } from 'src/types/Notice';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const PostEditor = dynamic(
@@ -22,7 +22,7 @@ export default function NoticePage(): JSX.Element {
   const { studyId } = router.query;
 
   //POST
-  const [notice, { loading, data, error }] = useMutation('/api/notice');
+  const [notice, { loading, data }] = useMutation('/api/notice/create');
 
   //FORM
   const [noticeList, setNoticeList] = useState<NoticeData[]>([]);
@@ -63,6 +63,14 @@ export default function NoticePage(): JSX.Element {
     setTitle('');
     setContent('');
   };
+
+  //페이지 이동
+  useEffect(() => {
+    if (data?.ok) {
+      router.push(`/study/${studyId}/notice`);
+    }
+  }, [data, router]);
+
   //
   return (
     <>

@@ -1,5 +1,14 @@
 import { Notice, Study, User } from '@prisma/client';
 
+export interface INotice {
+  studyId: number | undefined | null;
+}
+
+export interface ITotalNoticeRes {
+  ok: true;
+  allNotice: NoticeWithAuthorNStudy[];
+}
+
 export interface NoticeData {
   noticeList?: [{ category: string; title: string; content: string }];
 }

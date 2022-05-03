@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import dynamic from 'next/dynamic';
 import useMutation from 'src/libs/client/useMutation';
 import { NoticeData } from 'src/types/Notice';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
 import { NoticeTitle } from 'src/components/Notice/NoticeTitle';
@@ -22,8 +22,7 @@ export default function NoticePage(): JSX.Element {
   const { studyId, id } = router.query;
 
   //POST
-  const [editNotice, { loading, data, error }] =
-    useMutation('/api/notice/edit');
+  const [editNotice, { loading, data }] = useMutation('/api/notice/edit');
 
   //FORM
   const [noticeList, setNoticeList] = useState<NoticeData[]>([]);
@@ -63,6 +62,13 @@ export default function NoticePage(): JSX.Element {
     setTitle('');
     setContent('');
   };
+  //페이지 이동
+  useEffect(() => {
+    if (data?.ok) {
+      router.push(`/study/${Number(studyId)}/notice`);
+    }
+  }, [data, router]);
+
   //
   return (
     <>

@@ -11,58 +11,57 @@ import useMutation from 'src/libs/client/useMutation';
 import { INoticeData, INoticeRes } from 'src/types/Notice';
 import useSWR from 'swr';
 
+interface ISave {
+  saved: number | null | undefined;
+}
+
 export default function NoticePage() {
-  //ROUTER
   const router = useRouter();
-  const { id } = router.query;
+  const { studyId, id } = router.query;
 
-  //GET DATA
-  const { data: currentData } = useSWR<INoticeRes>(`/api/notice/${Number(id)}`);
+  //현재보고있는 공지데이터를 불러옵니다.
+  const { data } = useSWR<INoticeRes>(`/api/notice/${Number(id)}/current`);
 
-  //
-  const [del] = useMutation('/api/notice/delete');
-  const [notice, setNotice] = useState<INoticeData[]>([
-    {
-      id: 0,
-      category: '',
-      title: '',
-      content: '',
-    },
-  ]);
+  //현재보고있는 공지데이터의 삭제요청을 POST 합니다.
+  const [deleteNotion, { loading, data: receivedData }] =
+    useMutation('/api/notice/delete');
 
-  const data = view(id);
-  useEffect(() => {
-    setNotice(data);
-  }, [data]);
+  //공지사항 삭제후 처리
 
   const deleteAlert = () => {
-    const Id = parseInt(id);
-    del(Id);
+    if (loading) return;
+    deleteNotion(data?.notice?.id);
     alert('해당 게시글이 삭제되었습니다.');
-    window.location.href = '/study/notice';
   };
 
+  //페이지 이동
+  useEffect(() => {
+    if (receivedData?.ok) {
+      router.push(`/study/${studyId}/notice`);
+    }
+  }, [data, router]);
+  //
   return (
     <>
       <StudyBanner />
       <NoticeTitle />
       <ViewSection>
         <div className="title">
-          <p className="category">{currentData?.notice?.category}</p>
-          <h4>{currentData?.notice?.title}</h4>
+          <p className="category">{data?.notice?.category}</p>
+          <h4>{data?.notice?.title}</h4>
         </div>
         <div className="editor-content">
-          <p>{currentData?.notice?.content}</p>
+          <p>{data?.notice?.content}</p>
         </div>
         <div className="btn-group">
-          <Link href={`/study/${currentData?.notice?.studyId}/notice`}>
+          <Link href={`/study/${data?.notice?.studyId}/notice`}>
             <a>
               <Button text="목록" className="list" />
             </a>
           </Link>
 
           <Link
-            href={`/study/${currentData?.notice?.studyId}/notice/edit/${currentData?.notice?.id}`}
+            href={`/study/${data?.notice?.studyId}/notice/edit/${data?.notice?.id}`}
           >
             <a>
               <Button text="수정" className="modify" />

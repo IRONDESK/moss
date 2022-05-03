@@ -1,51 +1,44 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 import Link from 'next/link';
-import { NoticeData } from '../../types/Notice';
+import { INotice, ITotalNoticeRes } from '../../types/Notice';
 import useSWR from 'swr';
-import { useEffect, useState } from 'react';
-import view from 'src/pages/api/notice/view';
+import { useRouter } from 'next/router';
 
-export const Notice = ({ studyId }: any) => {
-  const [noticeList, setNoticeList] = useState<NoticeData[]>([
-    { category: '', title: '', content: '' },
-  ]);
+export const Notice = ({ studyId }: INotice) => {
+  //GET
+  const { data } = useSWR<ITotalNoticeRes>(`/api/notice/${studyId}/total`);
 
-  const res = view('many');
-  useEffect(() => {
-    setNoticeList(res);
-  }, [res]);
-
+  //페이지이동
+  const router = useRouter();
+  const handleClick = () => {
+    if (data?.ok) {
+      router.push(`/study/${studyId}/notice`);
+    }
+  };
+  //
   return (
     <Container>
       <Title>공지사항</Title>
       <SubTitle>Notice</SubTitle>
       <article>
         <ul>
-          {noticeList?.noticeData
-            ?.slice(0)
-            .reverse()
-            .slice(0, 3)
-            .map((notice: any, id: number) => {
-              return (
-                <NoticeList key={notice.id}>
-                  <NoticeTitle>
-                    <Tag>{notice.category}</Tag>
-                    <Link href={`/study/notice/${notice.id}`}>
-                      {notice.title}
-                    </Link>
-                  </NoticeTitle>
-                  <CreatedDate>{notice.createdAt}</CreatedDate>
-                </NoticeList>
-              );
-            })}
+          {data?.allNotice?.map((data) => {
+            return (
+              <NoticeList key={data.id}>
+                <NoticeTitle>
+                  <Tag>{data.category}</Tag>
+                  <Link href={`/study/${data.studyId}/notice/${data.id}`}>
+                    <a>{data.title}</a>
+                  </Link>
+                </NoticeTitle>
+                <CreatedDate>{data.createdAt}</CreatedDate>
+              </NoticeList>
+            );
+          })}
         </ul>
       </article>
-      <Link href={`/study/${studyId}/notice`}>
-        <a>
-          <Button>더보기</Button>
-        </a>
-      </Link>
+      <Button onClick={handleClick}>더보기</Button>
     </Container>
   );
 };
@@ -118,7 +111,7 @@ const CreatedDate = styled.span`
   color: ${COLOR.deepGray};
 `;
 
-const Button = styled.a`
+const Button = styled.button`
   position: absolute;
   top: 57px;
   right: 33px;

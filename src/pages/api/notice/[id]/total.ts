@@ -5,9 +5,11 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
-  const notice = await client.notice.findUnique({
+
+  //현 스터디에 존재하는 모든 일정데이터를 찾습니다.
+  const allNotice = await client.notice.findMany({
     where: {
-      id: +id.toString(),
+      studyId: +id,
     },
     include: {
       author: {
@@ -23,13 +25,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       },
     },
+    orderBy: { createdAt: 'desc' },
   });
   //
-  if (!notice) {
-    return res.json({ ok: false, message: '생성된 공지사항이 없습니다.' });
-  }
-  //
-  return res.json({ ok: true, notice });
+  return res.json({ ok: true, allNotice });
 }
 
 export default withApiSession(withHandler({ methods: ['GET'], handler }));
