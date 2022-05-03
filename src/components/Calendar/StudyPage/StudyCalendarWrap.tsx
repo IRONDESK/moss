@@ -69,6 +69,7 @@ export const StudyCalendarWrap = () => {
   function onClick() {
     click ? setClick(false) : setClick(true);
   }
+  //
   return (
     <Container>
       <StudyCalendar studyData={studyData} />
@@ -80,7 +81,7 @@ export const StudyCalendarWrap = () => {
           일정 등록
         </button>
         {click && <StudySchedule onClick={onClick} />}
-        <CalendarList studyData={studyData} />
+        <CalendarList />
       </StudyListWrap>
     </Container>
   );

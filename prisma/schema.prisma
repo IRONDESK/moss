@@ -41,17 +41,6 @@ model Schedule {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
-model StudySchedule {
-  id          Int      @id @default(autoincrement())
-  date        String
-  startTime   String
-  endTime     String
-  content     String
-  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
 
 model Token {
   id        Int      @id @default(autoincrement())
@@ -74,11 +63,25 @@ model Study {
   chatLink         String?
   image            String?
   joinMsg          String?
-  notice           Notice[]
   joinMember       Json?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
+  StudySchedule    StudySchedule[]
   StudyTodo        StudyTodo[]
+  notice           Notice[]
+}
+model StudySchedule {
+  id          Int      @id @default(autoincrement())
+  date        String
+  startTime   String
+  endTime     String
+  content     String
+  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId      Int
+  study       Study    @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId     Int      
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Todo {

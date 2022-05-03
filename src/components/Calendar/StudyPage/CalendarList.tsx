@@ -2,21 +2,33 @@ import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import { ITotalStudyScheduleRes } from 'src/types/Schedule';
 
-export const CalendarList = ({ studyData }: any) => {
+export const CalendarList = () => {
+  //QUERY
+  const router = useRouter();
+  const { studyId } = router.query;
+
+  //GET
+  const { data } = useSWR<ITotalStudyScheduleRes>(
+    `/api/schedule/study/${Number(studyId)}/total`,
+  );
+  //
   return (
     <StudyList>
-      {studyData.map((item: any) => (
+      {data?.totalSchedule?.map((item) => (
         <li
           key={item.id}
           className={item.date === moment().format('YYYY-MM-DD') ? 'today' : ''}
         >
           <p className="date">
             <strong>{item.date.split('-')[2]}</strong>
-            <span>{item.day}</span>
+            {/* <span>{item.day}</span> */}
           </p>
           <p className="time">
-            {item.start} - {item.end}
+            {item.startTime} - {item.endTime}
           </p>
           <p className="content">{item.content}</p>
         </li>

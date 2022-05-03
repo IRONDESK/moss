@@ -5,9 +5,9 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
-  const { date, startTime, endTime, content } = req.body;
+  const { studyId, date, startTime, endTime, content } = req.body;
 
-  if (user && date && startTime && endTime && content) {
+  if (user && studyId && date && startTime && endTime && content) {
     const studySchedule = await client.studySchedule.create({
       data: {
         date,
@@ -15,6 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         endTime,
         content,
         user: { connect: { id: user?.id } },
+        study: { connect: { id: +studyId } },
       },
     });
     //

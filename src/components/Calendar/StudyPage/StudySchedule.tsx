@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { COLOR } from 'src/constants';
@@ -9,6 +10,11 @@ import { Button } from './Button';
 import { H } from './Title';
 
 export const StudySchedule = ({ onClick }: any) => {
+  //QUERY
+  const router = useRouter();
+  const { studyId } = router.query;
+  console.log(studyId);
+
   //POST
   const [recordSchedule, { loading, data, error }] =
     useMutation<IStudyScheduleRes>(`/api/schedule/study`);
@@ -20,10 +26,10 @@ export const StudySchedule = ({ onClick }: any) => {
     formState: { errors },
   } = useForm<IStudySchedule>();
 
-  const onValid = (formData: IStudySchedule) => {
+  const onValid = ({ date, startTime, endTime, content }: IStudySchedule) => {
     if (loading) return;
     setClose(true);
-    return recordSchedule(formData);
+    return recordSchedule({ studyId, date, startTime, endTime, content });
   };
 
   //AFTER SUBMIT
@@ -32,7 +38,9 @@ export const StudySchedule = ({ onClick }: any) => {
     if (data?.ok) {
       alert(data?.message);
     }
-    data?.error && alert(data?.error);
+    if (data?.error) {
+      alert(data?.error);
+    }
   }, [data]);
   console.log(data);
   //
