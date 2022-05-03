@@ -135,7 +135,7 @@ const Item = styled.li`
   margin: 8px 0 0;
   border: 1px solid ${COLOR.gray};
   background: #F9F9F9;
-  font-family: 'Noto Sans KR';
+  font-family: 'Pretendard';
   color: ${COLOR.black};
   `
 
@@ -158,7 +158,7 @@ const InputEdit = styled.input`
   height: 48px;
   background: none;
   border: none;
-  font-family: 'Noto Sans KR';
+  font-family: 'Pretendard';
   font-size: 14px;
   &:focus {
     outline: 1px solid ${COLOR.main};

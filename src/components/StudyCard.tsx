@@ -112,8 +112,8 @@ const Category = styled.span`
   display: inline-block;
   padding: 6px 12px;
   background-color: rgba(0, 0, 0, 0.2);
-  font-family: 'Noto Sans KR';
-  font-size: 0.8rem;
+  font-family: 'Pretendard';
+  font-size: 0.9rem;
   color: #fff;
   border-radius: 40px;
   box-sizing: border-box;
