@@ -5,9 +5,9 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
-
   const { inputData, studyId } = req.body;
   const { category, title, content } = inputData;
+
   if (user) {
     const noticeData = await client.notice.create({
       data: {

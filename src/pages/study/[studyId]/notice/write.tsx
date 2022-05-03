@@ -17,17 +17,18 @@ const PostEditor = dynamic(
 );
 
 export default function NoticePage(): JSX.Element {
+  //ROUTER
   const router = useRouter();
   const { studyId } = router.query;
-  //
+
+  //POST
   const [notice, { loading, data, error }] = useMutation('/api/notice');
-  console.log(data);
-  //
-  let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
+
+  //FORM
+  const [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name },
@@ -39,13 +40,14 @@ export default function NoticePage(): JSX.Element {
       setTitle(e.target.value);
     }
   };
-
   const editor = (editor: string) => {
     setContent(editor);
   };
 
+  //SUBMIT
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
     setNoticeList(
       (noticeList = [{ category: category, title: title, content: content }]),
     );
@@ -55,14 +57,13 @@ export default function NoticePage(): JSX.Element {
     notice({ inputData, studyId });
     reset();
   };
-
   const reset = () => {
     setNoticeList([]);
     setCategory('');
     setTitle('');
     setContent('');
   };
-
+  //
   return (
     <>
       <StudyBanner />

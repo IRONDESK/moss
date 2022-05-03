@@ -18,7 +18,7 @@ export default function NoticePage() {
 
   //GET DATA
   const { data: currentData } = useSWR<INoticeRes>(`/api/notice/${Number(id)}`);
-  console.log(currentData?.notice);
+
   //
   const [del] = useMutation('/api/notice/delete');
   const [notice, setNotice] = useState<INoticeData[]>([
