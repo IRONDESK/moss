@@ -40,6 +40,7 @@ export const StudyComponents = () => {
             memberslimit={data?.study?.membersLimit}
             memberlist={data?.study?.joinMember}
           />
+          <StudyCalendarWrap />
         </Container>
       ) : (
         <>

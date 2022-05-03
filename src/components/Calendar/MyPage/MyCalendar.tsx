@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
-import { ScheduleModal } from './ScheduleModal';
+import { ScheduleModal } from './MyScheduleModal';
 
-export const Calendar = ({ studyData }: any) => {
+export const MyCalendar = ({ studyData }: any) => {
   const [date, setdate] = useState<moment.Moment>(moment());
   const [onDate, setOnDate] = useState('');
 
@@ -71,13 +71,13 @@ export const Calendar = ({ studyData }: any) => {
               let isGrayed =
                 current.format('MM') !== today.format('MM') ? 'grayed' : '';
 
-              let yesDate = studyData.map((item: any) => item.date);
+              // let yesDate = studyData.map((item: any) => item.date);
               let isDate = '';
-              for (let i = 0; i < yesDate.length; i++) {
-                if (yesDate[i] === current.format('YYYY-MM-DD')) {
-                  isDate = 'yes';
-                }
-              }
+              // for (let i = 0; i < yesDate.length; i++) {
+              //   if (yesDate[i] === current.format('YYYY-MM-DD')) {
+              //     isDate = 'yes';
+              //   }
+              // }
 
               return (
                 <div
@@ -99,7 +99,7 @@ export const Calendar = ({ studyData }: any) => {
   return (
     <>
       {modal ? <ScheduleModal date={onDate} /> : null}
-      <div>
+      <Wrap>
         <CalendarHead>
           <div className="head">
             <span className="title">
@@ -128,10 +128,18 @@ export const Calendar = ({ studyData }: any) => {
           </div>
           {generate()}
         </CalendarBody>
-      </div>
+      </Wrap>
     </>
   );
 };
+
+const Wrap = styled.div`
+  /* 임시로 만들어 놓은 자리 */
+  height: 450px;
+  padding: 48px 24px 16px;
+  background-color: ${COLOR.white};
+  border: 1px solid ${COLOR.boxBorder};
+`;
 
 const CalendarHead = styled.div`
   .head {
