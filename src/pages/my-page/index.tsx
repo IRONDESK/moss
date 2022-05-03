@@ -18,14 +18,26 @@ export default function MyPage() {
 }
 const Container = styled.main`
   position: relative;
+  padding: 24px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 60px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
 `;
 const TopWrap = styled.section`
-  position: absolute;
-  padding: 23px;
-  top: 0;
-  right: 0;
-  width: 43%;
+  position: relative;
+  flex-basis: 472px;
+  flex-shrink: 0;
 `;
 const BottomWrap = styled.section`
-  width: 50%;
+  flex-grow: 1;
+  position: relative;
+  margin-top: 320px;
+
+  @media (max-width: 1024px) {
+    margin-top: 0px;
+  }
 `;

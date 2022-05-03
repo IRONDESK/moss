@@ -33,12 +33,15 @@ export const LoginStart = () => {
   //
   return (
     <>
-      <select onInput={onClick} value={method}>
-        <option value="">로그인 방식을 선택하세요.</option>
+      <label htmlFor="login-select" className="a11y-hidden">
+        로그인 방식 선택
+      </label>
+      <select onInput={onClick} value={method} id="login-select">
         <option value="userId">아이디 비밀번호로 로그인</option>
         <option value="email">이메일 로그인</option>
         <option value="phone">휴대폰 로그인</option>
       </select>
+
       <LoginForm
         method={method}
         login={login}
