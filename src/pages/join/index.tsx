@@ -159,6 +159,7 @@ export default function Join() {
                   name="username"
                   type="text"
                   placeholer="이름을 입력해주세요."
+                  label="이름"
                 />
 
                 {errors.username && <Error>{errors.username.message}</Error>}
@@ -176,6 +177,7 @@ export default function Join() {
                   name="userId"
                   type="text"
                   placeholer="아이디를 입력해주세요."
+                  label="아이디"
                 />
 
                 {errors.userId && <Error>{errors.userId.message}</Error>}
@@ -202,6 +204,7 @@ export default function Join() {
                   name="password"
                   type="password"
                   placeholer="비밀번호를 입력해주세요."
+                  label="비밀번호"
                 />
 
                 {errors.password && <Error>{errors.password.message}</Error>}
@@ -214,6 +217,7 @@ export default function Join() {
                   name="confirmPassword"
                   type="password"
                   placeholer="비밀번호를 다시한번 입력해주세요."
+                  label="비밀번호 재입력"
                 />
 
                 {errors.confirmPassword && (
@@ -231,6 +235,7 @@ export default function Join() {
                   name="email"
                   type="text"
                   placeholer="이메일을 입력해주세요."
+                  label="이메일"
                 />
 
                 {errors.email && <Error>{errors.email.message}</Error>}
@@ -246,6 +251,7 @@ export default function Join() {
                   name="phone"
                   type="text"
                   placeholer="휴대폰 번호를 입력해주세요."
+                  label="휴대폰 번호"
                 />
 
                 {errors.phone && <Error>{errors.phone.message}</Error>}
@@ -256,6 +262,7 @@ export default function Join() {
                   name="location"
                   type="text"
                   placeholer="위치를 입력해주세요."
+                  label="거주지"
                 />
 
                 {errors.location && <Error>{errors.location.message}</Error>}

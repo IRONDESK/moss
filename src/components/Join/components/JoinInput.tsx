@@ -7,6 +7,7 @@ interface InputProps {
   type: string;
   register: UseFormRegisterReturn;
   placeholer: string;
+  label: string;
 }
 
 export default function JoinInput({
@@ -15,9 +16,13 @@ export default function JoinInput({
   type,
   register,
   placeholer,
+  label,
 }: InputProps) {
   return (
-    <>
+    <div>
+      <label htmlFor={name} className="a11y-hidden">
+        {label}
+      </label>
       <input
         required={required}
         id={name}
@@ -25,6 +30,6 @@ export default function JoinInput({
         type={type}
         placeholder={placeholer}
       />
-    </>
+    </div>
   );
 }
