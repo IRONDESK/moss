@@ -8,6 +8,7 @@ import { Button } from '../../../../components/Notice/Button';
 import { NoticeData } from 'src/types/Notice';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 
 const PostEditor = dynamic(
   () => import('../../../../components/Notice/PostEditor'),
@@ -22,57 +23,28 @@ export default function NoticePage(): JSX.Element {
   const StudyId = Number(studyId);
   //
   const [notice, { loading, data, error }] = useMutation('/api/notice');
-  console.log(data);
-  //
-  let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name },
-    } = e;
-    if (name === 'category') {
-      setCategory(e.target.value);
-    }
-    if (name === 'title') {
-      setTitle(e.target.value);
-    }
+  //SUBMIT FORM
+  const { register, handleSubmit } = useForm();
+  const onValid = (formData: any) => {
+    console.log(formData, content);
   };
 
+  //에디터
+  const [content, setContent] = useState('');
   const editor = (editor: string) => {
     setContent(editor);
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setNoticeList(
-      (noticeList = [{ category: category, title: title, content: content }]),
-    );
-    const data = { ...noticeList };
-    const inputData = data[0];
-    //POST
-    notice({ inputData, studyId });
-    reset();
-  };
-
-  const reset = () => {
-    setNoticeList([]);
-    setCategory('');
-    setTitle('');
-    setContent('');
   };
 
   return (
     <>
       <StudyBanner />
       <NoticeTitle />
-      <NoticeForm onSubmit={onSubmit} action="/study/notice">
+      <NoticeForm onSubmit={handleSubmit(onValid)}>
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input
-            onChange={onChange}
+            {...register('category', { required: true })}
             list="category-list"
             id="input-category"
             name="category"
@@ -82,21 +54,21 @@ export default function NoticePage(): JSX.Element {
         <div className="list">
           <label htmlFor="input-title">제목</label>
           <input
-            onChange={onChange}
+            {...register('category', { required: true })}
             name="title"
             type="text"
             id="input-title"
             className="w100"
           />
         </div>
-        <div className="list">
-          <PostEditor editor={editor} />
-        </div>
+        <div className="list"></div>
+
         <BtnGroup>
           <Button text="글게시" className="write" type="submit" />
           <Button text="취소" className="cancel" type="#" />
         </BtnGroup>
       </NoticeForm>
+      <PostEditor editor={editor} />
     </>
   );
 }

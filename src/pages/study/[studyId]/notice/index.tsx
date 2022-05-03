@@ -28,18 +28,8 @@ export default function NoticePage(): JSX.Element {
   }, [res]);
   return (
     <>
-      <StudyBanner
-        logo="../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
-
+      <StudyBanner />
       <NoticeTitle />
-
       <Table>
         <caption>
           스터디 공지사항 번호, 말머리, 제목, 작성일, 등록일시 정보 제공

@@ -22,7 +22,7 @@ export default function NoticePage(): JSX.Element {
   const StudyId = Number(studyId);
   //
   const [notice, { loading, data, error }] = useMutation('/api/notice');
-  console.log(data);
+
   //
   let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
@@ -51,9 +51,8 @@ export default function NoticePage(): JSX.Element {
       (noticeList = [{ category: category, title: title, content: content }]),
     );
     const data = { ...noticeList };
-    const inputData = data[0];
-    //POST
-    notice({ inputData, studyId });
+    console.log(data);
+    notice({ data, StudyId });
     reset();
   };
 

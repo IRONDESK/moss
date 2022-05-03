@@ -41,8 +41,10 @@ export const Notice = ({ studyId }: any) => {
             })}
         </ul>
       </article>
-      <Link href={`/study/${studyId}/notice`} passHref>
-        <Button>더보기</Button>
+      <Link href={`/study/${studyId}/notice/write`}>
+        <a>
+          <Button>더보기</Button>
+        </a>
       </Link>
     </Container>
   );

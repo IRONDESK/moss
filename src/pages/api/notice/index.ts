@@ -6,32 +6,34 @@ import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { category, title, content, studyId } = req.body;
     const { user } = req.session;
 
-    if (category && title && content && studyId) {
-      const noticeData = await client.notice.create({
-        data: {
-          category: category,
-          title: title,
-          content: content,
-          author: {
-            connect: {
-              id: user?.id,
-            },
-          },
-          study: {
-            connect: {
-              id: studyId,
-            },
+    // const { category, title, content } = req.body;
+    const { inputData, studyId } = req.body;
+    const { category, title, content } = inputData;
+    console.log(category, title, content, studyId);
+
+    const noticeData = await client.notice.create({
+      data: {
+        category,
+        title,
+        content,
+        author: {
+          connect: {
+            id: user?.id,
           },
         },
-      });
-      return res.json({
-        ok: true,
-        noticeData,
-      });
-    }
+        study: {
+          connect: {
+            id: +studyId,
+          },
+        },
+      },
+    });
+    return res.json({
+      ok: true,
+      noticeData,
+    });
   }
 
   // if (req.method === 'GET') {
