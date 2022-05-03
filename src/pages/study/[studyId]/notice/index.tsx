@@ -5,27 +5,17 @@ import { Button } from '../../../../components/Notice/Button';
 import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
 import { COLOR } from '../../../../constants';
 import { NoticeList } from '../../../../components/Notice/NoticeList';
-import { NoticeData } from '../../../../types/Notice';
-import { useEffect, useState } from 'react';
+import { INoticeRes } from '../../../../types/Notice';
+import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import view from 'src/pages/api/notice/view';
 
 export default function NoticePage(): JSX.Element {
+  //ROUTER
   const router = useRouter();
-  const url = router.query;
-  console.log(url);
-  const [noticeList, setNoticeList] = useState<NoticeData[]>([
-    {
-      category: '',
-      title: '',
-      content: '',
-    },
-  ]);
-
-  const res = view('many');
-  useEffect(() => {
-    setNoticeList(res);
-  }, [res]);
+  const { studyId } = router.query;
+  //GET DATA
+  const { data } = useSWR<INoticeRes>(`/api/notice/all_notice`);
+  //
   return (
     <>
       <StudyBanner />
@@ -59,22 +49,19 @@ export default function NoticePage(): JSX.Element {
           </tr>
         </thead>
         <>
-          {noticeList?.noticeData
-            ?.slice(0)
-            .reverse()
-            .map((notice: any, id: number) => {
-              return (
-                <tbody key={notice.id}>
-                  <NoticeList
-                    num={notice.id}
-                    category={notice.category}
-                    title={notice.title}
-                    writer={notice.author}
-                    date={notice.createdAt}
-                  />
-                </tbody>
-              );
-            })}
+          {data?.allNotice?.map((data) => {
+            return (
+              <tbody key={data.id}>
+                <NoticeList
+                  num={data.id}
+                  category={data.category}
+                  title={data.title}
+                  writer={data.author.username}
+                  date={data.createdAt}
+                />
+              </tbody>
+            );
+          })}
         </>
       </Table>
       <Page>
@@ -93,15 +80,11 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        {/* <Link
-          href={{
-            pathname: `/study/${studyId}/notice/write`,
-          }}
-        >
+        <Link href={`/study/${Number(studyId)}/notice/write`}>
           <a>
             <Button text="글작성" className="write" />
           </a>
-        </Link> */}
+        </Link>
       </BtnGroup>
     </>
   );

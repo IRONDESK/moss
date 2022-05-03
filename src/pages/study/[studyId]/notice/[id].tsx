@@ -8,19 +8,13 @@ import { useRouter } from 'next/router';
 import view from '../../../api/notice/view';
 import Link from 'next/link';
 import useMutation from 'src/libs/client/useMutation';
-
-interface NoticeData {
-  id: number;
-  category: string;
-  title: string;
-  content: string;
-}
+import { INoticeData } from 'src/types/Notice';
 
 export default function NoticePage() {
   const router = useRouter();
   const { id } = router.query;
   const [del] = useMutation('/api/notice/delete');
-  const [notice, setNotice] = useState<NoticeData[]>([
+  const [notice, setNotice] = useState<INoticeData[]>([
     {
       id: 0,
       category: '',
@@ -43,18 +37,8 @@ export default function NoticePage() {
 
   return (
     <>
-      <StudyBanner
-        logo="../../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
-
+      <StudyBanner />
       <NoticeTitle />
-
       <ViewSection>
         <div className="title">
           <p className="category">{notice?.noticeData?.category}</p>

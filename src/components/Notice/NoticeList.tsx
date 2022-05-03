@@ -5,7 +5,7 @@ export const NoticeList = (props: {
   category: String;
   title: String;
   writer: String;
-  date: String;
+  date: Date;
 }) => {
   return (
     <tr>

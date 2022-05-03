@@ -19,7 +19,6 @@ const PostEditor = dynamic(
 export default function NoticePage(): JSX.Element {
   const router = useRouter();
   const { studyId } = router.query;
-  const StudyId = Number(studyId);
   //
   const [notice, { loading, data, error }] = useMutation('/api/notice');
   console.log(data);
