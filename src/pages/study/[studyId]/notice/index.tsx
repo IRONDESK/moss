@@ -15,6 +15,7 @@ export default function NoticePage(): JSX.Element {
   const { studyId } = router.query;
   //GET DATA
   const { data } = useSWR<INoticeRes>(`/api/notice/all_notice`);
+
   //
   return (
     <>
@@ -53,6 +54,7 @@ export default function NoticePage(): JSX.Element {
             return (
               <tbody key={data.id}>
                 <NoticeList
+                  studyId={data.studyId}
                   num={data.id}
                   category={data.category}
                   title={data.title}

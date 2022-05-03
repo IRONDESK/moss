@@ -14,8 +14,17 @@ export interface INoticeData {
 export interface INoticeRes {
   ok: boolean;
   allNotice: NoticeWithAuthorNStudy[];
+  notice: NoticeWithAuthorNStudy;
 }
 export interface NoticeWithAuthorNStudy extends Notice {
   author: User;
   study: Study;
+}
+export interface INoticeList {
+  num: number;
+  category: string;
+  title: string;
+  writer: string;
+  date: Date;
+  studyId: number;
 }

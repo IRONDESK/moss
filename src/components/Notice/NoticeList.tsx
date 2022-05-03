@@ -1,21 +1,26 @@
 import Link from 'next/link';
+import { INoticeList } from 'src/types/Notice';
 
-export const NoticeList = (props: {
-  num: Number;
-  category: String;
-  title: String;
-  writer: String;
-  date: Date;
-}) => {
+export const NoticeList = ({
+  num,
+  category,
+  title,
+  writer,
+  date,
+  studyId,
+}: INoticeList) => {
+  //
   return (
     <tr>
-      <td className="col-num">{props.num}</td>
-      <td className="col-category">{props.category}</td>
+      <td className="col-num">{num}</td>
+      <td className="col-category">{category}</td>
       <td className="notice-title">
-        <Link href={`/study/notice/${props.num}`}>{props.title}</Link>
+        <Link href={`/study/${studyId}/notice/${num}`}>
+          <a>{title}</a>
+        </Link>
       </td>
-      <td>{props.writer}</td>
-      <td className="col-date">{props.date}</td>
+      <td>{writer}</td>
+      <td className="col-date">{date}</td>
     </tr>
   );
 };

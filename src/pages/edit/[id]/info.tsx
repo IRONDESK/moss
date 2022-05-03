@@ -17,7 +17,7 @@ import {
   Message,
   ProfileImg,
 } from 'src/styles/components';
-import { IEditResponse } from 'src/types/edit';
+import { IEditResponse } from 'src/types/Edit';
 import { joinForm } from 'src/types/join';
 
 export default function Profile() {

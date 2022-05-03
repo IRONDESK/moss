@@ -8,11 +8,18 @@ import { useRouter } from 'next/router';
 import view from '../../../api/notice/view';
 import Link from 'next/link';
 import useMutation from 'src/libs/client/useMutation';
-import { INoticeData } from 'src/types/Notice';
+import { INoticeData, INoticeRes } from 'src/types/Notice';
+import useSWR from 'swr';
 
 export default function NoticePage() {
+  //ROUTER
   const router = useRouter();
   const { id } = router.query;
+
+  //GET DATA
+  const { data: currentData } = useSWR<INoticeRes>(`/api/notice/${Number(id)}`);
+  console.log(currentData?.notice);
+  //
   const [del] = useMutation('/api/notice/delete');
   const [notice, setNotice] = useState<INoticeData[]>([
     {
@@ -41,24 +48,27 @@ export default function NoticePage() {
       <NoticeTitle />
       <ViewSection>
         <div className="title">
-          <p className="category">{notice?.noticeData?.category}</p>
-          <h4>{notice?.noticeData?.title}</h4>
+          <p className="category">{currentData?.notice?.category}</p>
+          <h4>{currentData?.notice?.title}</h4>
         </div>
         <div className="editor-content">
-          <p>{notice?.noticeData?.content}</p>
+          <p>{currentData?.notice?.content}</p>
         </div>
         <div className="btn-group">
-          <Link href="/study/notice" passHref>
+          <Link href={`/study/${currentData?.notice?.studyId}/notice`}>
             <a>
               <Button text="목록" className="list" />
             </a>
           </Link>
-          <Link href={`/study/notice/edit/${notice?.noticeData?.id}`} passHref>
+
+          <Link
+            href={`/study/${currentData?.notice?.studyId}/notice/edit/${currentData?.notice?.id}`}
+          >
             <a>
               <Button text="수정" className="modify" />
             </a>
           </Link>
-          <button text="삭제" className="delete" onClick={deleteAlert}>
+          <button className="delete" onClick={deleteAlert}>
             삭제
           </button>
         </div>
