@@ -35,6 +35,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
     membersLimit,
     chatLink,
     image,
+    joinMsg,
   }) => {
     if (loading) return;
     //스터디 사진 업로드 + 스터디생성
@@ -60,6 +61,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         tag,
         membersLimit,
         chatLink,
+        joinMsg,
         imageId: id,
       });
     } else {
@@ -73,6 +75,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         tag,
         membersLimit,
         chatLink,
+        joinMsg,
       });
     }
   };

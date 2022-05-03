@@ -5,40 +5,23 @@ import { Button } from '../../../../components/Notice/Button';
 import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
 import { COLOR } from '../../../../constants';
 import { NoticeList } from '../../../../components/Notice/NoticeList';
-import { NoticeData } from '../../../../types/Notice';
-import { useEffect, useState } from 'react';
+import { INoticeRes } from '../../../../types/Notice';
+import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import view from 'src/pages/api/notice/view';
 
 export default function NoticePage(): JSX.Element {
+  //ROUTER
   const router = useRouter();
   const { studyId } = router.query;
-  const [noticeList, setNoticeList] = useState<NoticeData[]>([
-    {
-      category: '',
-      title: '',
-      content: '',
-    },
-  ]);
 
-  const res = view('many');
-  useEffect(() => {
-    setNoticeList(res);
-  }, [res]);
+  //GET DATA
+  const { data } = useSWR<INoticeRes>(`/api/notice/${Number(studyId)}/total`);
+
+  //
   return (
     <>
-      <StudyBanner
-        logo="../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
-
+      <StudyBanner />
       <NoticeTitle />
-
       <Table>
         <caption>
           스터디 공지사항 번호, 말머리, 제목, 작성일, 등록일시 정보 제공
@@ -68,22 +51,20 @@ export default function NoticePage(): JSX.Element {
           </tr>
         </thead>
         <>
-          {noticeList?.noticeData
-            ?.slice(0)
-            .reverse()
-            .map((notice: any, id: number) => {
-              return (
-                <tbody key={notice.id}>
-                  <NoticeList
-                    num={notice.id}
-                    category={notice.category}
-                    title={notice.title}
-                    writer={notice.author}
-                    date={notice.createdAt}
-                  />
-                </tbody>
-              );
-            })}
+          {data?.allNotice?.map((data) => {
+            return (
+              <tbody key={data.id}>
+                <NoticeList
+                  studyId={data.studyId}
+                  num={data.id}
+                  category={data.category}
+                  title={data.title}
+                  writer={data.author.username}
+                  date={data.createdAt}
+                />
+              </tbody>
+            );
+          })}
         </>
       </Table>
       <Page>
@@ -102,11 +83,7 @@ export default function NoticePage(): JSX.Element {
         </ol>
       </Page>
       <BtnGroup>
-        <Link
-          href={{
-            pathname: `/study/${studyId}/notice/write`,
-          }}
-        >
+        <Link href={`/study/${Number(studyId)}/notice/write`}>
           <a>
             <Button text="글작성" className="write" />
           </a>

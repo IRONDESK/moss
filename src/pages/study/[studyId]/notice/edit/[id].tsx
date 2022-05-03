@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
-import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
-import { COLOR } from 'src/constants';
 import dynamic from 'next/dynamic';
 import useMutation from 'src/libs/client/useMutation';
-import { NoticeTitle } from 'src/components/Notice/NoticeTitle';
-import { Button } from 'src/components/Notice/Button';
+import { NoticeData } from 'src/types/Notice';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import view from '../../../../api/notice/view';
+import { StudyBanner } from 'src/components/StudyMain/StudyBanner';
+import { NoticeTitle } from 'src/components/Notice/NoticeTitle';
+
+import { COLOR } from 'src/constants';
+import { Button } from 'src/components/Notice/Button';
+import { Error } from 'src/styles/components';
 
 const PostEditor = dynamic(
   () => import('../../../../../components/Notice/PostEditor'),
@@ -16,31 +18,18 @@ const PostEditor = dynamic(
   },
 );
 
-interface NoticeData {
-  id: number;
-  category: string;
-  title: string;
-  content: string;
-}
-
 export default function NoticePage(): JSX.Element {
-  let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const router = useRouter();
-  const { id } = router.query;
-  const [beforeNotice, setBeforeNotice] = useState<NoticeData[]>([]);
-  const beforeNoticeData = view(id);
-  useEffect(() => {
-    setBeforeNotice(beforeNoticeData);
-  }, [beforeNoticeData]);
+  const { studyId, id } = router.query;
 
-  const [category, setCategory] = useState(
-    beforeNoticeData?.noticeData?.category,
-  );
-  const [title, setTitle] = useState(beforeNoticeData?.noticeData?.title);
-  const [content, setContent] = useState(beforeNoticeData?.noticeData?.content);
+  //POST
+  const [editNotice, { loading, data }] = useMutation('/api/notice/edit');
 
-  const [edit] = useMutation('/api/notice/edit');
-
+  //FORM
+  const [noticeList, setNoticeList] = useState<NoticeData[]>([]);
+  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name },
@@ -52,41 +41,43 @@ export default function NoticePage(): JSX.Element {
       setTitle(e.target.value);
     }
   };
-
   const editor = (editor: string) => {
     setContent(editor);
   };
 
-  const onSubmit = async (e: any) => {
+  //SUBMIT
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (loading) return;
     setNoticeList(
-      (noticeList = [
-        { id: +id, category: category, title: title, content: content },
-      ]),
+      (noticeList = [{ category: category, title: title, content: content }]),
     );
-    const data = noticeList;
-    edit(data);
+    const data = { ...noticeList };
+    const inputData = data[0];
+    editNotice({ inputData, studyId, id });
+    reset();
   };
-
   const reset = () => {
     setNoticeList([]);
     setCategory('');
     setTitle('');
     setContent('');
   };
+  //페이지 이동
+  useEffect(() => {
+    if (data?.ok) {
+      router.push(`/study/${Number(studyId)}/notice`);
+    }
+  }, [data, router]);
 
+  //
   return (
     <>
-      <StudyBanner
-        logo="../../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
+      <StudyBanner />
       <NoticeTitle />
-      <NoticeForm onSubmit={onSubmit} action="/study/notice/">
+      <NoticeForm onSubmit={onSubmit} action="/study/notice">
+        {data?.error && <Error>{data?.error}</Error>}
+
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input
@@ -94,7 +85,7 @@ export default function NoticePage(): JSX.Element {
             list="category-list"
             id="input-category"
             name="category"
-            placeholder={`${beforeNoticeData?.noticeData?.category}`}
+            placeholder="최대 4자까지 입력할 수 있습니다."
           />
         </div>
         <div className="list">
@@ -105,7 +96,6 @@ export default function NoticePage(): JSX.Element {
             type="text"
             id="input-title"
             className="w100"
-            placeholder={`${beforeNoticeData?.noticeData?.title}`}
           />
         </div>
         <div className="list">

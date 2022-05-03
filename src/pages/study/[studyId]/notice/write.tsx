@@ -6,7 +6,8 @@ import useMutation from 'src/libs/client/useMutation';
 import { NoticeTitle } from '../../../../components/Notice/NoticeTitle';
 import { Button } from '../../../../components/Notice/Button';
 import { NoticeData } from 'src/types/Notice';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const PostEditor = dynamic(
   () => import('../../../../components/Notice/PostEditor'),
@@ -16,12 +17,18 @@ const PostEditor = dynamic(
 );
 
 export default function NoticePage(): JSX.Element {
-  const [notice, { loading, data, error }] = useMutation('/api/notice');
-  let [noticeList, setNoticeList] = useState<NoticeData[]>([]);
+  //ROUTER
+  const router = useRouter();
+  const { studyId } = router.query;
+
+  //POST
+  const [notice, { loading, data }] = useMutation('/api/notice/create');
+
+  //FORM
+  const [noticeList, setNoticeList] = useState<NoticeData[]>([]);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name },
@@ -33,21 +40,23 @@ export default function NoticePage(): JSX.Element {
       setTitle(e.target.value);
     }
   };
-
   const editor = (editor: string) => {
     setContent(editor);
   };
 
+  //SUBMIT
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (loading) return;
     setNoticeList(
       (noticeList = [{ category: category, title: title, content: content }]),
     );
-    const data = noticeList;
-    notice(data);
+    const data = { ...noticeList };
+    const inputData = data[0];
+    //POST
+    notice({ inputData, studyId });
     reset();
   };
-
   const reset = () => {
     setNoticeList([]);
     setCategory('');
@@ -55,17 +64,17 @@ export default function NoticePage(): JSX.Element {
     setContent('');
   };
 
+  //페이지 이동
+  useEffect(() => {
+    if (data?.ok) {
+      router.push(`/study/${studyId}/notice`);
+    }
+  }, [data, router]);
+
+  //
   return (
     <>
-      <StudyBanner
-        logo="../../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
+      <StudyBanner />
       <NoticeTitle />
       <NoticeForm onSubmit={onSubmit} action="/study/notice">
         <div className="list">

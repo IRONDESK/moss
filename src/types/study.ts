@@ -1,4 +1,12 @@
-import { Study } from '@prisma/client';
+import { Study, User } from '@prisma/client';
+
+export interface IStudyResponse {
+  ok: boolean;
+  study: IStudyWithUser;
+}
+export interface IStudyWithUser extends Study {
+  user: User;
+}
 
 export interface StudyModal {
   modal: boolean;

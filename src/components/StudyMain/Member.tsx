@@ -5,13 +5,10 @@ import { COLOR } from '../../constants';
 
 interface props {
   memberlist?: any;
-  memberslimit?: number|string;
+  memberslimit?: string | null | undefined;
 }
 
-export const Member = ( {
-  memberlist,
-  memberslimit }: props ) => {
-
+export const Member = ({ memberlist, memberslimit }: props) => {
   return (
     <Container>
       <Title>스터디원</Title>

@@ -12,7 +12,7 @@ import {
   InputWrap,
   Message,
 } from 'src/styles/components';
-import { IEditForm } from 'src/types/edit';
+import { IEditForm } from 'src/types/Edit';
 
 export default function User() {
   //GET

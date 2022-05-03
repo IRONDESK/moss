@@ -52,39 +52,40 @@ model Token {
 }
 
 model Study {
-  id           Int         @id @default(autoincrement())
-  user         User        @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId       Int
-  studyName    String
-  introduce    String?
-  category     String?
-  tag          String?
-  membersLimit String?
-  chatLink     String?
-  image        String?
-  notice        Notice[]
-  joinMember   Json?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  StudyTodo    StudyTodo[]
+  id               Int            @id @default(autoincrement())
+  user             User           @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId           Int
+  studyName        String
+  introduce        String?
+  category         String?
+  tag              String?
+  membersLimit     String?
+  chatLink         String?
+  image            String?
+  joinMsg          String?
+  notice           Notice[]
+  joinMember       Json?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  StudyTodo        StudyTodo[]
 }
 
 model Todo {
-  id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(100)
-  completed Boolean   @default(false)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  id            Int           @id @default(autoincrement())
+  title         String        @db.VarChar(100)
+  completed     Boolean       @default(false)
+  createdAt     DateTime?     @default(now())
+  updatedAt     DateTime?     @updatedAt
 }
 
 model StudyTodo {
-  id        Int       @id @default(autoincrement())
-  title     String    @db.VarChar(100)
-  completed Boolean   @default(false)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-  study     Study     @relation(fields: [studyId], references: [id], onDelete: Cascade)
-  studyId   Int
+  id           Int        @id @default(autoincrement())
+  title        String     @db.VarChar(100)
+  completed    Boolean    @default(false)
+  createdAt    DateTime?  @default(now())
+  updatedAt    DateTime?  @updatedAt
+  study        Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId      Int
   // User      User?     @relation(fields: [userId], references: [id])
   // userId    Int?
 }

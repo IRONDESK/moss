@@ -10,6 +10,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       where: {
         id: studyid,
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
     });
 
     if (studyinfo) {

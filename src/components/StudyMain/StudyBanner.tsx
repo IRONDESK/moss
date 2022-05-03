@@ -4,62 +4,60 @@ import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
 import useUser from 'src/libs/client/useUser';
 import useSWR from 'swr';
+import { Study, User } from '@prisma/client';
+import { useRouter } from 'next/router';
+import { IStudyResponse } from 'src/types/study';
 
-interface bannerType {
-  logo?: string | undefined;
-  studyId?: number | undefined;
-  category: string | undefined;
-  title: string | undefined;
-  des: string | undefined;
-  hashtag: string | undefined;
-  joinMember?: string[] | undefined;
-  memberlimit: number | undefined;
-  link: string | undefined;
-  joinMsg: string | undefined;
-}
+export const StudyBanner = () => {
+  //현재 스터디 페이지에있는 study 데이터 소환
+  const router = useRouter();
+  const { studyId } = router.query;
+  const StudyId = Number(studyId); //라우터에서 받은 id는 string입니다.
 
-export const StudyBanner = ({
-  logo = '/images/StudyLogo.png',
-  studyId,
-  category,
-  title,
-  des,
-  hashtag,
-  joinMember,
-  memberlimit,
-  link,
-  joinMsg,
-}: bannerType) => {
-  //현재 스터디 데이터 소환
-  const { data } = useSWR(`/api/study/${studyId}`);
+  const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
   const logoImg = `https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${data?.study?.image}/avatar`;
+  const userid: any = data?.study?.user.id;
+
   //
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
-  const { isLoggedIn, loggedInUser } = useUser();
-  const userid: any = loggedInUser?.userId;
+
+  //join Member 스터디신청한 사람
+  //임시방편으로 어쩔수없이 작성한 코드입니다. 수철님이 이부분 수정해주셔도 됩니다.
+  //현재코드는 data?.study?.joinMember는 array가 아닌 object 상태입니다.
+  const joinMember = data?.study?.joinMember;
+  const joinMemberArray = [];
+  joinMemberArray.push(joinMember);
+  //
   return (
     <Banner>
       <StudyIntro>
         {data?.study ? (
           <StudyImg src={logoImg} alt="study-logo" />
         ) : (
-          <StudyImg src={logo} alt="study-logo" />
+          <StudyImg src={'/images/StudyLogo.svg'} alt="study-logo" />
         )}
         <StudyDescription>
           <StudyDetail>
             <TagWrap>
-              <Category>{category}</Category>
-              <Hashtag>{hashtag}</Hashtag>
+              <Category>{data?.study?.category}</Category>
+              <Hashtag>{data?.study?.tag}</Hashtag>
             </TagWrap>
-            <Title>{title}</Title>
-            <Des>{des}</Des>
+            <Title>{data?.study?.studyName}</Title>
+            <Des>{data?.study?.introduce}</Des>
           </StudyDetail>
           <Join>
             <Member>
-              {joinMember?.length}/{memberlimit}
+              {joinMemberArray.length} / {data?.study?.membersLimit}
             </Member>
-            {joinMember?.indexOf(userid) !== -1 ? (
+            <StudyBtn
+              joincheck={joinMemberArray?.indexOf(userid) !== -1}
+              onClick={openModal}
+            >
+              스터디 신청하기
+            </StudyBtn>
+
+            {/* {joinMember?.indexOf(userid) !== -1 ? (
               <StudyBtn
                 joincheck={joinMember?.indexOf(userid) !== -1}
                 href={link}
@@ -73,15 +71,15 @@ export const StudyBanner = ({
               >
                 스터디 신청하기
               </StudyBtn>
-            )}
+            )} */}
           </Join>
         </StudyDescription>
       </StudyIntro>
       <ApplyStudyModal
         modal={modal}
         setModal={setModal}
-        studyid={studyId}
-        joinMsg={joinMsg}
+        studyid={StudyId}
+        joinMsg={data?.study?.joinMsg}
       />
     </Banner>
   );

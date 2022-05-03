@@ -8,73 +8,69 @@ import { useRouter } from 'next/router';
 import view from '../../../api/notice/view';
 import Link from 'next/link';
 import useMutation from 'src/libs/client/useMutation';
+import { INoticeData, INoticeRes } from 'src/types/Notice';
+import useSWR from 'swr';
+import { Error } from 'src/styles/components';
 
-interface NoticeData {
-  id: number;
-  category: string;
-  title: string;
-  content: string;
+interface ISave {
+  saved: number | null | undefined;
 }
 
 export default function NoticePage() {
   const router = useRouter();
-  const { id } = router.query;
-  const [del] = useMutation('/api/notice/delete');
-  const [notice, setNotice] = useState<NoticeData[]>([
-    {
-      id: 0,
-      category: '',
-      title: '',
-      content: '',
-    },
-  ]);
+  const { studyId, id } = router.query;
 
-  const data = view(id);
-  useEffect(() => {
-    setNotice(data);
-  }, [data]);
+  //현재보고있는 공지데이터를 불러옵니다.
+  const { data } = useSWR<INoticeRes>(`/api/notice/${Number(id)}/current`);
 
+  //현재보고있는 공지데이터의 삭제요청을 POST 합니다.
+  const [deleteNotion, { loading, data: receivedData }] =
+    useMutation('/api/notice/delete');
+
+  //공지사항 삭제후 처리
   const deleteAlert = () => {
-    const Id = parseInt(id);
-    del(Id);
-    alert('해당 게시글이 삭제되었습니다.');
-    window.location.href = '/study/notice';
+    if (loading) return;
+    deleteNotion(data?.notice?.id);
   };
 
+  //페이지 이동
+  useEffect(() => {
+    if (receivedData?.ok) {
+      alert('해당 게시글이 삭제되었습니다.');
+      router.push(`/study/${studyId}/notice`);
+    }
+  }, [data, router]);
+  //
   return (
     <>
-      <StudyBanner
-        logo="../../images/StudyLogo.png"
-        category="카테고리"
-        title="React 스터디"
-        des="혼자 코딩하기 싫은 개발자들 모여라! 누구나 자유롭게 모여서 각자 코딩해요"
-        hashtag="#개발"
-        member={7}
-        link="#"
-      />
-
+      <StudyBanner />
       <NoticeTitle />
-
       <ViewSection>
         <div className="title">
-          <p className="category">{notice?.noticeData?.category}</p>
-          <h4>{notice?.noticeData?.title}</h4>
+          <p className="category">{data?.notice?.category}</p>
+          <h4>{data?.notice?.title}</h4>
         </div>
+
+        {receivedData?.error && <Error>{receivedData?.error}</Error>}
+
         <div className="editor-content">
-          <p>{notice?.noticeData?.content}</p>
+          <p>{data?.notice?.content}</p>
         </div>
         <div className="btn-group">
-          <Link href="/study/notice" passHref>
+          <Link href={`/study/${data?.notice?.studyId}/notice`}>
             <a>
               <Button text="목록" className="list" />
             </a>
           </Link>
-          <Link href={`/study/notice/edit/${notice?.noticeData?.id}`} passHref>
+
+          <Link
+            href={`/study/${data?.notice?.studyId}/notice/edit/${data?.notice?.id}`}
+          >
             <a>
               <Button text="수정" className="modify" />
             </a>
           </Link>
-          <button text="삭제" className="delete" onClick={deleteAlert}>
+          <button className="delete" onClick={deleteAlert}>
             삭제
           </button>
         </div>
