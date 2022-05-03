@@ -10,6 +10,7 @@ import Link from 'next/link';
 import useMutation from 'src/libs/client/useMutation';
 import { INoticeData, INoticeRes } from 'src/types/Notice';
 import useSWR from 'swr';
+import { Error } from 'src/styles/components';
 
 interface ISave {
   saved: number | null | undefined;
@@ -27,16 +28,15 @@ export default function NoticePage() {
     useMutation('/api/notice/delete');
 
   //공지사항 삭제후 처리
-
   const deleteAlert = () => {
     if (loading) return;
     deleteNotion(data?.notice?.id);
-    alert('해당 게시글이 삭제되었습니다.');
   };
 
   //페이지 이동
   useEffect(() => {
     if (receivedData?.ok) {
+      alert('해당 게시글이 삭제되었습니다.');
       router.push(`/study/${studyId}/notice`);
     }
   }, [data, router]);
@@ -50,6 +50,9 @@ export default function NoticePage() {
           <p className="category">{data?.notice?.category}</p>
           <h4>{data?.notice?.title}</h4>
         </div>
+
+        {receivedData?.error && <Error>{receivedData?.error}</Error>}
+
         <div className="editor-content">
           <p>{data?.notice?.content}</p>
         </div>

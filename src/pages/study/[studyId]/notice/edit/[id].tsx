@@ -9,6 +9,7 @@ import { NoticeTitle } from 'src/components/Notice/NoticeTitle';
 
 import { COLOR } from 'src/constants';
 import { Button } from 'src/components/Notice/Button';
+import { Error } from 'src/styles/components';
 
 const PostEditor = dynamic(
   () => import('../../../../../components/Notice/PostEditor'),
@@ -75,6 +76,8 @@ export default function NoticePage(): JSX.Element {
       <StudyBanner />
       <NoticeTitle />
       <NoticeForm onSubmit={onSubmit} action="/study/notice">
+        {data?.error && <Error>{data?.error}</Error>}
+
         <div className="list">
           <label htmlFor="input-category">말머리</label>
           <input
