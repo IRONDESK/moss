@@ -28,30 +28,30 @@ export const ScheduleModal = ({ onClick }: any) => {
     if (loading) return;
     recordSchedule({ studyId, date, startTime, endTime, content });
     setTimeout(() => {
-      setClose(true);
-    }, 1000);
+      setOpen(false);
+    }, 2000);
   };
 
   //생성후 처리
-  const [close, setClose] = useState(false);
-  const [verify, setVerify] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [confirm, setConfirm] = useState(false);
   useEffect(() => {
     if (data?.ok) {
-      setVerify(true);
+      setConfirm(true);
     }
   }, [data]);
 
   //
   return (
     <>
-      {verify && (
+      {confirm && (
         <ConfirmModal>
           {data?.message && <p className="success">{data?.message}</p>}
           {data?.error && <p className="fail">{data?.error}</p>}
-          <Btn onClick={() => setVerify((value) => !value)}>확인</Btn>
+          <Btn onClick={() => setConfirm((value) => !value)}>확인</Btn>
         </ConfirmModal>
       )}
-      {!close && (
+      {open && (
         <>
           <Modal className="modal">
             <H>스터디 일정 등록</H>

@@ -4,12 +4,12 @@ import withHandler from 'src/libs/server/withHandler';
 import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { user } = req.session;
-  const { scheduleId } = req.body; //프론트에서 받은 스케줄아이디
   //프론트에서 이미 체크된 조건: 스터디아이디와 일치하는 데이터 (O)
+  const { user } = req.session;
+  const id = req.body; //프론트에서 받은 스케줄아이디
 
   const chosenSch = await client.studySchedule.findUnique({
-    where: { id: scheduleId },
+    where: { id },
     select: {
       id: true,
       UserId: true,

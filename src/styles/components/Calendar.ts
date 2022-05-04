@@ -52,6 +52,63 @@ export const Modal = styled.section`
     right: 40px;
   }
 `;
+export const DeleteSchModal = styled.div`
+  & + .dim {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+  width: 400px;
+  height: 250px;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 444;
+  background-color: ${COLOR.errorBg};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  button {
+    width: 80%;
+    height: 50px;
+    &.cancel {
+      &:hover {
+        background-color: #27ae60;
+        color: white;
+      }
+    }
+    &.delete {
+      background-color: #e74c3c;
+      &:hover {
+        background-color: #c0392b;
+        color: white;
+      }
+    }
+  }
+  p {
+    color: #e74c3c;
+    margin: 15px auto;
+    font-style: italic;
+    font-size: 15px;
+  }
+`;
+export const ConfirmModal = styled(DeleteSchModal)`
+  background-color: white;
+  p {
+    color: ${COLOR.main};
+    margin: 15px auto;
+    font-size: 20px;
+    font-style: normal;
+  }
+`;
+
 export const StudyList = styled.ul`
   font-family: 'Noto Sans KR', sans-serif;
   height: 300px;
@@ -192,52 +249,5 @@ export const DelBtn = styled(EditBtn)`
   &:hover {
     background-color: #e74c3c;
     color: white;
-  }
-`;
-export const DelModal = styled.div`
-  width: 400px;
-  height: 250px;
-  padding: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 444;
-  background-color: ${COLOR.errorBg};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  button {
-    width: 80%;
-    height: 50px;
-    &.cancel {
-      &:hover {
-        background-color: #27ae60;
-        color: white;
-      }
-    }
-    &.delete {
-      background-color: #e74c3c;
-      &:hover {
-        background-color: #c0392b;
-        color: white;
-      }
-    }
-  }
-  p {
-    color: #e74c3c;
-    margin: 15px auto;
-    font-style: italic;
-    font-size: 15px;
-  }
-`;
-export const ConfirmModal = styled(DelModal)`
-  background-color: white;
-  p {
-    color: ${COLOR.main};
-    margin: 15px auto;
-    font-size: 20px;
-    font-style: normal;
   }
 `;
