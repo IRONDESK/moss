@@ -20,7 +20,7 @@ export const StudyCalendarWrap = () => {
         <button type="button" className="btn" onClick={onClick}>
           일정 등록
         </button>
-        {click && <ScheduleModal onClick={onClick} />}
+        {click && <ScheduleModal onClick={onClick} postType={'create'} />}
         <ScheduleList />
       </StudyListWrap>
     </Container>

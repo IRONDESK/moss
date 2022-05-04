@@ -18,7 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   //본인이 만든 공지사항이어야 합니다.
   if (chosenNotice.authorId !== user?.id)
-    return res.json({ ok: false, error: '수정 권한이 없습니다.' });
+    return res.json({ ok: false, error: '삭제 권한이 없습니다.' });
 
   //위 사항을 모두 통과하면 데이터를 삭제해줍니다.
   const removedData = await client.notice.delete({

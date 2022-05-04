@@ -8,15 +8,22 @@ import { IStudySchedule, IStudyScheduleRes } from 'src/types/Schedule';
 import { Button } from './Button';
 import { H } from './Title';
 
-export const ScheduleModal = ({ onClick, onEdit }: any) => {
+export const ScheduleModal = ({
+  onClick,
+  onEdit,
+  postType,
+  scheduleId,
+}: any) => {
   //QUERY
   const router = useRouter();
   const { studyId } = router.query;
 
   //POST
-  const [recordSchedule, { loading, data }] = useMutation<IStudyScheduleRes>(
+  const [create, { loading, data }] = useMutation<IStudyScheduleRes>(
     `/api/schedule/studypage`,
   );
+  const [edit, { loading: editLoading, data: editResult }] =
+    useMutation<IStudyScheduleRes>(`/api/schedule/studypage/${studyId}/edit`);
 
   //FORM SUBMIT
   const {
@@ -27,7 +34,12 @@ export const ScheduleModal = ({ onClick, onEdit }: any) => {
 
   const onValid = ({ date, startTime, endTime, content }: IStudySchedule) => {
     if (loading) return;
-    recordSchedule({ studyId, date, startTime, endTime, content });
+    if (postType === 'create') {
+      create({ studyId, date, startTime, endTime, content });
+    }
+    if (postType === 'edit') {
+      edit({ scheduleId, date, startTime, endTime, content });
+    }
     setTimeout(() => {
       setOpen(false);
     }, 1000);

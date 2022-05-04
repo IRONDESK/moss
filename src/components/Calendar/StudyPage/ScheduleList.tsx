@@ -105,7 +105,13 @@ export const ScheduleList = () => {
           studyId={Number(studyId)}
         />
       )}
-      {edit && <ScheduleModal onClick={onEdit} />}
+      {edit && (
+        <ScheduleModal
+          postType={'edit'}
+          onClick={onEdit}
+          scheduleId={scheduleID}
+        />
+      )}
     </>
   );
 };

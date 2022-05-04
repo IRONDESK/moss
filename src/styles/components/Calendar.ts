@@ -85,6 +85,7 @@ export const DeleteConfirmModal = styled(Modal)`
 `;
 export const ConfirmModal = styled(DeleteConfirmModal)`
   background-color: white;
+  border: 1px solid ${COLOR.boxBorder};
   p {
     color: ${COLOR.main};
     margin: 15px auto;
