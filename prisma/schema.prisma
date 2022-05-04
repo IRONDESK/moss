@@ -73,8 +73,8 @@ model Study {
 model StudySchedule {
   id          Int      @id @default(autoincrement())
   date        String
-  startTime   String
-  endTime     String
+  startTime   String?
+  endTime     String?
   content     String
   user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
   UserId      Int

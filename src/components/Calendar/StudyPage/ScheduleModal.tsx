@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
-import { Error } from 'src/styles/components';
-import { Modal } from 'src/styles/components/Calendar';
+import { Btn, Error } from 'src/styles/components';
+import { ConfirmModal, Modal } from 'src/styles/components/Calendar';
 import { IStudySchedule, IStudyScheduleRes } from 'src/types/Schedule';
 import { Button } from './Button';
 import { H } from './Title';
@@ -26,26 +26,31 @@ export const ScheduleModal = ({ onClick }: any) => {
 
   const onValid = ({ date, startTime, endTime, content }: IStudySchedule) => {
     if (loading) return;
-    setClose(true);
-    return recordSchedule({ studyId, date, startTime, endTime, content });
+    recordSchedule({ studyId, date, startTime, endTime, content });
+    setTimeout(() => {
+      setClose(true);
+    }, 1000);
   };
 
-  //AFTER SUBMIT
+  //생성후 처리
   const [close, setClose] = useState(false);
+  const [verify, setVerify] = useState(false);
   useEffect(() => {
     if (data?.ok) {
-      alert(data?.message);
-    }
-    if (data?.error) {
-      alert(data?.error);
+      setVerify(true);
     }
   }, [data]);
 
   //
-
-  //
   return (
     <>
+      {verify && (
+        <ConfirmModal>
+          {data?.message && <p className="success">{data?.message}</p>}
+          {data?.error && <p className="fail">{data?.error}</p>}
+          <Btn onClick={() => setVerify((value) => !value)}>확인</Btn>
+        </ConfirmModal>
+      )}
       {!close && (
         <>
           <Modal className="modal">
@@ -72,7 +77,7 @@ export const ScheduleModal = ({ onClick }: any) => {
                     </label>
                     <input
                       {...register('startTime', {
-                        required: '시작시간을 선택해주세요.',
+                        // required: '시작시간을 선택해주세요.',
                       })}
                       type="time"
                       id="time"
@@ -82,7 +87,7 @@ export const ScheduleModal = ({ onClick }: any) => {
                     </label>
                     <input
                       {...register('endTime', {
-                        required: '종료시간을 선택해주세요.',
+                        // required: '종료시간을 선택해주세요.',
                       })}
                       type="time"
                       id="time2"

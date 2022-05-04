@@ -7,7 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
   const { studyId, date, startTime, endTime, content } = req.body;
 
-  if (user && studyId && date && startTime && endTime && content) {
+  if (user && studyId && date && content) {
     const studySchedule = await client.studySchedule.create({
       data: {
         date,
@@ -25,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       message: '새로운 스터디 일정이 등록되었습니다.',
     });
   }
-  return res.json({ ok: false, error: '스터디 일정등록을 실패했습니다.' });
+  return res.json({ ok: true, error: '스터디 일정등록을 실패했습니다.' });
 }
 
 export default withApiSession(withHandler({ methods: ['POST'], handler }));

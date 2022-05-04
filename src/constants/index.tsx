@@ -9,6 +9,7 @@ export const COLOR = {
   darkergray: '#bdc3c7',
   deepGray: '#666',
   placeHolderText: '#AAA',
+  errorBg: '#fff5f5',
   error: '#FF3636',
   boxBorder: '#DDD',
   ListBorder: '#EEE',
