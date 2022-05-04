@@ -34,7 +34,6 @@ const TopWrap = styled.section`
 `;
 const BottomWrap = styled.section`
   flex-grow: 1;
-  position: relative;
   margin-top: 320px;
 
   @media (max-width: 1024px) {

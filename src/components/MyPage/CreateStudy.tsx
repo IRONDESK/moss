@@ -181,7 +181,10 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
-            <Select {...register('joinMsg')} name="joinMsg" id="study-joinmsg">
+            <Select
+              {...register('joinMsg')}
+              name="joinMsg"
+              id="study-joinmsg">
               <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
               <option value="Welcome😃">Welcome😃</option>
               <option value="반갑습니다🥰">반갑습니다🥰</option>
@@ -256,9 +259,9 @@ const StudySetBtn = styled.button`
 
 const Container = styled.section<{ size: string }>`
   position: absolute;
-  top: 15vh;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
   background-color: ${COLOR.white};
   border: 1px solid ${COLOR.gray};
   padding: 90px 50px;
