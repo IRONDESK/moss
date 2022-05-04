@@ -12,7 +12,8 @@ export const Modal = styled.section`
   background: #fff;
   z-index: 20;
 
-  & + .dim {
+  & + .dim,
+  & + .dim2 {
     position: fixed;
     top: 0;
     left: 0;
@@ -52,30 +53,14 @@ export const Modal = styled.section`
     right: 40px;
   }
 `;
-export const DeleteSchModal = styled.div`
-  & + .dim {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 10;
-  }
-  width: 400px;
-  height: 250px;
-  padding: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 444;
-  background-color: ${COLOR.errorBg};
+export const DeleteConfirmModal = styled(Modal)`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   button {
+    margin: 0;
     width: 80%;
     height: 50px;
     &.cancel {
@@ -94,12 +79,11 @@ export const DeleteSchModal = styled.div`
   }
   p {
     color: #e74c3c;
-    margin: 15px auto;
     font-style: italic;
     font-size: 15px;
   }
 `;
-export const ConfirmModal = styled(DeleteSchModal)`
+export const ConfirmModal = styled(DeleteConfirmModal)`
   background-color: white;
   p {
     color: ${COLOR.main};
@@ -235,7 +219,8 @@ export const BtnWrap = styled.div`
   align-items: center;
   gap: 5px;
 `;
-export const EditBtn = styled.button`
+export const EditBtn = styled.input`
+  background-color: white;
   border-radius: 10px;
   padding: 5px 10px;
   border: 2px solid ${COLOR.main};
@@ -249,5 +234,101 @@ export const DelBtn = styled(EditBtn)`
   &:hover {
     background-color: #e74c3c;
     color: white;
+  }
+`;
+export const CalendarHead = styled.div`
+  .head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .title {
+    font-size: 24px;
+    strong {
+      font-weight: bold;
+    }
+  }
+  .prev,
+  .next {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    font-size: 10px;
+    padding: 0;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .prev::before {
+    background: #fff url('/images/arrow-left.svg') no-repeat 50% 50% / cover;
+  }
+  .next::before {
+    background: #fff url('/images/arrow-right.svg') no-repeat 50% 50% / cover;
+  }
+`;
+export const CalendarBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  .week {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    .box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3em;
+      height: 3em;
+      border-radius: 50%;
+      position: relative;
+      border: 1px solid transparent;
+
+      &.selected {
+        border: 1px solid ${COLOR.main};
+      }
+      &.today {
+        &::before {
+          content: '';
+          display: block;
+          width: 8px;
+          height: 8px;
+          box-sizing: border-box;
+          border-top: 8px solid ${COLOR.main};
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          position: absolute;
+          top: -3px;
+        }
+      }
+      &.yes {
+        &::after {
+          content: '';
+          display: block;
+          width: 8px;
+          height: 8px;
+          background: ${COLOR.point};
+          border-radius: 50%;
+          position: absolute;
+          bottom: 2px;
+        }
+      }
+    }
+  }
+
+  .grayed {
+    color: #ccc;
   }
 `;

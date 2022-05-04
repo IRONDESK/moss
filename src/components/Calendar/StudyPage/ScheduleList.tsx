@@ -2,6 +2,9 @@ import moment from 'moment';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { ITotalStudyScheduleRes } from 'src/types/Schedule';
+import useUser from 'src/libs/client/useUser';
+import { useState } from 'react';
+import { DeleteModal } from './DeleteModal';
 import {
   BtnWrap,
   DelBtn,
@@ -10,9 +13,7 @@ import {
   StudyList,
   Wrap,
 } from 'src/styles/components/Calendar';
-import useUser from 'src/libs/client/useUser';
-import { SetStateAction, useState } from 'react';
-import { DeleteModal } from './DeleteModal';
+import { ScheduleModal } from './ScheduleModal';
 
 export const ScheduleList = () => {
   //QUERY
@@ -21,7 +22,7 @@ export const ScheduleList = () => {
 
   //GET
   const { data } = useSWR<ITotalStudyScheduleRes>(
-    `/api/schedule/study/${Number(studyId)}/total`,
+    `/api/schedule/studypage/${Number(studyId)}/total`,
   );
   //요일계산
   const days = [
@@ -40,16 +41,63 @@ export const ScheduleList = () => {
   //스터디일정 수정 및 삭제
   const { loggedInUser } = useUser();
   const [click, setClick] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [scheduleID, setScheduleID] = useState();
   const onClick = () => {
     click ? setClick(false) : setClick(true);
   };
-  const sendID = (id: SetStateAction<undefined>) => {
+  const onEdit = () => {
+    edit ? setEdit(false) : setEdit(true);
+  };
+  const sendID = (id: any) => {
     setScheduleID(id);
   };
   //
   return (
-    <StudyList>
+    <>
+      <StudyList>
+        {data?.totalSchedule?.map((item) => (
+          <li
+            key={item.id}
+            className={
+              item.date === moment().format('YYYY-MM-DD') ? 'today' : ''
+            }
+          >
+            <Wrap>
+              <SecondWrap>
+                <div className="date">
+                  <strong>{item.date.split('-')[2]}</strong>
+                  <span>{getDay(item.date)}</span>
+                </div>
+                <p className="time">
+                  {item.startTime} - {item.endTime}
+                </p>
+              </SecondWrap>
+              <p className="content">{item.content}</p>
+            </Wrap>
+            {item.UserId === loggedInUser?.id && (
+              <BtnWrap>
+                <EditBtn
+                  type="button"
+                  value="수정"
+                  onClick={() => {
+                    onEdit();
+                    sendID(item.id);
+                  }}
+                />
+                <DelBtn
+                  type="button"
+                  value="삭제"
+                  onClick={() => {
+                    onClick();
+                    sendID(item.id);
+                  }}
+                />
+              </BtnWrap>
+            )}
+          </li>
+        ))}
+      </StudyList>
       {click && (
         <DeleteModal
           onClick={onClick}
@@ -57,38 +105,7 @@ export const ScheduleList = () => {
           studyId={Number(studyId)}
         />
       )}
-      {data?.totalSchedule?.map((item) => (
-        <li
-          key={item.id}
-          className={item.date === moment().format('YYYY-MM-DD') ? 'today' : ''}
-        >
-          <Wrap>
-            <SecondWrap>
-              <div className="date">
-                <strong>{item.date.split('-')[2]}</strong>
-                <span>{getDay(item.date)}</span>
-              </div>
-              <p className="time">
-                {item.startTime} - {item.endTime}
-              </p>
-            </SecondWrap>
-            <p className="content">{item.content}</p>
-          </Wrap>
-          {item.UserId === loggedInUser?.id && (
-            <BtnWrap>
-              <EditBtn>수정</EditBtn>
-              <DelBtn
-                onClick={() => {
-                  onClick();
-                  sendID(item.id);
-                }}
-              >
-                삭제
-              </DelBtn>
-            </BtnWrap>
-          )}
-        </li>
-      ))}
-    </StudyList>
+      {edit && <ScheduleModal onClick={onEdit} />}
+    </>
   );
 };

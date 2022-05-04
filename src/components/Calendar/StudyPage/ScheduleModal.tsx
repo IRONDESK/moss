@@ -8,14 +8,15 @@ import { IStudySchedule, IStudyScheduleRes } from 'src/types/Schedule';
 import { Button } from './Button';
 import { H } from './Title';
 
-export const ScheduleModal = ({ onClick }: any) => {
+export const ScheduleModal = ({ onClick, onEdit }: any) => {
   //QUERY
   const router = useRouter();
   const { studyId } = router.query;
 
   //POST
-  const [recordSchedule, { loading, data, error }] =
-    useMutation<IStudyScheduleRes>(`/api/schedule/study`);
+  const [recordSchedule, { loading, data }] = useMutation<IStudyScheduleRes>(
+    `/api/schedule/studypage`,
+  );
 
   //FORM SUBMIT
   const {
@@ -29,7 +30,7 @@ export const ScheduleModal = ({ onClick }: any) => {
     recordSchedule({ studyId, date, startTime, endTime, content });
     setTimeout(() => {
       setOpen(false);
-    }, 2000);
+    }, 1000);
   };
 
   //생성후 처리
@@ -123,6 +124,7 @@ export const ScheduleModal = ({ onClick }: any) => {
             </form>
           </Modal>
           <div className="dim" onClick={onClick}></div>
+          <div className="dim2" onClick={onEdit}></div>
         </>
       )}
     </>

@@ -22,11 +22,11 @@ import {
   IScheduleForm,
   IScheduleModal,
   IScheduleRes,
-} from 'src/types/schedule';
+} from 'src/types/Schedule';
 
 import useSWR from 'swr';
 
-export const ScheduleModal = ({ date }: IScheduleModal) => {
+export const MyScheduleModal = ({ date }: IScheduleModal) => {
   //Toggle
   const [toggle, setToggle] = useState(true);
   const [afterModal, setAfterModal] = useState(false);
@@ -45,8 +45,9 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
   };
 
   //API
-  const [createSchedule, { data, loading }] = useMutation(`/api/schedule`);
-  const { data: givenData } = useSWR<IScheduleRes>(`/api/schedule`);
+  const [createSchedule, { data, loading }] =
+    useMutation(`/api/schedule/mypage`);
+  const { data: givenData } = useSWR<IScheduleRes>(`/api/schedule/mypage`);
 
   //FORM SUBMIT
   const {
@@ -57,11 +58,7 @@ export const ScheduleModal = ({ date }: IScheduleModal) => {
 
   const onValid = (formData: IScheduleForm) => {
     if (loading) return;
-    //api 전송하고
     createSchedule(formData);
-    //모달창 닫고
-
-    //확인메시지 모달창 열고
   };
 
   useEffect(() => {

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
 import { Btn } from 'src/styles/components';
-import { ConfirmModal, DeleteSchModal } from 'src/styles/components/Calendar';
+import {
+  ConfirmModal,
+  DeleteConfirmModal,
+} from 'src/styles/components/Calendar';
 import { ISchDelRes } from 'src/types/Schedule';
 
 interface IDeleteSchedule {
@@ -17,7 +20,7 @@ export const DeleteModal = ({
 }: IDeleteSchedule) => {
   //POST
   const [deleteSch, { loading, data }] = useMutation<ISchDelRes>(
-    `/api/schedule/study/${studyId}/delete`,
+    `/api/schedule/studypage/${studyId}/delete`,
   );
 
   const confirmDelete = () => {
@@ -47,7 +50,7 @@ export const DeleteModal = ({
       )}
       {open && (
         <>
-          <DeleteSchModal>
+          <DeleteConfirmModal>
             <Btn onClick={confirmDelete} className="delete">
               {loading ? '로딩중...' : '해당일정을 삭제하시겠습니까?'}
             </Btn>
@@ -55,7 +58,7 @@ export const DeleteModal = ({
             <Btn onClick={onClick} className="cancel">
               취소
             </Btn>
-          </DeleteSchModal>
+          </DeleteConfirmModal>
           <div className="dim" onClick={onClick}></div>
         </>
       )}

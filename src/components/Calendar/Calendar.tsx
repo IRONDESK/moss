@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import { CalendarBody, CalendarHead } from 'src/styles/components/Calendar';
 
 export const Calendar = () => {
   const [date, setdate] = useState<moment.Moment>(() => moment());
@@ -107,100 +108,3 @@ export const Calendar = () => {
     </div>
   );
 };
-
-const CalendarHead = styled.div`
-  .head {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .title {
-    font-size: 24px;
-    strong {
-      font-weight: bold;
-    }
-  }
-  .prev,
-  .next {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    margin-left: 8px;
-    font-size: 10px;
-    padding: 0;
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .prev::before {
-    background: #fff url('/images/arrow-left.svg') no-repeat 50% 50% / cover;
-  }
-  .next::before {
-    background: #fff url('/images/arrow-right.svg') no-repeat 50% 50% / cover;
-  }
-`;
-const CalendarBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  .week {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  .row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    .box {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 3em;
-      height: 3em;
-      border-radius: 50%;
-      position: relative;
-      border: 1px solid transparent;
-
-      &.selected {
-        border: 1px solid ${COLOR.main};
-      }
-      &.today {
-        &::before {
-          content: '';
-          display: block;
-          width: 8px;
-          height: 8px;
-          box-sizing: border-box;
-          border-top: 8px solid ${COLOR.main};
-          border-left: 6px solid transparent;
-          border-right: 6px solid transparent;
-          position: absolute;
-          top: -3px;
-        }
-      }
-      &.yes {
-        &::after {
-          content: '';
-          display: block;
-          width: 8px;
-          height: 8px;
-          background: ${COLOR.point};
-          border-radius: 50%;
-          position: absolute;
-          bottom: 2px;
-        }
-      }
-    }
-  }
-
-  .grayed {
-    color: #ccc;
-  }
-`;
