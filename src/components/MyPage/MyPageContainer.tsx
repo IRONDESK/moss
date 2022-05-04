@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { Calendar } from '../Calendar/Calendar';
+import { MyCalendar } from '../Calendar/MyPage/MyCalendar';
 import { TodoList } from '../StudyMain/Todo';
 
 export const MyPageContainer = () => {
   return (
     <Container>
       <article>
-        <Calendar />
+        <MyCalendar />
       </article>
       <TodoList />
     </Container>

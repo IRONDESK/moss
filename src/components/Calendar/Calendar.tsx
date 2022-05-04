@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
-import styled from '@emotion/styled';
-import { COLOR } from 'src/constants';
 import { CalendarBody, CalendarHead } from 'src/styles/components/Calendar';
 
 export const Calendar = () => {

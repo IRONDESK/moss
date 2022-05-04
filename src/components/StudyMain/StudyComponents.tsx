@@ -33,13 +33,13 @@ export const StudyComponents = () => {
     <>
       {myStudy ? (
         <Container>
-          {/* <Record />
+          <Record />
           <TodoList studyId={data?.study?.id} />
           <Notice studyId={data?.study?.id} />
           <Member
             memberslimit={data?.study?.membersLimit}
             memberlist={data?.study?.joinMember}
-          /> */}
+          />
           <StudyCalendarWrap />
         </Container>
       ) : (

@@ -95,6 +95,25 @@ export const ScheduleList = () => {
                 />
               </BtnWrap>
             )}
+
+            {/* <BtnWrap>
+              <EditBtn
+                type="button"
+                value="수정"
+                onClick={() => {
+                  onEdit();
+                  sendID(item.id);
+                }}
+              />
+              <DelBtn
+                type="button"
+                value="삭제"
+                onClick={() => {
+                  onClick();
+                  sendID(item.id);
+                }}
+              />
+            </BtnWrap> */}
           </li>
         ))}
       </StudyList>

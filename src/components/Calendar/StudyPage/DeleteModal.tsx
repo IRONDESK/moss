@@ -41,13 +41,6 @@ export const DeleteModal = ({
   //
   return (
     <>
-      {confirm && (
-        <ConfirmModal>
-          {data?.message && <p className="success">{data?.message}</p>}
-          {data?.error && <p className="fail">{data?.error}</p>}
-          <Btn onClick={() => setConfirm((value) => !value)}>확인</Btn>
-        </ConfirmModal>
-      )}
       {open && (
         <>
           <DeleteConfirmModal>
@@ -61,6 +54,29 @@ export const DeleteModal = ({
           </DeleteConfirmModal>
           <div className="dim" onClick={onClick}></div>
         </>
+      )}
+      {confirm && (
+        <ConfirmModal>
+          {data?.message && <p className="success">{data?.message}</p>}
+          {data?.error && <p className="fail">{data?.error}</p>}
+          {data?.message ? (
+            <Btn
+              className="success"
+              onClick={() => setConfirm((value) => !value)}
+            >
+              확인
+            </Btn>
+          ) : (
+            data?.error && (
+              <Btn
+                className="fail"
+                onClick={() => setConfirm((value) => !value)}
+              >
+                확인
+              </Btn>
+            )
+          )}
+        </ConfirmModal>
       )}
     </>
   );

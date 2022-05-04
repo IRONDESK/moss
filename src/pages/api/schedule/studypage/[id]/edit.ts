@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         chosenData?.studyId === +id,
     );
     if (!validate)
-      return res.json({ ok: false, error: '수정할 권한이 없습니다.' });
+      return res.json({ ok: true, error: '수정할 권한이 없습니다.' });
 
     //조건을 통과하면 편집 해당데이터 편집
     const updatedData = await client.studySchedule.update({

@@ -22,7 +22,7 @@ export const ScheduleModal = ({
   const [create, { loading, data }] = useMutation<IStudyScheduleRes>(
     `/api/schedule/studypage`,
   );
-  const [edit, { loading: editLoading, data: editResult }] =
+  const [edit, { loading: editLoading, data: editedData }] =
     useMutation<IStudyScheduleRes>(`/api/schedule/studypage/${studyId}/edit`);
 
   //FORM SUBMIT
@@ -37,6 +37,7 @@ export const ScheduleModal = ({
     if (postType === 'create') {
       create({ studyId, date, startTime, endTime, content });
     }
+    if (editLoading) return;
     if (postType === 'edit') {
       edit({ scheduleId, date, startTime, endTime, content });
     }
@@ -52,18 +53,14 @@ export const ScheduleModal = ({
     if (data?.ok) {
       setConfirm(true);
     }
-  }, [data]);
+    if (editedData?.ok) {
+      setConfirm(true);
+    }
+  }, [data, editedData]);
 
   //
   return (
     <>
-      {confirm && (
-        <ConfirmModal>
-          {data?.message && <p className="success">{data?.message}</p>}
-          {data?.error && <p className="fail">{data?.error}</p>}
-          <Btn onClick={() => setConfirm((value) => !value)}>확인</Btn>
-        </ConfirmModal>
-      )}
       {open && (
         <>
           <Modal className="modal">
@@ -128,7 +125,11 @@ export const ScheduleModal = ({
                 </li>
               </ul>
               <Button type="submit">
-                {loading ? '로딩중...' : '일정 등록'}
+                {loading || editLoading
+                  ? '로딩중...'
+                  : postType === 'create'
+                  ? '스터디일정 등록하기'
+                  : postType === 'edit' && '스터디일정 수정하기'}
               </Button>
               <button type="button" className="btn-close" onClick={onClick}>
                 <img src="/images/close.svg" alt="닫기" />
@@ -137,6 +138,36 @@ export const ScheduleModal = ({
           </Modal>
           <div className="dim" onClick={onClick}></div>
           <div className="dim2" onClick={onEdit}></div>
+        </>
+      )}
+      {confirm && (
+        <>
+          <ConfirmModal>
+            {data?.message && <p className="success">{data?.message}</p>}
+            {data?.error && <p className="fail">{data?.error}</p>}
+            {editedData?.message && (
+              <p className="success">{editedData?.message}</p>
+            )}
+            {editedData?.error && <p className="fail">{editedData?.error}</p>}
+            {data?.message || editedData?.message ? (
+              <Btn
+                className="success"
+                onClick={() => setConfirm((value) => !value)}
+              >
+                확인
+              </Btn>
+            ) : (
+              data?.error ||
+              (editedData?.error && (
+                <Btn
+                  className="fail"
+                  onClick={() => setConfirm((value) => !value)}
+                >
+                  확인
+                </Btn>
+              ))
+            )}
+          </ConfirmModal>
         </>
       )}
     </>

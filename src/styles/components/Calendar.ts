@@ -87,10 +87,29 @@ export const ConfirmModal = styled(DeleteConfirmModal)`
   background-color: white;
   border: 1px solid ${COLOR.boxBorder};
   p {
-    color: ${COLOR.main};
+    &.success {
+      color: ${COLOR.main};
+    }
+    &.fail {
+      color: ${COLOR.error};
+    }
     margin: 15px auto;
     font-size: 20px;
     font-style: normal;
+  }
+  button {
+    &.success {
+      background-color: ${COLOR.main};
+      &:hover {
+        background-color: #00b894;
+      }
+    }
+    &.fail {
+      background-color: ${COLOR.error};
+      &:hover {
+        background-color: #c0392b;
+      }
+    }
   }
 `;
 
