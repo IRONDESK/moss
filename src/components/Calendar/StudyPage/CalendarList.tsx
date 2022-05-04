@@ -15,6 +15,21 @@ export const CalendarList = () => {
   const { data } = useSWR<ITotalStudyScheduleRes>(
     `/api/schedule/study/${Number(studyId)}/total`,
   );
+  //요일계산
+  const days = [
+    '일요일',
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일',
+  ];
+  const getDay = (date: string) => {
+    return days[new Date(date).getDay()];
+  };
+  console.log(getDay('2022-05-05'));
+
   //
   return (
     <StudyList>
@@ -25,7 +40,7 @@ export const CalendarList = () => {
         >
           <p className="date">
             <strong>{item.date.split('-')[2]}</strong>
-            {/* <span>{item.day}</span> */}
+            <span>{getDay(item.date)}</span>
           </p>
           <p className="time">
             {item.startTime} - {item.endTime}
