@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { ITotalStudyScheduleRes } from 'src/types/Schedule';
+import { ISchDelRes, ITotalStudyScheduleRes } from 'src/types/Schedule';
 import {
   BtnWrap,
   DelBtn,
@@ -12,6 +12,10 @@ import {
 } from 'src/styles/components/Calendar';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import useMutation from 'src/libs/client/useMutation';
+import useUser from 'src/libs/client/useUser';
+import { StudySchedule } from '@prisma/client';
+import { useEffect } from 'react';
 
 export const ScheduleList = () => {
   //QUERY
@@ -36,6 +40,21 @@ export const ScheduleList = () => {
     return days[new Date(date).getDay()];
   };
 
+  //삭제 POST
+  const { loggedInUser } = useUser();
+  const [delSch, { loading: delLoading, data: delResult }] =
+    useMutation<ISchDelRes>(`/api/schedule/study/${Number(studyId)}/delete`);
+  const deleteClick = (data: any) => {
+    if (delLoading) return;
+    delSch(data); //선택한 스케줄데이터의 아이디를 보낸다.
+  };
+
+  useEffect(() => {
+    if (delResult?.ok) {
+      alert(delResult.message);
+    }
+  }, [data]);
+
   //
   return (
     <StudyList>
@@ -56,10 +75,14 @@ export const ScheduleList = () => {
             </SecondWrap>
             <p className="content">{item.content}</p>
           </Wrap>
-          <BtnWrap>
-            <EditBtn>수정</EditBtn>
-            <DelBtn>삭제</DelBtn>
-          </BtnWrap>
+          {item.UserId === loggedInUser?.id && (
+            <BtnWrap>
+              <EditBtn>수정</EditBtn>
+              <DelBtn onClick={() => deleteClick({ schId: item.id })}>
+                삭제
+              </DelBtn>
+            </BtnWrap>
+          )}
         </li>
       ))}
     </StudyList>

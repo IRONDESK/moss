@@ -34,3 +34,9 @@ export interface StudyScheduleWithUserNStudy extends StudySchedule {
   user: User;
   study: Study;
 }
+export interface ISchDelRes {
+  ok: boolean;
+  DeletedSch: StudySchedule;
+  error: string;
+  message: string;
+}

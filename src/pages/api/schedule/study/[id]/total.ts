@@ -18,6 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       startTime: true,
       endTime: true,
       content: true,
+      UserId: true,
       user: { select: { id: true, username: true } },
       study: { select: { id: true, studyName: true } },
     },
