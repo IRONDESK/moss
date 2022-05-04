@@ -13,6 +13,7 @@ export const StudyBanner = () => {
   const StudyId = Number(studyId); //라우터에서 받은 id는 string입니다.
 
   const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
+  console.log("here", data);
   const logoImg = `https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${data?.study?.image}/avatar`;
   const userid: any = data?.study?.user.id;
 
@@ -187,7 +188,7 @@ const Title = styled.h2`
 `;
 
 const Des = styled.div`
-  font-family: 'Noto Sans KR';
+  font-family: 'Pretendard';
   width: 246px;
   @media (max-width: 1024px) {
     width: 100%;

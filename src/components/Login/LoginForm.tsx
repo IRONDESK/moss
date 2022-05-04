@@ -40,6 +40,7 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               placeholder="아이디를 입력하세요."
               errorMsg={errors.userId?.message}
               errorMsg2={errors.password?.message}
+              label="아이디"
             />
             <Btn>{loading ? '로딩중...' : '로그인'}</Btn>
           </InputWrap>
@@ -59,6 +60,7 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               type="text"
               placeholder="이메일을 입력하세요."
               errorMsg={errors.email?.message}
+              label="이메일"
             />
             <Btn>{loading ? '로딩중...' : '로그인 링크 받기'}</Btn>
           </InputWrap>
@@ -78,6 +80,7 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
               name="phone"
               placeholder="휴대폰 번호를 입력하세요."
               errorMsg={errors.phone?.message}
+              label="휴대폰 번호"
             />
             <Btn>{loading ? '로딩중...' : '인증번호 받기'}</Btn>
           </InputWrap>

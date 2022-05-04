@@ -89,7 +89,7 @@ export const InputWrap = styled.div`
     width: 100%;
     height: 48px;
     font-size: 14px;
-    color: ${COLOR.grayText};
+    color: ${COLOR.black};
     border: 1px solid ${COLOR.gray};
     &::placeholder {
       color: ${COLOR.grayText};
@@ -264,10 +264,9 @@ export const Btn = styled.button`
   background-color: ${COLOR.main};
   color: white;
   width: 100%;
+  height: 48px;
   padding: 10px 5px;
-  border-radius: 5px;
   font-size: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
 export const EditBtn = styled.button`
