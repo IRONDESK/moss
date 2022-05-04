@@ -1,9 +1,8 @@
 import React from 'react';
-import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
 
-export const Button = ({ children, type }) => {
+export const Button = ({ children, type }: any) => {
   return (
     <>
       <Btn type={type}>{children}</Btn>

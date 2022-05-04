@@ -1,19 +1,17 @@
-import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { COLOR } from 'src/constants';
 import useMutation from 'src/libs/client/useMutation';
 import { Error } from 'src/styles/components';
+import { Modal } from 'src/styles/components/Calendar';
 import { IStudySchedule, IStudyScheduleRes } from 'src/types/Schedule';
 import { Button } from './Button';
 import { H } from './Title';
 
-export const StudySchedule = ({ onClick }: any) => {
+export const ScheduleModal = ({ onClick }: any) => {
   //QUERY
   const router = useRouter();
   const { studyId } = router.query;
-  console.log(studyId);
 
   //POST
   const [recordSchedule, { loading, data, error }] =
@@ -42,7 +40,7 @@ export const StudySchedule = ({ onClick }: any) => {
       alert(data?.error);
     }
   }, [data]);
-  console.log(data);
+
   //
 
   //
@@ -125,55 +123,3 @@ export const StudySchedule = ({ onClick }: any) => {
     </>
   );
 };
-
-const Modal = styled.section`
-  width: 500px;
-  max-width: calc(100% - 60px);
-  padding: 50px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  z-index: 20;
-
-  & + .dim {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 10;
-  }
-
-  .label-text {
-    display: block;
-    margin: 20px 0 10px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px;
-  }
-  input {
-    height: 48px;
-    width: 100%;
-    border: 1px solid ${COLOR.gray};
-    padding: 0 10px;
-    &::placeholder {
-      color: ${COLOR.grayText};
-    }
-  }
-  .timeWrap {
-    display: flex;
-    gap: 8px;
-  }
-  button {
-    margin-top: 24px;
-  }
-  .btn-close {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    right: 40px;
-  }
-`;
