@@ -21,6 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       user: { select: { id: true, username: true } },
       study: { select: { id: true, studyName: true } },
     },
+    orderBy: { createdAt: 'desc' },
   });
   //스터디 일정이 없을때
   if (!totalSchedule)
