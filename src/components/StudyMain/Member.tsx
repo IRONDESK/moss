@@ -4,20 +4,29 @@ import getUserName from '../../pages/api/study/getUserName';
 import { COLOR } from '../../constants';
 
 interface props {
+  leader: any;
   memberlist?: any;
-  memberslimit?: string | null | undefined;
+  memberslimit: string | null | undefined;
 }
 
-export const Member = ({ memberlist, memberslimit }: props) => {
+export const Member = ({
+  leader,
+  memberlist,
+  memberslimit
+ }: props) => {
   return (
     <Container>
       <Title>스터디원</Title>
       <SubTitle>Members</SubTitle>
       <Contents>
         <MemberLength>
-          <strong>{memberlist?.length}</strong>/{memberslimit}
+          <strong>{memberlist?.length + 1}</strong>/{memberslimit}
         </MemberLength>
         <MemberDetail>
+            <MemberList id="leader" key="leader">
+              <Img src="/images/profile.svg" alt="스터디원 이미지" />
+              <p>{leader?.username}</p>
+            </MemberList>
           {memberlist?.map((member: string) => (
             <MemberList key={member}>
               <Img src="/images/profile.svg" alt="스터디원 이미지" />
@@ -107,6 +116,25 @@ const MemberDetail = styled.ul`
   @media (max-width: 1024px) {
     justify-content: space-evenly;
   } ;
+  & #leader {
+    position: relative;
+      &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      background-image: url('/images/crown.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 20px;
+      background-color: ${COLOR.main};
+      border-radius: 100%;
+      
+    }
+  }
 `;
 
 const MemberList = styled.li`

@@ -1,35 +1,24 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
 import useUser from 'src/libs/client/useUser';
 import useSWR from 'swr';
-import { Study, User } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { IStudyResponse } from 'src/types/study';
 
 export const StudyBanner = () => {
-  //현재 스터디 페이지에있는 study 데이터 소환
   const router = useRouter();
   const { studyId } = router.query;
-  const StudyId = Number(studyId); //라우터에서 받은 id는 string입니다.
+  const StudyId = Number(studyId);
+  const { isLoggedIn, loggedInUser } = useUser();
 
   const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
-  console.log("here", data);
   const logoImg = `https://imagedelivery.net/akzZnR6sxZ1bwXZp9XYgsg/${data?.study?.image}/avatar`;
-  const userid: any = data?.study?.user.id;
 
-  //
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
 
-  //join Member 스터디신청한 사람
-  //임시방편으로 어쩔수없이 작성한 코드입니다. 수철님이 이부분 수정해주셔도 됩니다.
-  //현재코드는 data?.study?.joinMember는 array가 아닌 object 상태입니다.
-  const joinMember = data?.study?.joinMember;
-  const joinMemberArray = [];
-  joinMemberArray.push(joinMember);
-  //
   return (
     <Banner>
       <StudyIntro>
@@ -49,30 +38,26 @@ export const StudyBanner = () => {
           </StudyDetail>
           <Join>
             <Member>
-              {joinMemberArray.length} / {data?.study?.membersLimit}
+              {data ? data?.study?.joinMember?.length + 1 : 0} / {data?.study?.membersLimit}
             </Member>
-            <StudyBtn
-              joincheck={joinMemberArray?.indexOf(userid) !== -1}
-              onClick={openModal}
-            >
-              스터디 신청하기
-            </StudyBtn>
-
-            {/* {joinMember?.indexOf(userid) !== -1 ? (
+            {data ? (
+            data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1 ? (
               <StudyBtn
-                joincheck={joinMember?.indexOf(userid) !== -1}
-                href={link}
+                joincheck={data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1}
+                href={String(data?.study?.chatLink)}
               >
                 오픈채팅 참여하기
               </StudyBtn>
             ) : (
               <StudyBtn
-                joincheck={joinMember?.indexOf(userid) !== -1}
+                joincheck={data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1}
                 onClick={openModal}
               >
                 스터디 신청하기
               </StudyBtn>
-            )} */}
+            ) )
+            : ""
+            }
           </Join>
         </StudyDescription>
       </StudyIntro>
@@ -81,6 +66,7 @@ export const StudyBanner = () => {
         setModal={setModal}
         studyid={StudyId}
         joinMsg={data?.study?.joinMsg}
+        joinMember={data?.study?.joinMember}
       />
     </Banner>
   );
