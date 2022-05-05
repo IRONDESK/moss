@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Btn, Error, InputWrap } from 'src/styles/components';
 import { IFindForm, IFindProps, ILoginForm } from 'src/types/Login';
 import Input from '../Login/LoginInput';
+import { Id_Modal } from './modal/Id_Modal';
 
 export const FindForm = ({
   method,
@@ -9,6 +11,7 @@ export const FindForm = ({
   findPw,
   loading,
   errMsg,
+  data,
 }: IFindProps) => {
   //
   const {
@@ -19,21 +22,33 @@ export const FindForm = ({
   } = useForm<IFindForm>({
     mode: 'onChange',
   });
-  //
+  //FORM SUBMIT
   const onValid = ({ email, phone }: ILoginForm) => {
     reset();
     if (loading) return;
     if (method === 'email') {
-      return findId({ email });
+      findId({ email });
+      setTimeout(() => {
+        modalClick();
+      }, 2000);
     }
     if (method === 'phone') {
-      return findId({ phone });
+      findId({ phone });
+      setTimeout(() => {
+        modalClick();
+      }, 2000);
     }
+  };
+  //Found Id Pw Modal
+  const [modal, setModal] = useState(false);
+  const modalClick = () => {
+    modal ? setModal(false) : setModal(true);
   };
   //
   return (
     <>
       <form onSubmit={handleSubmit(onValid)}>
+        {errMsg && <Error>{errMsg}</Error>}
         {method === 'email' && (
           <>
             <InputWrap>
@@ -73,11 +88,12 @@ export const FindForm = ({
                 errorMsg={errors.phone?.message}
                 label="휴대폰 번호"
               />
-              <Btn>{loading ? '로딩중...' : '인증번호 받기'}</Btn>
+              <Btn>{loading ? '로딩중...' : '휴대폰 번호로 아이디 찾기'}</Btn>
             </InputWrap>
           </>
         )}
       </form>
+      {modal && <Id_Modal />}
     </>
   );
 };

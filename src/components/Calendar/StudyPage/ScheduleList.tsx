@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { ITotalStudyScheduleRes } from 'src/types/Schedule';
+
 import useUser from 'src/libs/client/useUser';
 import { useState } from 'react';
 import { DeleteModal } from './DeleteModal';
@@ -14,6 +14,7 @@ import {
   Wrap,
 } from 'src/styles/components/Calendar';
 import { ScheduleModal } from './ScheduleModal';
+import { ITotalStudyScheduleRes } from 'src/types/schedule';
 
 export const ScheduleList = () => {
   //QUERY

@@ -11,7 +11,9 @@ export default function FindIdPw() {
   };
   //POST
   const [findId, { data, loading }] = useMutation(`/api/users/find-id`);
+  console.log(data);
 
+  //
   return (
     <>
       <Container>
@@ -27,7 +29,13 @@ export default function FindIdPw() {
           <option value="email">이메일로 아이디 찾기</option>
           <option value="phone">휴대폰 번호로 아이디 찾기</option>
         </select>
-        <FindForm method={method} findId={findId} loading={loading} errMsg="" />
+        <FindForm
+          data={data}
+          method={method}
+          findId={findId}
+          loading={loading}
+          errMsg={data?.error}
+        />
       </Container>
     </>
   );
