@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { SearchInput } from '../components/SearchInput';
-import { COLOR } from '../constants';
+import { SearchInput } from '../../components/SearchInput';
+import { COLOR } from '../../constants';
 
 export default function SearchPage() {
   const router = useRouter();

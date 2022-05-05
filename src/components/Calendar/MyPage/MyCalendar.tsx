@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import moment, { Moment as MomentTypes } from 'moment';
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import { MyScheduleModal } from './MyScheduleModal';
 
-export const Calendar = ({ studyData }: any) => {
-  const [date, setdate] = useState<moment.Moment>(() => moment());
+export const MyCalendar = () => {
+  const [date, setdate] = useState<moment.Moment>(moment());
+  const [onDate, setOnDate] = useState('');
 
-  const handleDayClick = (current: moment.Moment) => setdate(current);
+  //일정모달
+  const [modal, setModal] = useState(false);
+  const handleDayClick = (current: moment.Moment) => {
+    setdate(current);
+    setModal((value) => !value);
+    setOnDate(date.format('YYYY-MM-DD'));
+  };
+
+  //달력
   const returnToday = () => setdate(moment());
   const jumpToMonth = (num: number) =>
     num
@@ -61,7 +71,7 @@ export const Calendar = ({ studyData }: any) => {
               let isGrayed =
                 current.format('MM') !== today.format('MM') ? 'grayed' : '';
 
-              let yesDate = studyData.map((item: any) => item.date);
+              let yesDate = [].map((item: any) => item.date);
               let isDate = '';
               for (let i = 0; i < yesDate.length; i++) {
                 if (yesDate[i] === current.format('YYYY-MM-DD')) {
@@ -85,9 +95,10 @@ export const Calendar = ({ studyData }: any) => {
 
     return calendar;
   }
-
+  //
   return (
     <>
+      {modal ? <MyScheduleModal date={onDate} /> : null}
       <div>
         <CalendarHead>
           <div className="head">
@@ -99,16 +110,16 @@ export const Calendar = ({ studyData }: any) => {
             <div className="util-button">
               <button onClick={returnToday}>Today</button>
               <button className="prev" onClick={() => jumpToMonth(0)}>
-                <span>이전</span>
+                &lt;
               </button>
               <button className="next" onClick={() => jumpToMonth(1)}>
-                <span>이후</span>
+                &gt;
               </button>
             </div>
           </div>
         </CalendarHead>
         <CalendarBody>
-          <div className="row week">
+          <div className="row">
             {['일', '월', '화', '수', '목', '금', '토'].map((el) => (
               <div className="box" key={el}>
                 <span className="text">{el}</span>
@@ -126,7 +137,6 @@ const CalendarHead = styled.div`
   .head {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
   }
   .title {
     font-size: 24px;
@@ -134,45 +144,16 @@ const CalendarHead = styled.div`
       font-weight: bold;
     }
   }
-  .prev,
-  .next {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    margin-left: 8px;
-    font-size: 10px;
-    padding: 0;
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.1);
-    }
-  }
-  .prev::before {
-    background: #fff url(./images/arrow-left.svg) no-repeat 50% 50% / cover;
-  }
-  .next::before {
-    background: #fff url(./images/arrow-right.svg) no-repeat 50% 50% / cover;
-  }
 `;
 const CalendarBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  .week {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
   .row {
     display: flex;
     justify-content: space-around;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
     .box {
       display: flex;
       align-items: center;
@@ -182,7 +163,6 @@ const CalendarBody = styled.div`
       border-radius: 50%;
       position: relative;
       border: 1px solid transparent;
-
       &.selected {
         border: 1px solid ${COLOR.main};
       }

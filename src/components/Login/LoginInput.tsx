@@ -1,5 +1,5 @@
-import { UseFormRegisterReturn } from 'react-hook-form';
-import { Error } from '../../../styles/components';
+import { Error } from 'src/styles/components';
+import { InputProps } from 'src/types/Login';
 
 export default function Input({
   name,
@@ -40,13 +40,4 @@ export default function Input({
       ) : null}
     </>
   );
-}
-
-//TS
-interface InputProps {
-  name: string;
-  register: UseFormRegisterReturn;
-  register2?: UseFormRegisterReturn;
-  required?: boolean;
-  [key: string]: any;
 }

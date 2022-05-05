@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
+import useUser from 'src/libs/client/useUser';
+import { studyForm, StudyModal } from 'src/types/study';
 import {
   Avatar,
   AvatarInput,
@@ -11,8 +13,6 @@ import {
   ImgLabel,
   ProfileImg,
 } from 'src/styles/components';
-import { studyForm, StudyModal } from 'src/types/study';
-import useUser from 'src/libs/client/useUser';
 
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();

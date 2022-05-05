@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { StudyCard } from './StudyCard';
 import useSWR from 'swr';
-import { IStudyResponse } from 'src/types/study';
-import { COLOR } from './../constants'
+import { COLOR } from './../constants';
 import { useState } from 'react';
+import { IStudyResponse } from 'src/types/Study';
 
 export const StudyList = () => {
   const { data } = useSWR<IStudyResponse>(`/api/study/total_study`);
@@ -11,7 +11,7 @@ export const StudyList = () => {
   const [showItem, setShowItem] = useState<number>(8);
   const [noMoreMsg, setNoMoreMsg] = useState<boolean>(false);
   const ListMore = () => {
-    if ( data?.totalStudies?.length > showItem ) {
+    if (data?.totalStudies?.length > showItem) {
       setShowItem(showItem * 2);
     } else {
       setNoMoreMsg(true);
@@ -36,7 +36,7 @@ export const StudyList = () => {
           />
         ))}
       </List>
-      <NoMore>{noMoreMsg ? "더 이상 불러올 스터디가 없습니다" : null}</NoMore>
+      <NoMore>{noMoreMsg ? '더 이상 불러올 스터디가 없습니다' : null}</NoMore>
       <More onClick={ListMore}>더 보기</More>
     </>
   );

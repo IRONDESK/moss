@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { css } from "@emotion/react";
+import { css } from '@emotion/react';
 import { Study } from '@prisma/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -10,9 +10,8 @@ import { TodoData } from '../../types/Todo';
 import { TodoItem } from './TodoItem';
 import useUser from 'src/libs/client/useUser';
 
-export const TodoList = ({studyId}: number | any ) => {
-  
-  const router = useRouter()
+export const TodoList = ({ studyId }: number | any) => {
+  const router = useRouter();
 
   // const { loggedInUser } = useUser();
 
@@ -20,16 +19,14 @@ export const TodoList = ({studyId}: number | any ) => {
   const { data, mutate } = useSWR<any>('/api/todo');
   // const { data } = useSWR(`api/study/my_study`);
 
-  console.log(data);
-
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
       id: 0,
-      title: "",
+      title: '',
       completed: false,
-      createdAt: "",
-      updatedAt: "",
-      studyId: 0
+      createdAt: '',
+      updatedAt: '',
+      studyId: 0,
     },
   ]);
 
@@ -47,71 +44,68 @@ export const TodoList = ({studyId}: number | any ) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createTodo({title: todo, studyId: studyId});
+    createTodo({ title: todo, studyId: studyId });
     // createTodo({title: todo, studyId: studyId, userId: loggedInUser});
     setTodo('');
     setIsTodo(false);
     router.reload();
   };
 
-  
   useEffect(() => {
-    if(data) {
-      setTodoList(data.studyTodo)
+    if (data) {
+      setTodoList(data.studyTodo);
     }
   }, [data]);
 
   return (
     <>
-    {!studyId && <MyPageTitle>오늘의 할 일</MyPageTitle>}
-    <Container studyId={studyId}>
-      {studyId ? (
-        <>
-          <Title>오늘의 할일</Title>
-          <SubTitle>Todo List</SubTitle>
-        </>
-      ) : (
-        <>
-          <TagBox>
-          {data?.studyTodo?.map((todoItem: TodoData) => {
-            return (
-              <ItemTag>{todoItem.studyId}</ItemTag>
-            )
-          })}
-          </TagBox>
-        </>
-      )}
-      {data && (
-        <ItemList todoList={data?.studyTodo}>
-          <ul>
-            {/* {data?.title && <TodoItem todoItem={tit} todoList={data.todo} setTodoList={setTodoList}/>} */}
-            {data?.studyTodo?.map((todoItem: TodoData, index: number) => {
-              return (
-                <TodoItem
-                  key={index}
-                  studyId={studyId}
-                  todoItem={todoItem}
-                  todoList={data?.studyTodo}
-                />
-              );
-            })}
-          </ul>
-        </ItemList>
-      )}
-      <Form onSubmit={onSubmit}>
-        <label>
-          <Input
-            type="text"
-            placeholder="해야 할 일 입력하기"
-            value={todo}
-            onChange={onChange}
-          />
-        </label>
-        <Btn disabled={!isTodo} type="submit">
-          입력
-        </Btn>
-      </Form>
-    </Container>
+      {!studyId && <MyPageTitle>오늘의 할 일</MyPageTitle>}
+      <Container studyId={studyId}>
+        {studyId ? (
+          <>
+            <Title>오늘의 할일</Title>
+            <SubTitle>Todo List</SubTitle>
+          </>
+        ) : (
+          <>
+            <TagBox>
+              {data?.studyTodo?.map((todoItem: TodoData) => {
+                return <ItemTag key={todoItem.id}>{todoItem.studyId}</ItemTag>;
+              })}
+            </TagBox>
+          </>
+        )}
+        {data && (
+          <ItemList todoList={data?.studyTodo}>
+            <ul>
+              {/* {data?.title && <TodoItem todoItem={tit} todoList={data.todo} setTodoList={setTodoList}/>} */}
+              {data?.studyTodo?.map((todoItem: TodoData, index: number) => {
+                return (
+                  <TodoItem
+                    key={todoItem.id}
+                    studyId={studyId}
+                    todoItem={todoItem}
+                    todoList={data?.studyTodo}
+                  />
+                );
+              })}
+            </ul>
+          </ItemList>
+        )}
+        <Form onSubmit={onSubmit}>
+          <label>
+            <Input
+              type="text"
+              placeholder="해야 할 일 입력하기"
+              value={todo}
+              onChange={onChange}
+            />
+          </label>
+          <Btn disabled={!isTodo} type="submit">
+            입력
+          </Btn>
+        </Form>
+      </Container>
     </>
   );
 };
@@ -128,13 +122,14 @@ const MyPageTitle = styled.h2`
     height: 28px;
     background: url('./images/icons/titleBar.png');
   }
-`
+`;
 
 const Container = styled.section<{ studyId: number }>`
   position: relative;
   padding: 16px 24px 16px;
   border: 1px solid ${COLOR.boxBorder};
-  ${props => props.studyId && (
+  ${(props) =>
+    props.studyId &&
     css`
       padding: 48px 24px 16px;
       &::after {
@@ -146,8 +141,7 @@ const Container = styled.section<{ studyId: number }>`
         height: 48px;
         background: ${COLOR.main} url('/images/todoCheck.svg') no-repeat 50% 70%;
       }
-    `
-  )}
+    `}
 `;
 
 const Title = styled.h2`
@@ -166,7 +160,7 @@ const SubTitle = styled.span`
 
 const TagBox = styled.div`
   display: flex;
-`
+`;
 
 const ItemTag = styled.span`
   display: block;
@@ -176,7 +170,7 @@ const ItemTag = styled.span`
   margin-right: 8px;
   text-align: start;
   font-size: 14px;
-`
+`;
 
 const Form = styled.form`
   display: flex;

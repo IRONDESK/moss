@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import JoinInput from 'src/components/Join/components/JoinInput';
+import JoinInput from 'src/components/Join/JoinInput';
 import useMutation from 'src/libs/client/useMutation';
 import useUser from 'src/libs/client/useUser';
+import { IEditResponse } from 'src/types/Edit';
+import { joinForm } from 'src/types/Join';
 import {
   Avatar,
   AvatarInput,
@@ -17,8 +19,6 @@ import {
   Message,
   ProfileImg,
 } from 'src/styles/components';
-import { IEditResponse } from 'src/types/Edit';
-import { joinForm } from 'src/types/join';
 
 export default function Profile() {
   //GET
