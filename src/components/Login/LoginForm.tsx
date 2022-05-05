@@ -1,9 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { Btn, Error, InputWrap } from 'src/styles/components';
-import { ILoginForm } from 'src/types/Login';
+import { ILoginForm, ILoginProps } from 'src/types/Login';
 import Input from './LoginInput';
 
-export const LoginForm = ({ method, login, loading, errMsg }: any) => {
+export const LoginForm = ({ method, login, loading, errMsg }: ILoginProps) => {
   //
   const {
     register,
@@ -17,6 +17,9 @@ export const LoginForm = ({ method, login, loading, errMsg }: any) => {
   const onValid = (data: ILoginForm) => {
     reset();
     if (loading) return;
+    if (method === 'phone') {
+      data.phone = data?.phone?.replace(/-/g, '');
+    }
     return login(data);
   };
   //

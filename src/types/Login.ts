@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface ILoginForm {
@@ -6,6 +7,23 @@ export interface ILoginForm {
   userId?: string;
   password?: string;
   token?: string;
+}
+export interface ILoginProps {
+  method?: string;
+  login?: any;
+  loading?: boolean;
+  errMsg?: string;
+}
+export interface IFindForm extends ILoginForm {}
+export interface IFindProps extends ILoginProps {
+  findId?: any;
+  findPw?: any;
+  data?: {
+    ok: boolean;
+    error: string;
+    message: string;
+    userIdFail: string;
+  };
 }
 export interface SpanProps {
   txtColor: string;

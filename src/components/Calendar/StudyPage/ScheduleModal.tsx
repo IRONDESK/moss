@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { Btn, Error } from 'src/styles/components';
 import { ConfirmModal, Modal } from 'src/styles/components/Calendar';
-import { IStudySchedule, IStudyScheduleRes } from 'src/types/Schedule';
+import { IStudySchedule, IStudyScheduleRes } from 'src/types/schedule';
+
 import { Button } from './Button';
 import { H } from './Title';
 
