@@ -1,8 +1,37 @@
 import styled from '@emotion/styled';
 import { COLOR } from 'src/constants';
+import { Error } from '../components';
+
+export const FindError = styled(Error)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  div {
+    color: black;
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    a {
+      &.move {
+        &:hover {
+          color: ${COLOR.main};
+        }
+      }
+      &.cancel {
+        &:hover {
+          color: ${COLOR.error};
+        }
+      }
+    }
+  }
+`;
 
 export const Modal = styled.article`
-  width: 500px;
+  width: 600px;
   height: 300px;
   max-width: calc(100% - 60px);
   padding: 50px;

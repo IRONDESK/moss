@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
 import useUser from 'src/libs/client/useUser';
-import { studyForm, StudyModal } from 'src/types/study';
+
 import {
   Avatar,
   AvatarInput,
@@ -13,6 +13,7 @@ import {
   ImgLabel,
   ProfileImg,
 } from 'src/styles/components';
+import { studyForm, StudyModal } from 'src/types/Study';
 
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
@@ -181,10 +182,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
-            <Select
-              {...register('joinMsg')}
-              name="joinMsg"
-              id="study-joinmsg">
+            <Select {...register('joinMsg')} name="joinMsg" id="study-joinmsg">
               <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
               <option value="Welcome😃">Welcome😃</option>
               <option value="반갑습니다🥰">반갑습니다🥰</option>

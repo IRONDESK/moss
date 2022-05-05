@@ -22,6 +22,7 @@ export interface IFindProps extends ILoginProps {
     ok: boolean;
     error: string;
     message: string;
+    userIdFail: string;
   };
 }
 export interface SpanProps {

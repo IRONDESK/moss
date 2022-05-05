@@ -29,13 +29,12 @@ async function handler(
     if (!foundUser)
       return res.json({
         ok: false,
-        noUserIdMessage:
-          '아이디를 찾을수 없습니다. 아이디 찾기 페이지로 이동하시겠습니까?',
+        userIdFail: '아이디를 찾을수 없습니다.',
       });
     //
     return res.json({
       ok: true,
-      message: `귀하의 아이디는 "${foundUser?.password}" 입니다.`,
+      message: `귀하의 비밀번호는 "${foundUser?.password}" 입니다.`,
     });
   }
   //

@@ -1,9 +1,12 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Btn, Error, InputWrap } from 'src/styles/components';
+import { FindError } from 'src/styles/components/Find-id-pw';
 import { IFindForm, IFindProps, ILoginForm } from 'src/types/Login';
 import Input from '../Login/LoginInput';
-import { Id_Modal } from './modal/Id_Modal';
+import { FindModal } from './modal/FindModal';
 
 export const FindForm = ({
   method,
@@ -13,6 +16,8 @@ export const FindForm = ({
   data,
 }: IFindProps) => {
   //
+
+  //FORM SUBMIT
   const {
     register,
     reset,
@@ -21,7 +26,7 @@ export const FindForm = ({
   } = useForm<IFindForm>({
     mode: 'onChange',
   });
-  //FORM SUBMIT
+
   const onValid = ({ email, phone, userId }: ILoginForm) => {
     reset();
     if (loading) return;
@@ -37,7 +42,7 @@ export const FindForm = ({
     }
   };
 
-  //Found Id Pw Modal
+  //확인모달
   const [modal, setModal] = useState(false);
   const modalClick = () => {
     modal ? setModal(false) : setModal(true);
@@ -47,11 +52,26 @@ export const FindForm = ({
       modalClick();
     }
   }, [data]);
+
   //
   return (
     <>
-      <form onSubmit={handleSubmit(onValid)}>
+      <>
         {data?.error && <Error>{data?.error}</Error>}
+        {method === 'user-id' && data?.userIdFail && (
+          <FindError>
+            <p>{data?.userIdFail}</p>
+            <p>아이디찾기 페이지로 이동하시겠습니까?</p>
+            <div>
+              <Link href="/login/find_id">
+                <a className="move">이동하기</a>
+              </Link>
+              <button onClick={() => window.location.reload()}>취소</button>
+            </div>
+          </FindError>
+        )}
+      </>
+      <form onSubmit={handleSubmit(onValid)}>
         {method === 'email' && (
           <>
             <InputWrap>
@@ -108,7 +128,14 @@ export const FindForm = ({
           </>
         )}
       </form>
-      {modal && <Id_Modal message={data?.message} modalClick={modalClick} />}
+      <>
+        {(method === 'email' || 'phone') && modal ? (
+          <FindModal message={data?.message} modalClick={modalClick} />
+        ) : null}
+        {method === 'user-id' && modal ? (
+          <FindModal message={data?.message} modalClick={modalClick} />
+        ) : null}
+      </>
     </>
   );
 };
