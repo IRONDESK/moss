@@ -15,6 +15,7 @@ export const StudyComponents = () => {
   const router = useRouter();
   const { studyId } = router.query;
   const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
+  console.log(data)
 
   //내가 만든 스터디 이거나 (===loggedInUser의 고유id와 study안의 user의 고유id가 일치!)
   // 또는 신청한 스터디이면 UI표시 (joinMember는 후작업)
@@ -53,7 +54,7 @@ export const StudyComponents = () => {
             <Container>
               <Record />
               <TodoList studyId={data?.study?.id} />
-              <Notice />
+              <Notice studyId={data?.study?.id}/>
               <Member />
             </Container>
           </Blur>
