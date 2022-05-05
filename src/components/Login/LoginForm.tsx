@@ -17,6 +17,9 @@ export const LoginForm = ({ method, login, loading, errMsg }: ILoginProps) => {
   const onValid = (data: ILoginForm) => {
     reset();
     if (loading) return;
+    if (method === 'phone') {
+      data.phone = data?.phone?.replace(/-/g, '');
+    }
     return login(data);
   };
   //

@@ -18,7 +18,11 @@ export interface IFindForm extends ILoginForm {}
 export interface IFindProps extends ILoginProps {
   findId?: any;
   findPw?: any;
-  data?: User;
+  data?: {
+    ok: boolean;
+    error: string;
+    message: string;
+  };
 }
 export interface SpanProps {
   txtColor: string;

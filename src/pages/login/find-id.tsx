@@ -11,7 +11,6 @@ export default function FindIdPw() {
   };
   //POST
   const [findId, { data, loading }] = useMutation(`/api/users/find-id`);
-  console.log(data);
 
   //
   return (

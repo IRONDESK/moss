@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Btn, Error, InputWrap } from 'src/styles/components';
 import { IFindForm, IFindProps, ILoginForm } from 'src/types/Login';
@@ -27,16 +27,11 @@ export const FindForm = ({
     reset();
     if (loading) return;
     if (method === 'email') {
-      findId({ email });
-      setTimeout(() => {
-        modalClick();
-      }, 2000);
+      return findId({ email });
     }
     if (method === 'phone') {
-      findId({ phone });
-      setTimeout(() => {
-        modalClick();
-      }, 2000);
+      phone = phone?.replace(/-/g, '');
+      return findId({ phone });
     }
   };
   //Found Id Pw Modal
@@ -44,6 +39,11 @@ export const FindForm = ({
   const modalClick = () => {
     modal ? setModal(false) : setModal(true);
   };
+  useEffect(() => {
+    if (data?.ok) {
+      modalClick();
+    }
+  }, [data]);
   //
   return (
     <>
@@ -93,7 +93,7 @@ export const FindForm = ({
           </>
         )}
       </form>
-      {modal && <Id_Modal />}
+      {modal && <Id_Modal message={data?.message} modalClick={modalClick} />}
     </>
   );
 };

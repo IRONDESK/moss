@@ -33,22 +33,20 @@ async function handler(
     //
     return res.json({
       ok: true,
-      foundUser,
-      message: `귀하의 아이디는 ${foundUser?.userId} 입니다.`,
+      message: `귀하의 아이디는 "${foundUser?.userId}" 입니다.`,
     });
   }
   if (phone) {
     const foundUser = await client.user.findUnique({
       where: { phone },
-      select: { id: true, phone: true },
+      select: { id: true, userId: true },
     });
     if (!foundUser)
       return res.json({ ok: false, error: '등록된 휴대폰 번호가 아닙니다.' });
     //
     return res.json({
       ok: true,
-      foundUser,
-      message: `귀하의 휴대폰 번호는 ${foundUser?.phone} 입니다.`,
+      message: `귀하의 아이디는 "${foundUser?.userId}" 입니다.`,
     });
   }
   return res.json({ ok: false, error: '데이터가 미입력 되었습니다.' });
