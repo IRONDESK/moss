@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import useMutation from 'src/libs/client/useMutation';
-import { LoginForm } from './components/LoginForm';
+import { LoginForm } from './LoginForm';
 
 export const LoginStart = () => {
   const router = useRouter();
-
   //로그인 옵션
   const [method, setMethod] = useState('userId');
   const onClick = (option: React.FormEvent<HTMLSelectElement>) => {

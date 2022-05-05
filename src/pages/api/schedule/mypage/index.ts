@@ -7,7 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { user } = req.session;
   const { title, date, content } = req.body;
   if (req.method === 'POST') {
-    if (title && date) {
+    if (user && title && date) {
       const schedule = await client.schedule.create({
         data: {
           title,

@@ -1,15 +1,14 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Record } from './Record';
 import { TodoList } from './Todo';
 import { Notice } from './Notice';
 import { Member } from './Member';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
-import { IStudyResponse } from 'src/types/study';
 import useUser from 'src/libs/client/useUser';
-import { StudyBanner } from './StudyBanner';
+import { IStudyResponse } from 'src/types/study';
+import { StudyCalendarWrap } from '../Calendar/StudyPage/StudyCalendarWrap';
 
 export const StudyComponents = () => {
   const router = useRouter();
@@ -33,7 +32,6 @@ export const StudyComponents = () => {
     <>
       {myStudy ? (
         <Container>
-          <Record />
           <TodoList studyId={data?.study?.id} />
           <Notice studyId={data?.study?.id} />
           <Member
@@ -41,6 +39,7 @@ export const StudyComponents = () => {
               memberlist={data?.study?.joinMember}
               memberslimit={data?.study?.membersLimit}
           />
+          <StudyCalendarWrap />
         </Container>
       ) : (
         <>
@@ -52,7 +51,6 @@ export const StudyComponents = () => {
           </Link>
           <Blur>
             <Container>
-              <Record />
               <TodoList studyId={data?.study?.id} />
               <Notice studyId={data?.study?.id}/>
               <Member

@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
-import useUser from 'src/libs/client/useUser';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
+import useUser from 'src/libs/client/useUser';
 import { IStudyResponse } from 'src/types/study';
 
 export const StudyBanner = () => {
