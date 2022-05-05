@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { MyPageBanner } from '../../components/MyPage/MyPageBanner';
 import { StudyList } from '../../components/MyPage/StudyList';
 import { MyPageContainer } from '../../components/MyPage/MyPageContainer';
+import { Record } from 'src/components/MyPage/Record';
 
 export default function MyPage() {
+  const [day, setDay] = useState(0);
+  const getDay = (day: number) => {
+    setDay(day);
+  };
   return (
     <Container>
       <MyPageBanner />
@@ -11,6 +17,7 @@ export default function MyPage() {
         <MyPageContainer />
       </TopWrap>
       <BottomWrap>
+        <Record />
         <StudyList />
       </BottomWrap>
     </Container>
