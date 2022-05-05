@@ -18,7 +18,7 @@ export default function Input({
         {label}
       </label>
       <input id={`user-${name}`} {...register} required={required} {...rest} />
-      {method === 'userId' ? (
+      {method === 'userId' && (
         <>
           <label htmlFor="user-pw" className="a11y-hidden">
             비밀번호
@@ -31,13 +31,13 @@ export default function Input({
             id="user-pw"
           />
         </>
-      ) : null}
+      )}
 
       {errorMsg ? (
         <Error>{errorMsg}</Error>
-      ) : errorMsg2 ? (
-        <Error>{errorMsg2}</Error>
-      ) : null}
+      ) : (
+        errorMsg2 && <Error>{errorMsg2}</Error>
+      )}
     </>
   );
 }

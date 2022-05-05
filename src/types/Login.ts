@@ -7,6 +7,17 @@ export interface ILoginForm {
   password?: string;
   token?: string;
 }
+export interface ILoginProps {
+  method?: string;
+  login?: any;
+  loading?: boolean;
+  errMsg?: string;
+}
+export interface IFindForm extends ILoginForm {}
+export interface IFindProps extends ILoginProps {
+  findId?: any;
+  findPw?: any;
+}
 export interface SpanProps {
   txtColor: string;
 }
