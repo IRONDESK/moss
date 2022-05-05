@@ -6,11 +6,11 @@ export const LoginLink = () => {
     <div>
       <Container>
         <li>
-          <Link href="/login/find-id">아이디 찾기</Link>
+          <Link href="/login/find_id">아이디 찾기</Link>
         </li>
         <Slash />
         <li>
-          <Link href="/login/find-pw">비밀번호 찾기</Link>
+          <Link href="/login/find_pw">비밀번호 찾기</Link>
         </li>
         <Slash />
         <li>

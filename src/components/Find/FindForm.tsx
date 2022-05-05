@@ -10,7 +10,6 @@ export const FindForm = ({
   findId,
   findPw,
   loading,
-  errMsg,
   data,
 }: IFindProps) => {
   //
@@ -23,7 +22,7 @@ export const FindForm = ({
     mode: 'onChange',
   });
   //FORM SUBMIT
-  const onValid = ({ email, phone }: ILoginForm) => {
+  const onValid = ({ email, phone, userId }: ILoginForm) => {
     reset();
     if (loading) return;
     if (method === 'email') {
@@ -33,7 +32,11 @@ export const FindForm = ({
       phone = phone?.replace(/-/g, '');
       return findId({ phone });
     }
+    if (method === 'user-id') {
+      return findPw({ userId });
+    }
   };
+
   //Found Id Pw Modal
   const [modal, setModal] = useState(false);
   const modalClick = () => {
@@ -48,7 +51,7 @@ export const FindForm = ({
   return (
     <>
       <form onSubmit={handleSubmit(onValid)}>
-        {errMsg && <Error>{errMsg}</Error>}
+        {data?.error && <Error>{data?.error}</Error>}
         {method === 'email' && (
           <>
             <InputWrap>
@@ -89,6 +92,18 @@ export const FindForm = ({
                 label="휴대폰 번호"
               />
               <Btn>{loading ? '로딩중...' : '휴대폰 번호로 아이디 찾기'}</Btn>
+            </InputWrap>
+          </>
+        )}
+        {method === 'user-id' && (
+          <>
+            <InputWrap>
+              <input
+                {...register('userId', { required: '아이디를 입력하세요!' })}
+                type="text"
+                placeholder="아이디를 입력하세요."
+              />
+              <Btn>{loading ? '로딩중...' : '아이디로 비밀번호 찾기'}</Btn>
             </InputWrap>
           </>
         )}

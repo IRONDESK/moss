@@ -3,7 +3,7 @@ import { FindForm } from 'src/components/Find/FindForm';
 import useMutation from 'src/libs/client/useMutation';
 import { Container, H1 } from 'src/styles/components';
 
-export default function FindIdPw() {
+export default function find_id() {
   //아이디는 이메일이나 휴대폰 번호로 찾도록 한다.
   const [method, setMethod] = useState('');
   const onClick = (option: React.FormEvent<HTMLSelectElement>) => {

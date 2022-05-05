@@ -9,10 +9,9 @@ async function handler(
   res: NextApiResponse<ResponseType>,
 ) {
   /*
-  아이디 찾을 때 조건
+  비밀번호 찾을 때 조건
   - 이미 로그인이 되어있다면 로그아웃을 해야한다.
-  - 이메일 또는 휴대폰 번호가 있어야 한다.
-  - 이메일로 찾을때 이메일과 일치하는 데이터를 찾는다 / 휴대폰 이하동문
+  - 아이디와 일치하는 유저를 찾는다.
   */
   const { user } = req.session;
   if (user)
@@ -21,33 +20,25 @@ async function handler(
       error: '로그아웃한 후에 이용하시길 바랍니다.',
     });
   //
-  const { email, phone } = req.body;
-  if (email) {
+  const { userId } = req.body;
+  if (userId) {
     const foundUser = await client.user.findUnique({
-      where: { email },
-      select: { id: true, userId: true },
+      where: { userId },
+      select: { id: true, password: true },
     });
     if (!foundUser)
-      return res.json({ ok: false, error: '등록된 이메일이 아닙니다.' });
+      return res.json({
+        ok: false,
+        noUserIdMessage:
+          '아이디를 찾을수 없습니다. 아이디 찾기 페이지로 이동하시겠습니까?',
+      });
     //
     return res.json({
       ok: true,
-      message: `귀하의 아이디는 "${foundUser?.userId}" 입니다.`,
+      message: `귀하의 아이디는 "${foundUser?.password}" 입니다.`,
     });
   }
-  if (phone) {
-    const foundUser = await client.user.findUnique({
-      where: { phone },
-      select: { id: true, userId: true },
-    });
-    if (!foundUser)
-      return res.json({ ok: false, error: '등록된 휴대폰 번호가 아닙니다.' });
-    //
-    return res.json({
-      ok: true,
-      message: `귀하의 아이디는 "${foundUser?.userId}" 입니다.`,
-    });
-  }
+  //
   return res.json({ ok: false, error: '데이터가 미입력 되었습니다.' });
 }
 
