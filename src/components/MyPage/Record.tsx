@@ -1,21 +1,32 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import useMutation from 'src/libs/client/useMutation';
+
 import { COLOR } from '../../constants';
 import { StudyChart } from './StudyChart';
 import { StudyTimer } from './StudyTimer';
 
 export const Record = () => {
   const [percent, setPercent] = useState(0);
-  const [day, setDay] = useState(0);
   const [goalHour, setGoalHour] = useState(0);
   const [goalMinute, setGoalMinute] = useState(0);
   const [goalInputBox, setGoalInputBox] = useState(false);
-  const [data, setData] = useState(0);
+  const [TimeList, setTimeList] = useState({});
 
-  function getTime(percent: number, day: number) {
+  const [goal] = useMutation('/api/goal');
+
+  function getPercent(percent: number) {
     setPercent(percent);
-    setDay(day);
+  }
+  function getTimeList(TimeList: any) {
+    setTimeList(TimeList);
+    let data = TimeList;
+    submitData(data);
+  }
+
+  function submitData(data: any) {
+    goal(data);
   }
   function HourChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (Number(e.target.value) < 13) {
@@ -67,9 +78,10 @@ export const Record = () => {
         <StudyTimer
           goalHour={goalHour}
           goalMinute={goalMinute}
-          getTime={getTime}
+          getPercent={getPercent}
+          getTimeList={getTimeList}
           percent={percent}
-          day={day}
+          TimeList={TimeList}
         />
       </Contents>
       <Button onClick={showBox} defaultChecked={goalInputBox}>

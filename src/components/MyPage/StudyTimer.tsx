@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
+import useSWR from 'swr';
 import { COLOR } from '../../constants';
 
 type TimeProps = {
   goalHour: number;
   goalMinute: number;
-  getTime: any;
+  getPercent: any;
   percent: number;
-  day: number;
+  getTimeList: any;
+  TimeList: any;
 };
 
 const defaultTime = {
@@ -19,15 +21,19 @@ const defaultTime = {
 export const StudyTimer = ({
   goalHour,
   goalMinute,
-  getTime,
+  getPercent,
   percent,
-  day,
+  getTimeList,
+  TimeList,
 }: TimeProps) => {
   const [remainTime, setRemainTime] = useState(defaultTime);
   const [playStatus, setPlayStatus] = useState(false);
   const [alreadyStart, setAlreadyStart] = useState(false);
   const [startTime, setStartTime] = useState<string | undefined>();
   const targetTime = goalMinute * 60 + goalHour * 60 * 60;
+  const { data } = useSWR<any>('/api/goal');
+  let [studyTime, setStudyTime] = useState(0);
+  let [attandenceDay, setAttandenceDay] = useState(0);
 
   useEffect(() => {
     setRemainTime({
@@ -67,11 +73,22 @@ export const StudyTimer = ({
     getStartTime();
   }, [alreadyStart]);
 
+  function attandence() {
+    setAttandenceDay(data?.goalData?.day + 1);
+    alert('출석하셨습니다! 오늘도화이팅!!');
+  }
+
   function ChangePlayStatus() {
     if (!playStatus && (goalHour > 0 || goalMinute > 0)) {
       setPlayStatus(true);
     } else {
-      getTime((percent = Math.floor((1 - remainTime.time / targetTime) * 100)));
+      getPercent(
+        (percent = Math.floor((1 - remainTime.time / targetTime) * 100)),
+      );
+      setStudyTime(
+        (studyTime = data?.goalData?.time + targetTime - remainTime.time),
+      );
+      getTimeList((TimeList = { day: attandenceDay, time: studyTime }));
       setPlayStatus(false);
     }
   }
@@ -89,13 +106,9 @@ export const StudyTimer = ({
     return ('00' + nums).slice(-2);
   }
 
-  function attendance() {
-    getTime(day + 1);
-  }
-
   return (
     <Wrap>
-<AllBtnWrap>
+      <AllBtnWrap>
         <TimerControl>
           <PlayBtn
             onClick={ChangePlayStatus}
@@ -103,8 +116,8 @@ export const StudyTimer = ({
           ></PlayBtn>
           <StopBtn onClick={StopTimerReset}></StopBtn>
         </TimerControl>
-        <AttendanceBtn onClick={attendance}>출석</AttendanceBtn>
-</AllBtnWrap>
+        <AttendanceBtn onClick={attandence}>출석</AttendanceBtn>
+      </AllBtnWrap>
       <TimeWrap>
         <Timer>
           {ChangeDigit(remainTime.hours)}:{ChangeDigit(remainTime.minutes)}:

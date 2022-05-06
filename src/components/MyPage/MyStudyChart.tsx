@@ -1,21 +1,25 @@
 import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { COLOR } from '../../constants';
-
-export const MyStudyChart = (props: {
+import useSWR from 'swr';
+interface Studygoal {
   percent: Number;
   attendance: Number;
   month: Number;
   studyhour: number;
-}) => {
-  let hour: number = Math.floor(props.studyhour / 60);
-  let minute: number = props.studyhour % 60;
+}
+export const MyStudyChart = () => {
+  const { data } = useSWR<any>('/api/goal');
+  const studiedTime = Math.floor(data?.goalData?.time / 60);
+  const hour = Math.floor(studiedTime / 60);
+  const minute = Math.floor(studiedTime % 60);
+  const upData = data?.goalData?.updatedAt.slice(5, 7)[1];
   return (
     <MyStudyCharts>
       <GoalDay>
         <p>출석일</p>
-        <p className="content">{props.attendance}일</p>
-        <p>{props.month}월 중 공부시간</p>
+        <p className="content">{data?.goalData?.day}일</p>
+        <p>{upData}월 공부시간</p>
         <p className="content">
           {hour}시간{minute}분
         </p>
