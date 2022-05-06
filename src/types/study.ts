@@ -1,4 +1,5 @@
 import { Study, User } from '@prisma/client';
+import { Json } from 'twilio/lib/interfaces';
 
 export interface IStudyResponse {
   ok: boolean;
@@ -24,6 +25,7 @@ export interface studyForm {
   image?: FileList;
   studyImage?: FileList;
   avatar?: FileList;
+  joinMember: string[];
 }
 export interface IStudyResponse {
   ok: boolean;

@@ -95,14 +95,16 @@ export const StudyTimer = ({
 
   return (
     <Wrap>
-      <BtnWrap>
-        <PlayBtn
-          onClick={ChangePlayStatus}
-          defaultChecked={playStatus}
-        ></PlayBtn>
-        <StopBtn onClick={StopTimerReset}></StopBtn>
-      </BtnWrap>
-      <AttendanceBtn onClick={attendance}>출석하기</AttendanceBtn>
+<AllBtnWrap>
+        <TimerControl>
+          <PlayBtn
+            onClick={ChangePlayStatus}
+            defaultChecked={playStatus}
+          ></PlayBtn>
+          <StopBtn onClick={StopTimerReset}></StopBtn>
+        </TimerControl>
+        <AttendanceBtn onClick={attendance}>출석</AttendanceBtn>
+</AllBtnWrap>
       <TimeWrap>
         <Timer>
           {ChangeDigit(remainTime.hours)}:{ChangeDigit(remainTime.minutes)}:
@@ -120,7 +122,11 @@ const Wrap = styled.div`
   justify-content: space-between;
 `;
 
-const BtnWrap = styled.div`
+const AllBtnWrap = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+const TimerControl = styled.div`
   button {
     margin-right: 3px;
     display: inline-block;
@@ -144,7 +150,6 @@ const AttendanceBtn = styled.button`
   border: 1px solid ${COLOR.boxBorder};
   width: 80px;
   height: 32px;
-  margin-right: 280px;
 `;
 
 const TimeWrap = styled.div`

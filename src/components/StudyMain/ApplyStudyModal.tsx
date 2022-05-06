@@ -10,6 +10,7 @@ interface IModal {
   setModal: Function;
   joinMsg?: string | null;
   studyid: number;
+  joinMember: JsonValue|string[]|undefined;
 }
 
 export const ApplyStudyModal = ({
@@ -17,10 +18,13 @@ export const ApplyStudyModal = ({
   setModal,
   joinMsg,
   studyid,
+  joinMember,
 }: IModal) => {
-  const { data } = useSWR(`/api/study/create?id=${studyid}`);
+  const { data } = useSWR(`/api/study/create/${studyid}`);
   const [studyset] = useMutation('/api/study/apply');
   const { isLoggedIn, loggedInUser } = useUser();
+
+  console.log("여기", data)
 
   const applyStudy = (
     memberlist: string[],
@@ -43,7 +47,7 @@ export const ApplyStudyModal = ({
           <JoinMsg>{joinMsg}</JoinMsg>이 스터디에 신청하시겠습니까?
           <Button
             onClick={() => {
-              applyStudy(data?.joinMember, loggedInUser?.userId);
+              applyStudy(joinMember, loggedInUser?.userId);
               window.location.reload();
             }}
           >

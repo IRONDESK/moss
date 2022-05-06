@@ -35,8 +35,9 @@ export const StudyComponents = () => {
           <TodoList studyId={data?.study?.id} />
           <Notice studyId={data?.study?.id} />
           <Member
-            memberslimit={data?.study?.membersLimit}
-            memberlist={data?.study?.joinMember}
+              leader={data?.study?.user}
+              memberlist={data?.study?.joinMember}
+              memberslimit={data?.study?.membersLimit}
           />
           <StudyCalendarWrap />
         </Container>
@@ -51,12 +52,12 @@ export const StudyComponents = () => {
           <Blur>
             <Container>
               <TodoList studyId={data?.study?.id} />
-              <Notice studyId={data?.study?.id} />
+              <Notice studyId={data?.study?.id}/>
               <Member
-                memberslimit={data?.study?.membersLimit}
+                leader={data?.study?.user}
                 memberlist={data?.study?.joinMember}
+                memberslimit={data?.study?.membersLimit}
               />
-              <StudyCalendarWrap />
             </Container>
           </Blur>
         </>

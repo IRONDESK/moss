@@ -37,6 +37,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
     chatLink,
     image,
     joinMsg,
+    joinMember,
   }) => {
     if (loading) return;
     //스터디 사진 업로드 + 스터디생성
@@ -64,6 +65,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         chatLink,
         joinMsg,
         imageId: id,
+        joinMember,
       });
     } else {
       //사진업로드 없이 스터디생성
@@ -77,6 +79,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         membersLimit,
         chatLink,
         joinMsg,
+        joinMember,
       });
     }
   };
@@ -179,6 +182,11 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
               id="study-chatlink"
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
+            />
+            <Input
+              {...register('joinMember.0')}
+              name="joinMember"
+              style={{display: "none"}}
             />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
