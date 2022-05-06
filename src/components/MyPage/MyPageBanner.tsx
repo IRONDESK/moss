@@ -7,7 +7,7 @@ export const MyPageBanner = () => {
   return (
     <MyPageBanners>
       <UserInfo />
-      <MyStudyChart percent={50} attendance={3} month={4} studyhour={762} />
+      <MyStudyChart />
     </MyPageBanners>
   );
 };
