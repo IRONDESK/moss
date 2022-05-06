@@ -5,4 +5,7 @@ export interface TodoData {
   createdAt: string
   updatedAt: string
   studyId: number
+  study : {
+    studyName: string,
+  }
 }
