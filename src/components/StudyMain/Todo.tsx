@@ -16,8 +16,10 @@ export const TodoList = ({ studyId }: number | any) => {
   // const { loggedInUser } = useUser();
 
   const [item] = useMutation('/api/todo');
-  const { data, mutate } = useSWR<any>('/api/todo');
-  // const { data } = useSWR(`api/study/my_study`);
+
+  const { data, mutate } = useSWR('/api/todo');
+
+  // console.log(data)
 
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
@@ -27,11 +29,30 @@ export const TodoList = ({ studyId }: number | any) => {
       createdAt: '',
       updatedAt: '',
       studyId: 0,
+      study: {
+        studyName: "",
+      }
     },
   ]);
 
+  const arr: any[] = []
+
+  data?.studyTodo?.map((v: TodoData) =>{
+    if(v.study) arr.push(v.study.studyName)
+  })
+
+  const studyNameTagSet = new Set(arr)
+  const studyNameTag = [Array.from(studyNameTagSet)]
+
   const [todo, setTodo] = useState('');
   const [isTodo, setIsTodo] = useState(false);
+
+  const [category, setCategory] = useState("ALL");
+
+  const onClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    setCategory((e.target as HTMLButtonElement).name)
+  }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
@@ -44,49 +65,63 @@ export const TodoList = ({ studyId }: number | any) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createTodo({ title: todo, studyId: studyId });
-    // createTodo({title: todo, studyId: studyId, userId: loggedInUser});
+    if(studyId) createTodo({ title: todo, studyId: studyId });
+    else createTodo({ title: todo });
     setTodo('');
     setIsTodo(false);
     router.reload();
   };
 
   useEffect(() => {
-    if (data) {
-      setTodoList(data.studyTodo);
-    }
+    if (data) setTodoList(data.studyTodo);
   }, [data]);
 
   return (
     <>
-      {!studyId && <MyPageTitle>오늘의 할 일</MyPageTitle>}
-      <Container studyId={studyId}>
-        {studyId ? (
-          <>
-            <Title>오늘의 할일</Title>
-            <SubTitle>Todo List</SubTitle>
-          </>
-        ) : (
-          <>
-            <TagBox>
-              {data?.studyTodo?.map((todoItem: TodoData) => {
-                return <ItemTag key={todoItem.id}>{todoItem.studyId}</ItemTag>;
-              })}
-            </TagBox>
-          </>
+      <Container>
+        <Title>오늘의 할일</Title>
+        <SubTitle>Todo List</SubTitle>
+        {!studyId && (
+          <TagBox>
+            <ItemTag onClick={onClick} name="ALL" className={`${category === "ALL" && "check"}`}>ALL</ItemTag>
+            {studyNameTag[0].map((studyName, i) => {
+              return (
+                // <button>{studyName.slice(0, 2)}</button>
+                <ItemTag
+                  onClick={onClick}
+                  name={studyName}
+                  key={i}
+                  className={`${category === `${studyName}` && "check"}`}
+                >{studyName}</ItemTag>
+              )
+            })}
+          </TagBox>
         )}
         {data && (
           <ItemList todoList={data?.studyTodo}>
             <ul>
-              {/* {data?.title && <TodoItem todoItem={tit} todoList={data.todo} setTodoList={setTodoList}/>} */}
               {data?.studyTodo?.map((todoItem: TodoData, index: number) => {
                 return (
-                  <TodoItem
-                    key={todoItem.id}
-                    studyId={studyId}
-                    todoItem={todoItem}
-                    todoList={data?.studyTodo}
-                  />
+                  <div key={todoItem.id}>
+                    {category === 'ALL' && (
+                      <TodoItem
+                        // key={todoItem.id}
+                        studyId={studyId}
+                        todoItem={todoItem}
+                        todoList={data?.studyTodo}
+                        category={category}
+                      />
+                    )}
+                    {todoItem.study && category === todoItem.study.studyName && (
+                      <TodoItem
+                        // key={todoItem.id}
+                        studyId={studyId}
+                        todoItem={todoItem}
+                        todoList={data?.studyTodo}
+                        category={category}
+                      />
+                    )}
+                  </div>
                 );
               })}
             </ul>
@@ -124,24 +159,20 @@ const MyPageTitle = styled.h2`
   }
 `;
 
-const Container = styled.section<{ studyId: number }>`
+const Container = styled.section`
   position: relative;
   padding: 16px 24px 16px;
   border: 1px solid ${COLOR.boxBorder};
-  ${(props) =>
-    props.studyId &&
-    css`
-      padding: 48px 24px 16px;
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 32px;
-        width: 40px;
-        height: 48px;
-        background: ${COLOR.main} url('/images/todoCheck.svg') no-repeat 50% 70%;
-      }
-    `}
+  padding: 48px 24px 16px;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 32px;
+    width: 40px;
+    height: 48px;
+    background: ${COLOR.main} url('/images/todoCheck.svg') no-repeat 50% 70%;
+  }
 `;
 
 const Title = styled.h2`
@@ -160,16 +191,25 @@ const SubTitle = styled.span`
 
 const TagBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  margin: 18px 0 11px;
+  .check {
+    background: ${COLOR.point};
+    border: 1px solid ${COLOR.point};
+  }
 `;
 
-const ItemTag = styled.span`
+const ItemTag = styled.button`
   display: block;
-  padding: 2px 11px;
-  border: 1px solid ${COLOR.placeHolderText};
-  border-radius: 13px;
-  margin-right: 8px;
+  font-family: 'Pretendard';
+  padding: 6px 16px;
+  border: 1px solid ${COLOR.boxBorder};
+  border-radius: 50px;
+  margin: 0 8px 7px 0;
   text-align: start;
   font-size: 14px;
+  cursor: pointer;
+
 `;
 
 const Form = styled.form`
