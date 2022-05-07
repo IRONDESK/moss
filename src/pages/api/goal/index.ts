@@ -6,7 +6,6 @@ import { withApiSession } from 'src/libs/server/withSession';
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { day, time } = req.body;
   const { user } = req.session;
-
   if (req.method === 'GET') {
     const goalData = await client.goal.findUnique({
       where: {
@@ -22,7 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         id: user?.id,
       },
     });
-
+    console.log(goal);
     if (goal) {
       const goalData = await client.goal.update({
         where: {
