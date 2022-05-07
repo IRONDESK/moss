@@ -11,6 +11,7 @@ interface Studygoal {
 }
 export const MyStudyChart = () => {
   const [timeData, setTimedata] = useState(0);
+  const [dayData, setDayData] = useState(0);
   const { data } = useSWR<any>('/api/goal');
   useEffect(() => {
     if (data) {
@@ -20,8 +21,10 @@ export const MyStudyChart = () => {
   function timeSet() {
     if (data?.goalData) {
       setTimedata(data?.goalData?.time);
+      setDayData(data?.goalData?.day);
     } else {
       setTimedata(0);
+      setDayData(0);
     }
   }
   const studiedTime = Math.floor(timeData / 60);
@@ -33,7 +36,7 @@ export const MyStudyChart = () => {
     <MyStudyCharts>
       <GoalDay>
         <p>출석일</p>
-        <p className="content">{data?.goalData?.day}일</p>
+        <p className="content">{dayData}일</p>
         <p>{upData}월 공부시간</p>
         <p className="content">
           {hour}시간{minute}분
