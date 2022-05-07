@@ -5,27 +5,42 @@ import useSWR from 'swr';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { title, studyId } = req.body;
-  
+
   if (req.method === 'GET') {
     const studyTodo = await client.studyTodo.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        study: {
+          select: {
+            studyName: true,
+          }
+        }
+      }
     });
     return res.json({ ok: true, studyTodo });
   }
 
-  if (req.method === 'POST') {
-    const studyTodo = await client.studyTodo.create({
-      data: {
-        title,
-        study: {
-          connect: { id: studyId },
+  if(studyId) {
+    if (req.method === 'POST') {
+      const studyTodo = await client.studyTodo.create({
+        data: {
+          title,
+          study: {
+            connect: { id: studyId },
+          },
         },
-        // user: {
-        //   connect: { id: userid},
-        // }
-      },
-    });
-    return res.json({ ok: true, studyTodo });
+      });
+      return res.json({ ok: true, studyTodo });
+    }
+  } else {
+    if (req.method === 'POST') {
+      const studyTodo = await client.studyTodo.create({
+        data: {
+          title,
+        },
+      });
+      return res.json({ ok: true, studyTodo });
+    }
   }
 }
 

@@ -13,34 +13,34 @@ datasource db {
 
 //Schemas
 model User {
-  id                Int        @id @default(autoincrement())
-  username          String
-  userId            String?    @unique
-  password          String?
-  email             String?    @unique
-  phone             String?    @unique
-  avatar            String?
-  location          String?
-  Token             Token[]
-  Study             Study[]
-  Schedule          Schedule[]
-  StudySchedule     StudySchedule[]
-  Goal              Goal[]
-  Notice            Notice[]
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
+  id            Int             @id @default(autoincrement())
+  username      String
+  userId        String?         @unique
+  password      String?
+  email         String?         @unique
+  phone         String?         @unique
+  avatar        String?
+  location      String?
+  Token         Token[]
+  Study         Study[]
+  Schedule      Schedule[]
+  StudySchedule StudySchedule[]
+  Goal          Goal[]
+  Notice        Notice[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   // StudyTodo StudyTodo[]
 }
 
 model Schedule {
-  id          Int      @id @default(autoincrement())
-  title       String
-  date        String
-  content     String?
-  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String
+  date      String
+  content   String?
+  user      User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
 }
 
@@ -54,65 +54,56 @@ model Token {
 }
 
 model Study {
-  id               Int            @id @default(autoincrement())
-  user             User           @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId           Int
-  studyName        String
-  introduce        String?
-  category         String?
-  tag              String?
-  membersLimit     String?
-  chatLink         String?
-  image            String?
-  joinMsg          String?
-  joinMember       Json?
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  StudySchedule    StudySchedule[]
-  StudyTodo        StudyTodo[]
-  notice           Notice[]
-}
-model StudySchedule {
-  id          Int      @id @default(autoincrement())
-  date        String
-  startTime   String?
-  endTime     String?
-  content     String
-  user        User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
-  UserId      Int
-  study       Study    @relation(fields: [studyId], references: [id], onDelete: Cascade)
-  studyId     Int      
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            Int             @id @default(autoincrement())
+  user          User            @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId        Int
+  studyName     String
+  introduce     String?
+  category      String?
+  tag           String?
+  membersLimit  String?
+  chatLink      String?
+  image         String?
+  joinMsg       String?
+  joinMember    Json?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  StudySchedule StudySchedule[]
+  StudyTodo     StudyTodo[]
+  notice        Notice[]
 }
 
-model Todo {
-  id            Int           @id @default(autoincrement())
-  title         String        @db.VarChar(100)
-  completed     Boolean       @default(false)
-  createdAt     DateTime?     @default(now())
-  updatedAt     DateTime?     @updatedAt
+model StudySchedule {
+  id        Int      @id @default(autoincrement())
+  date      String
+  startTime String?
+  endTime   String?
+  content   String
+  user      User     @relation(fields: [UserId], references: [id], onDelete: Cascade)
+  UserId    Int
+  study     Study    @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model StudyTodo {
-  id           Int        @id @default(autoincrement())
-  title        String     @db.VarChar(100)
-  completed    Boolean    @default(false)
-  createdAt    DateTime?  @default(now())
-  updatedAt    DateTime?  @updatedAt
-  study        Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
-  studyId      Int
-  // User      User?     @relation(fields: [userId], references: [id])
-  // userId    Int?
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(100)
+  completed Boolean   @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  study     Study?    @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId   Int?
 }
 
 model Notice {
-  id        Int      @id @default(autoincrement()) 
+  id        Int      @id @default(autoincrement())
   category  String
   title     String
   content   String
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  Int 
+  authorId  Int
   study     Study    @relation(fields: [studyId], references: [id], onDelete: Cascade)
   studyId   Int
   createdAt DateTime @default(now())
@@ -122,7 +113,7 @@ model Notice {
 model Goal {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int 
+  userId    Int
   time      Int
   day       Int
   createdAt DateTime @default(now())

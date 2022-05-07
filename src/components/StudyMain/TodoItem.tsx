@@ -5,26 +5,26 @@ import useMutation from 'src/libs/client/useMutation';
 import { COLOR } from '../../constants';
 import { TodoData } from '../../types/Todo';
 
-interface Todo {
-  title: string,
-  completed: boolean
-}
-
 interface TodoList {
   studyId: number
+  category: string
   todoItem: TodoData
   todoList: TodoData[]
 }
 
-export const TodoItem = ({studyId, todoItem, todoList}: TodoList) => {
+export const TodoItem = ({studyId, todoItem, todoList, category}: TodoList) => {
 
-   const router = useRouter() 
+  const router = useRouter() 
 
   const [del] = useMutation('/api/todo/delTodo');
   const [edit] = useMutation('/api/todo/editTodo');
 
+  // console.log(todoItem)
+
   const [editTodo, setEditTodo] = useState(todoItem.title)
   const [isEdit, setIsEdit] = useState(false)
+
+  // const name = (todoItem.study.studyName).slice(0, 2)
 
   const editRef = useRef<HTMLInputElement>(null)
   
@@ -82,7 +82,9 @@ export const TodoItem = ({studyId, todoItem, todoList}: TodoList) => {
                   autoFocus
                 />
               ) : (
+                <>
                 <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+                </>
               )}
             </TitBox>
             <BtnBox>
@@ -110,8 +112,8 @@ export const TodoItem = ({studyId, todoItem, todoList}: TodoList) => {
               />
             ) : (
               <>
-              <ItemTag>{todoItem.studyId}</ItemTag>
-              <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
+                {todoItem.study && <ItemTag>{(todoItem.study.studyName).slice(0, 2)}</ItemTag>}
+                <ItemTit todoDone={todoItem.completed}>{todoItem.title}</ItemTit>
               </>
             )}
           </TitBox>
