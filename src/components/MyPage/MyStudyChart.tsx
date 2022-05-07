@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import * as d3 from 'd3';
 import { COLOR } from '../../constants';
 import useSWR from 'swr';
+import { useEffect, useState } from 'react';
 interface Studygoal {
   percent: Number;
   attendance: Number;
@@ -9,11 +10,25 @@ interface Studygoal {
   studyhour: number;
 }
 export const MyStudyChart = () => {
+  const [timeData, setTimedata] = useState(0);
   const { data } = useSWR<any>('/api/goal');
-  const studiedTime = Math.floor(data?.goalData?.time / 60);
+  useEffect(() => {
+    if (data) {
+      timeSet();
+    }
+  }, [data]);
+  function timeSet() {
+    if (data?.goalData) {
+      setTimedata(data?.goalData?.time);
+    } else {
+      setTimedata(0);
+    }
+  }
+  const studiedTime = Math.floor(timeData / 60);
   const hour = Math.floor(studiedTime / 60);
   const minute = Math.floor(studiedTime % 60);
   const upData = data?.goalData?.updatedAt.slice(5, 7)[1];
+
   return (
     <MyStudyCharts>
       <GoalDay>
