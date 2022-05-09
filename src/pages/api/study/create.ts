@@ -15,6 +15,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       membersLimit,
       chatLink,
       imageId,
+      memberlist,
+      welcome,
     } = req.body;
 
     const study = await client.study.create({
@@ -26,6 +28,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         membersLimit,
         chatLink,
         image: imageId,
+        memberlist,
+        welcome,
         user: {
           connect: { id: user?.id },
         },
