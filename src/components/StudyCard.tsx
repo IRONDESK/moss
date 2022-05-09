@@ -7,9 +7,8 @@ interface CardProps {
   category: string | null;
   title: string;
   hashtag: string | null;
-  members: string | null;
+  members: JsonValue | string[] | undefined;
   membersLimit: string | null;
-  link: string | null;
   leader?: boolean;
   bgImg?: string;
   studyId?: number;
@@ -21,7 +20,6 @@ export const StudyCard = ({
   hashtag,
   members,
   membersLimit,
-  link,
   leader = false,
   bgImg,
   studyId,
@@ -59,7 +57,7 @@ export const StudyCard = ({
         <Detail>
           <MemberIcon src="/images/login.svg" />
           <Member>
-            {members}/{membersLimit}
+            {members.length}/{membersLimit}
           </Member>
         </Detail>
 
