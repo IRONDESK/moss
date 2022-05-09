@@ -2,29 +2,40 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import client from 'src/libs/server/client';
 import withHandler from 'src/libs/server/withHandler';
 import useSWR from 'swr';
+import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { title, studyId } = req.body;
+  const { user } = req.session;
 
   if (req.method === 'GET') {
     const studyTodo = await client.studyTodo.findMany({
-      orderBy: { createdAt: "desc" },
       include: {
+        user: {
+          select: {
+            id: true,
+          },
+        },
         study: {
           select: {
             studyName: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     return res.json({ ok: true, studyTodo });
   }
 
-  if(studyId) {
+  if (studyId) {
     if (req.method === 'POST') {
       const studyTodo = await client.studyTodo.create({
         data: {
           title,
+          user: {
+            connect: {
+              id: user?.id,
+            },
+          },
           study: {
             connect: { id: studyId },
           },
@@ -37,6 +48,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const studyTodo = await client.studyTodo.create({
         data: {
           title,
+          user: {
+            connect: {
+              id: user?.id,
+            },
+          },
         },
       });
       return res.json({ ok: true, studyTodo });
@@ -44,8 +60,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withHandler({
-  methods: ['POST', 'GET'],
-  handler,
-  isPrivate: false,
-});
+export default withApiSession(
+  withHandler({
+    methods: ['POST', 'GET'],
+    handler,
+    isPrivate: false,
+  }),
+);

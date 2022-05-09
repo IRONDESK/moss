@@ -24,6 +24,7 @@ model User {
   StudySchedule StudySchedule[]
   Goal          Goal[]
   Notice        Notice[]
+  StudyTodo     StudyTodo[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -90,6 +91,7 @@ model StudyTodo {
   updatedAt DateTime? @updatedAt
   study     Study?    @relation(fields: [studyId], references: [id], onDelete: Cascade)
   studyId   Int?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
 }
 
