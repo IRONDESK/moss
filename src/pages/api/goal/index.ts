@@ -11,7 +11,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       where: {
         id: user?.id,
       },
+      select: {
+        id: true,
+        userId: true,
+        time: true,
+        day: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
+    console.log(user?.id);
+    console.log(goalData);
     return res.json({ ok: true, goalData });
   }
 
@@ -20,7 +30,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       where: {
         id: user?.id,
       },
+      select: {
+        id: true,
+        userId: true,
+        time: true,
+        day: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
+    console.log(user?.id);
     console.log(goal);
     if (goal) {
       const goalData = await client.goal.update({
@@ -33,7 +52,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         },
       });
       res.json({ ok: true, goalData });
-    } else {
+    }
+    if (!goal) {
       const goalData = await client.goal.create({
         data: {
           day,
