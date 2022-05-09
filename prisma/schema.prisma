@@ -59,9 +59,9 @@ model Study {
   membersLimit  String?
   chatLink      String?
   image         String?
-  welcome       String?
   memberlist    Json?
   createdAt     DateTime        @default(now())
+  welcome       String?
   updatedAt     DateTime        @updatedAt
   StudySchedule StudySchedule[]
   StudyTodo     StudyTodo[]
@@ -90,6 +90,7 @@ model StudyTodo {
   updatedAt DateTime? @updatedAt
   study     Study?    @relation(fields: [studyId], references: [id], onDelete: Cascade)
   studyId   Int?
+  userId    Int
 }
 
 model Notice {

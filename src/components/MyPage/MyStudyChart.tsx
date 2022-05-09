@@ -30,14 +30,13 @@ export const MyStudyChart = () => {
   const studiedTime = Math.floor(timeData / 60);
   const hour = Math.floor(studiedTime / 60);
   const minute = Math.floor(studiedTime % 60);
-  const upData = data?.goalData?.updatedAt.slice(5, 7)[1];
 
   return (
     <MyStudyCharts>
       <GoalDay>
         <p>출석일</p>
         <p className="content">{dayData}일</p>
-        <p>{upData}월 공부시간</p>
+        <p>공부시간</p>
         <p className="content">
           {hour}시간{minute}분
         </p>
