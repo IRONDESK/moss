@@ -1,27 +1,27 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
 import { COLOR } from '../constants';
+import useMutation from 'src/libs/client/useMutation';
+import { useForm } from 'react-hook-form';
 
 export const SearchInput = () => {
-  const [searchValue, setSearchValue] = useState('');
-  const router = useRouter();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  //Post
+  const [searchAPI, { data, loading }] = useMutation(`/api/search`);
+  console.log(data);
+  //Submit
+  const { register, handleSubmit, reset } = useForm();
+  const onValid = (formData: any) => {
+    reset();
+    searchAPI(formData);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    router.push(`/search?${searchValue}`);
-  };
+  //
   return (
-    <Search onSubmit={handleSubmit}>
+    <Search onSubmit={handleSubmit(onValid)}>
       <label htmlFor="search-input" className="a11y-hidden">
         검색
       </label>
       <input
-        value={searchValue}
-        onChange={handleChange}
+        {...register('search')}
+        name="search"
         className="search-input"
         id="search-input"
         type="search"
@@ -38,7 +38,6 @@ const Search = styled.form`
   position: relative;
   height: 48px;
   width: 290px;
-
   input {
     border: 1px solid ${COLOR.gray};
     width: 100%;

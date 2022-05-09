@@ -5,7 +5,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
 import useUser from 'src/libs/client/useUser';
-
 import {
   Avatar,
   AvatarInput,
@@ -13,7 +12,7 @@ import {
   ImgLabel,
   ProfileImg,
 } from 'src/styles/components';
-import { studyForm, StudyModal } from 'src/types/Study';
+import { studyForm, StudyModal } from 'src/types/study';
 
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
@@ -186,7 +185,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
             <Input
               {...register('joinMember.0')}
               name="joinMember"
-              style={{display: "none"}}
+              style={{ display: 'none' }}
             />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
