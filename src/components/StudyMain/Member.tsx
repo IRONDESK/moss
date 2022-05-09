@@ -13,21 +13,21 @@ export const Member = ({
   leader,
   memberlist,
   memberslimit
- }: props) => {
+  }: props) => {
   return (
     <Container>
       <Title>스터디원</Title>
       <SubTitle>Members</SubTitle>
       <Contents>
         <MemberLength>
-          <strong>{memberlist?.length + 1}</strong>/{memberslimit}
+          <strong>{memberlist?.length}</strong>/{memberslimit}
         </MemberLength>
         <MemberDetail>
             <MemberList id="leader" key="leader">
               <Img src="/images/profile.svg" alt="스터디원 이미지" />
-              <p>{leader?.username}</p>
+              <p>{leader?.userId}</p>
             </MemberList>
-          {memberlist?.map((member: string) => (
+          {memberlist?.slice(1).map((member: string) => (
             <MemberList key={member}>
               <Img src="/images/profile.svg" alt="스터디원 이미지" />
               <p>{member}</p>

@@ -27,7 +27,6 @@ export const StudyComponents = () => {
     }
   }, [data]);
 
-  //
   return (
     <>
       {myStudy ? (
@@ -36,7 +35,7 @@ export const StudyComponents = () => {
           <Notice studyId={data?.study?.id} />
           <Member
               leader={data?.study?.user}
-              memberlist={data?.study?.joinMember}
+              memberlist={data?.study?.memberlist}
               memberslimit={data?.study?.membersLimit}
           />
           <StudyCalendarWrap />
@@ -55,7 +54,7 @@ export const StudyComponents = () => {
               <Notice studyId={data?.study?.id}/>
               <Member
                 leader={data?.study?.user}
-                memberlist={data?.study?.joinMember}
+                memberlist={data?.study?.memberlist}
                 memberslimit={data?.study?.membersLimit}
               />
             </Container>
