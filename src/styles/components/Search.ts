@@ -1,40 +1,31 @@
 import styled from '@emotion/styled';
-import { COLOR } from '../constants';
-import useMutation from 'src/libs/client/useMutation';
-import { useForm } from 'react-hook-form';
+import { COLOR } from 'src/constants';
 
-export const SearchInput = () => {
-  //Post
-  const [searchAPI, { data, loading }] = useMutation(`/api/search`);
-  console.log(data);
-  //Submit
-  const { register, handleSubmit, reset } = useForm();
-  const onValid = (formData: any) => {
-    reset();
-    searchAPI(formData);
-  };
-  //
-  return (
-    <Search onSubmit={handleSubmit(onValid)}>
-      <label htmlFor="search-input" className="a11y-hidden">
-        검색
-      </label>
-      <input
-        {...register('search')}
-        name="search"
-        className="search-input"
-        id="search-input"
-        type="search"
-        placeholder="검색어를 입력하세요"
-      />
-      <button type="submit">
-        <span className="a11y-hidden">검색</span>
-      </button>
-    </Search>
-  );
-};
+export const Wrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 
-const Search = styled.form`
+  h2 {
+    font-size: 24px;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 0.9em;
+      margin-right: 4px;
+      background-color: ${COLOR.main};
+      vertical-align: -0.1em;
+    }
+  }
+  @media (max-width: 440px) {
+    h2 {
+      width: 100%;
+    }
+  }
+`;
+export const SearchForm = styled.form`
   position: relative;
   height: 48px;
   width: 290px;
