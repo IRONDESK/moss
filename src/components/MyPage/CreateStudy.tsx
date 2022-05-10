@@ -12,7 +12,7 @@ import {
   ImgLabel,
   ProfileImg,
 } from 'src/styles/components';
-import { studyForm, StudyModal } from 'src/types/study';
+import { studyForm, StudyModal } from '../../types/study';
 
 export const CreateStudy = ({ modal, setModal }: StudyModal) => {
   const router = useRouter();
@@ -35,8 +35,8 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
     membersLimit,
     chatLink,
     image,
-    joinMsg,
-    joinMember,
+    welcome,
+    memberlist,
   }) => {
     if (loading) return;
     //스터디 사진 업로드 + 스터디생성
@@ -62,9 +62,9 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         tag,
         membersLimit,
         chatLink,
-        joinMsg,
         imageId: id,
-        joinMember,
+        welcome,
+        memberlist,
       });
     } else {
       //사진업로드 없이 스터디생성
@@ -77,8 +77,8 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
         tag,
         membersLimit,
         chatLink,
-        joinMsg,
-        joinMember,
+        welcome,
+        memberlist,
       });
     }
   };
@@ -166,7 +166,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
 
             <Label htmlFor="study-members">스터디 인원</Label>
             <Input
-              {...register('membersLimit')}
+              {...register('membersLimit', { min: 3 })}
               name="membersLimit"
               id="study-members"
               type="number"
@@ -182,14 +182,10 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
             />
-            <Input
-              {...register('joinMember.0')}
-              name="joinMember"
-              style={{ display: 'none' }}
-            />
+            <Input {...register('memberlist.0')} className="a11y-hidden" />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
-            <Select {...register('joinMsg')} name="joinMsg" id="study-joinmsg">
+            <Select {...register('welcome')} id="study-joinmsg">
               <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
               <option value="Welcome😃">Welcome😃</option>
               <option value="반갑습니다🥰">반갑습니다🥰</option>

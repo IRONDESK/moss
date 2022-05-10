@@ -26,7 +26,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           id: studyinfo.id,
         },
         data: {
-          joinMember: memberList,
+          memberlist: memberList,
         },
       });
       res.json({ ok: true, updated });

@@ -9,7 +9,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     where: {
       id: +id.toString(),
     },
-    include: { user: { select: { id: true, username: true } } },
+    include: { user: { select: { id: true, userId: true } } },
   });
 
   return res.json({ ok: true, study });

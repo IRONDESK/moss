@@ -24,8 +24,6 @@ export const ApplyStudyModal = ({
   const [studyset] = useMutation('/api/study/apply');
   const { isLoggedIn, loggedInUser } = useUser();
 
-  console.log("여기", data)
-
   const applyStudy = (
     memberlist: string[],
     userid: string | null | undefined,

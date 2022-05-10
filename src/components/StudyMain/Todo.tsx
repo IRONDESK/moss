@@ -13,13 +13,11 @@ import useUser from 'src/libs/client/useUser';
 export const TodoList = ({ studyId }: number | any) => {
   const router = useRouter();
 
-  // const { loggedInUser } = useUser();
+  const { loggedInUser } = useUser();
 
   const [item] = useMutation('/api/todo');
 
   const { data, mutate } = useSWR('/api/todo');
-
-  // console.log(data)
 
   const [todoList, setTodoList] = useState<TodoData[]>([
     {
@@ -30,29 +28,34 @@ export const TodoList = ({ studyId }: number | any) => {
       updatedAt: '',
       studyId: 0,
       study: {
-        studyName: "",
-      }
+        studyName: '',
+      },
+      user: {
+        id: 0,
+      },
     },
   ]);
 
-  const arr: any[] = []
+  const arr: any[] = [];
 
-  data?.studyTodo?.map((v: TodoData) =>{
-    if(v.study) arr.push(v.study.studyName)
-  })
+  data?.studyTodo?.map((v: TodoData) => {
+    if (v.user.id === loggedInUser?.id) {
+      if (v.study) arr.push(v.study.studyName);
+    }
+  });
 
-  const studyNameTagSet = new Set(arr)
-  const studyNameTag = [Array.from(studyNameTagSet)]
+  const studyNameTagSet = new Set(arr);
+  const studyNameTag = [Array.from(studyNameTagSet)];
 
   const [todo, setTodo] = useState('');
   const [isTodo, setIsTodo] = useState(false);
 
-  const [category, setCategory] = useState("ALL");
+  const [category, setCategory] = useState('ALL');
 
   const onClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
-    setCategory((e.target as HTMLButtonElement).name)
-  }
+    e.preventDefault();
+    setCategory((e.target as HTMLButtonElement).name);
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
@@ -65,7 +68,7 @@ export const TodoList = ({ studyId }: number | any) => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(studyId) createTodo({ title: todo, studyId: studyId });
+    if (studyId) createTodo({ title: todo, studyId: studyId });
     else createTodo({ title: todo });
     setTodo('');
     setIsTodo(false);
@@ -83,7 +86,13 @@ export const TodoList = ({ studyId }: number | any) => {
         <SubTitle>Todo List</SubTitle>
         {!studyId && (
           <TagBox>
-            <ItemTag onClick={onClick} name="ALL" className={`${category === "ALL" && "check"}`}>ALL</ItemTag>
+            <ItemTag
+              onClick={onClick}
+              name="ALL"
+              className={`${category === 'ALL' && 'check'}`}
+            >
+              ALL
+            </ItemTag>
             {studyNameTag[0].map((studyName, i) => {
               return (
                 // <button>{studyName.slice(0, 2)}</button>
@@ -91,9 +100,11 @@ export const TodoList = ({ studyId }: number | any) => {
                   onClick={onClick}
                   name={studyName}
                   key={i}
-                  className={`${category === `${studyName}` && "check"}`}
-                >{studyName}</ItemTag>
-              )
+                  className={`${category === `${studyName}` && 'check'}`}
+                >
+                  {studyName}
+                </ItemTag>
+              );
             })}
           </TagBox>
         )}
@@ -103,23 +114,28 @@ export const TodoList = ({ studyId }: number | any) => {
               {data?.studyTodo?.map((todoItem: TodoData, index: number) => {
                 return (
                   <div key={todoItem.id}>
-                    {category === 'ALL' && (
-                      <TodoItem
-                        // key={todoItem.id}
-                        studyId={studyId}
-                        todoItem={todoItem}
-                        todoList={data?.studyTodo}
-                        category={category}
-                      />
-                    )}
-                    {todoItem.study && category === todoItem.study.studyName && (
-                      <TodoItem
-                        // key={todoItem.id}
-                        studyId={studyId}
-                        todoItem={todoItem}
-                        todoList={data?.studyTodo}
-                        category={category}
-                      />
+                    {loggedInUser?.id === todoItem?.user?.id && (
+                      <>
+                        {category === 'ALL' && (
+                          <TodoItem
+                            // key={todoItem.id}
+                            studyId={studyId}
+                            todoItem={todoItem}
+                            todoList={data?.studyTodo}
+                            category={category}
+                          />
+                        )}
+                        {todoItem.study &&
+                          category === todoItem.study.studyName && (
+                            <TodoItem
+                              // key={todoItem.id}
+                              studyId={studyId}
+                              todoItem={todoItem}
+                              todoList={data?.studyTodo}
+                              category={category}
+                            />
+                          )}
+                      </>
                     )}
                   </div>
                 );
@@ -209,7 +225,6 @@ const ItemTag = styled.button`
   text-align: start;
   font-size: 14px;
   cursor: pointer;
-
 `;
 
 const Form = styled.form`

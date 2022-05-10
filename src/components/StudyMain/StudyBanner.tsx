@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COLOR } from '../../constants';
 import { ApplyStudyModal } from './ApplyStudyModal';
 import useSWR from 'swr';
@@ -18,6 +18,13 @@ export const StudyBanner = () => {
 
   const [modal, setModal] = useState(false);
   const openModal = () => setModal((prev) => !prev);
+
+  const [userCheck, setUserCheck] = useState<boolean>(false);
+  useEffect(() => {
+    if (data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 || loggedInUser?.userId == data?.study?.user?.userId) {
+      setUserCheck(true);
+    }
+  }, [data?.study?.memberlist])
 
   return (
     <Banner>
@@ -38,19 +45,19 @@ export const StudyBanner = () => {
           </StudyDetail>
           <Join>
             <Member>
-              {data ? data?.study?.joinMember?.length + 1 : 0} / {data?.study?.membersLimit}
+              {data?.study?.memberlist?.length} / {data?.study?.membersLimit}
             </Member>
             {data ? (
-            data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1 ? (
+            userCheck ? (
               <StudyBtn
-                joincheck={data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1}
+                joincheck={userCheck}
                 href={String(data?.study?.chatLink)}
               >
-                오픈채팅 참여하기
+                오픈 채팅 참여하기
               </StudyBtn>
             ) : (
               <StudyBtn
-                joincheck={data?.study?.joinMember?.indexOf(loggedInUser?.userId) !== -1}
+                joincheck={userCheck}
                 onClick={openModal}
               >
                 스터디 신청하기
@@ -65,8 +72,8 @@ export const StudyBanner = () => {
         modal={modal}
         setModal={setModal}
         studyid={StudyId}
-        joinMsg={data?.study?.joinMsg}
-        joinMember={data?.study?.joinMember}
+        joinMsg={data?.study?.welcome}
+        joinMember={data?.study?.memberlist}
       />
     </Banner>
   );

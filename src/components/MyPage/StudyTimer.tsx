@@ -32,8 +32,8 @@ export const StudyTimer = ({
   const [startTime, setStartTime] = useState<string | undefined>();
   const targetTime = goalMinute * 60 + goalHour * 60 * 60;
   const { data } = useSWR<any>('/api/goal');
-  const [studyTime, setStudyTime] = useState(0);
-  const [attandenceDay, setAttandenceDay] = useState(0);
+  let [attandenceDay, setAttandenceDay] = useState(0);
+  let [studyTime, setStudyTime] = useState(0);
 
   useEffect(() => {
     setRemainTime({
@@ -75,11 +75,10 @@ export const StudyTimer = ({
 
   function attandence() {
     if (data?.goalData) {
-      let attandenceDay = data?.goalData?.day;
-      setAttandenceDay(attandenceDay + 1);
+      setAttandenceDay((attandenceDay = data?.goalData?.day + 1));
       alert('출석하셨습니다! 오늘도화이팅!!');
     } else {
-      setAttandenceDay(attandenceDay + 1);
+      setAttandenceDay(+1);
       alert('출석하셨습니다! 오늘도화이팅!!');
     }
   }
@@ -92,8 +91,9 @@ export const StudyTimer = ({
         (percent = Math.floor((1 - remainTime.time / targetTime) * 100)),
       );
       if (data?.goalData) {
-        let studyTime = data?.goalData?.time;
-        setStudyTime(studyTime + (targetTime - remainTime.time));
+        setStudyTime(
+          (studyTime = data?.goalData?.time + (targetTime - remainTime.time)),
+        );
       } else {
         setStudyTime(targetTime - remainTime.time);
       }

@@ -21,11 +21,11 @@ export interface studyForm {
   tag?: string;
   membersLimit?: number;
   chatLink: string;
-  joinMsg?: string;
+  welcome?: string;
   image?: FileList;
   studyImage?: FileList;
   avatar?: FileList;
-  joinMember: string[];
+  memberlist: string[];
 }
 export interface IStudyResponse {
   ok: boolean;
