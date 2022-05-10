@@ -22,7 +22,7 @@ import {
   IScheduleForm,
   IScheduleModal,
   IScheduleRes,
-} from 'src/types/Schedule';
+} from 'src/types/schedule';
 
 import useSWR from 'swr';
 

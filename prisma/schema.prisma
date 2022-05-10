@@ -95,7 +95,7 @@ model StudyTodo {
   study     Study?    @relation(fields: [studyId], references: [id], onDelete: Cascade)
   studyId   Int?
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    Int       
 }
 
 model Notice {
