@@ -11,7 +11,7 @@ interface NoticeData {
 }
 
 const PostEditor = (props: any) => {
-  const editorRef = React.createRef();
+  const editorRef = React.createRef<any>();
   const router = useRouter();
   const url = router.pathname;
   const { id } = router.query;

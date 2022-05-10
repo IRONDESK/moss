@@ -5,7 +5,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useMutation from 'src/libs/client/useMutation';
 import { useRouter } from 'next/router';
 import useUser from 'src/libs/client/useUser';
-
 import {
   Avatar,
   AvatarInput,
@@ -167,7 +166,7 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
 
             <Label htmlFor="study-members">스터디 인원</Label>
             <Input
-              {...register("membersLimit", {min : 3})}
+              {...register('membersLimit', { min: 3 })}
               name="membersLimit"
               id="study-members"
               type="number"
@@ -177,19 +176,16 @@ export const CreateStudy = ({ modal, setModal }: StudyModal) => {
 
             <Label htmlFor="study-chatlink">카카오톡 오픈채팅 링크</Label>
             <Input
-              {...register("chatLink")}
+              {...register('chatLink')}
               name="chatLink"
               id="study-chatlink"
               type="text"
               placeholder="오픈 채팅 URL을 넣어주세요"
             />
-            <Input
-              {...register("memberlist.0")}
-              className="a11y-hidden"
-            />
+            <Input {...register('memberlist.0')} className="a11y-hidden" />
 
             <Label htmlFor="study-joinmsg">가입 인사</Label>
-            <Select {...register("welcome")} id="study-joinmsg">
+            <Select {...register('welcome')} id="study-joinmsg">
               <option value="가입을 환영합니다🤚">가입을 환영합니다🤚</option>
               <option value="Welcome😃">Welcome😃</option>
               <option value="반갑습니다🥰">반갑습니다🥰</option>

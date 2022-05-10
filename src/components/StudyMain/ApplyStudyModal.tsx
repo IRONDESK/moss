@@ -10,7 +10,7 @@ interface IModal {
   setModal: Function;
   joinMsg?: string | null;
   studyid: number;
-  joinMember: JsonValue|string[]|undefined;
+  joinMember: any | string[] | undefined; //JsonValue 에러발생
 }
 
 export const ApplyStudyModal = ({

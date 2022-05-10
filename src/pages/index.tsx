@@ -1,8 +1,7 @@
 import type { NextPage } from 'next';
 import { Banner } from '../components/Banner';
-import { TitleSearch } from '../components/TitleSearch';
-import { StudyList } from 'src/components/StudyList';
 import { Backgroud } from 'src/components/StyleComponents';
+import { TitleSearch } from 'src/components/Search/TitleSearch';
 
 const Home: NextPage = () => {
   return (
@@ -10,7 +9,6 @@ const Home: NextPage = () => {
       <Backgroud />
       <Banner />
       <TitleSearch />
-      <StudyList />
     </>
   );
 };

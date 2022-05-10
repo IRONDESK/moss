@@ -21,10 +21,13 @@ export const StudyBanner = () => {
 
   const [userCheck, setUserCheck] = useState<boolean>(false);
   useEffect(() => {
-    if (data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 || loggedInUser?.userId == data?.study?.user?.userId) {
+    if (
+      data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 ||
+      loggedInUser?.userId == data?.study?.user?.userId
+    ) {
       setUserCheck(true);
     }
-  }, [data?.study?.memberlist])
+  }, [data?.study?.memberlist]);
 
   return (
     <Banner>
@@ -48,23 +51,21 @@ export const StudyBanner = () => {
               {data?.study?.memberlist?.length} / {data?.study?.membersLimit}
             </Member>
             {data ? (
-            userCheck ? (
-              <StudyBtn
-                joincheck={userCheck}
-                href={String(data?.study?.chatLink)}
-              >
-                오픈 채팅 참여하기
-              </StudyBtn>
+              userCheck ? (
+                <StudyBtn
+                  joincheck={userCheck}
+                  href={String(data?.study?.chatLink)}
+                >
+                  오픈 채팅 참여하기
+                </StudyBtn>
+              ) : (
+                <StudyBtn joincheck={userCheck} onClick={openModal}>
+                  스터디 신청하기
+                </StudyBtn>
+              )
             ) : (
-              <StudyBtn
-                joincheck={userCheck}
-                onClick={openModal}
-              >
-                스터디 신청하기
-              </StudyBtn>
-            ) )
-            : ""
-            }
+              ''
+            )}
           </Join>
         </StudyDescription>
       </StudyIntro>
