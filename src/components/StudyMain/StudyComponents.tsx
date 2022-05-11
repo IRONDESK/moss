@@ -15,21 +15,18 @@ export const StudyComponents = () => {
   const { studyId } = router.query;
   const { data } = useSWR<IStudyResponse>(`/api/study/${studyId}`);
 
-  //내가 만든 스터디 이거나 (===loggedInUser의 고유id와 study안의 user의 고유id가 일치!)
-  // 또는 신청한 스터디이면 UI표시 (joinMember는 후작업)
+  const { isLoggedIn, loggedInUser } = useUser();
 
-  //1. 내가 만든 스터디인 경우
-  const [myStudy, setMyStudy] = useState(false);
-  const { loggedInUser } = useUser();
+  const [userCheck, setUserCheck] = useState<boolean>(false);
   useEffect(() => {
-    if (loggedInUser?.id === data?.study?.user?.id) {
-      setMyStudy(true);
+    if (data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 || loggedInUser?.userId == data?.study?.user?.userId) {
+      setUserCheck(true);
     }
-  }, [data]);
+  }, [data?.study?.memberlist])
 
   return (
     <>
-      {myStudy ? (
+      {userCheck ? (
         <Container>
           <TodoList studyId={data?.study?.id} />
           <Notice studyId={data?.study?.id} />

@@ -29,9 +29,8 @@ export const StudyList = () => {
             category={studyInfo.category}
             title={studyInfo.studyName}
             hashtag={studyInfo.tag}
-            members={studyInfo.membersLimit}
+            members={studyInfo.memberlist}
             membersLimit={studyInfo.membersLimit}
-            link={studyInfo.chatLink}
             leader={Boolean(data?.ok)}
           />
         ))}
