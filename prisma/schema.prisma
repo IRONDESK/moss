@@ -38,6 +38,8 @@ model Schedule {
   UserId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([UserId])
 }
 
 model Token {
@@ -47,6 +49,8 @@ model Token {
   UserId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([UserId])
 }
 
 model Study {
@@ -70,6 +74,8 @@ model Study {
 
   @@fulltext([studyName])
   @@fulltext([studyName, category]) //검색 api
+
+  @@index([UserId])
 }
 
 model StudySchedule {
@@ -84,6 +90,9 @@ model StudySchedule {
   studyId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([UserId])
+  @@index([studyId])
 }
 
 model StudyTodo {
@@ -92,10 +101,13 @@ model StudyTodo {
   completed Boolean   @default(false)
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int      
   study     Study?    @relation(fields: [studyId], references: [id], onDelete: Cascade)
   studyId   Int?
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int       
+
+  @@index([userId])
+  @@index([studyId])
 }
 
 model Notice {
@@ -109,6 +121,9 @@ model Notice {
   studyId   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([studyId])
 }
 
 model Goal {
@@ -119,4 +134,6 @@ model Goal {
   day       Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }

@@ -7,7 +7,8 @@ interface CardProps {
   category: string | null;
   title: string;
   hashtag: string | null;
-  members: JsonValue | string[] | undefined;
+  // members: JsonValue | string[] | undefined;
+  members: any | string[] | undefined;
   membersLimit: string | null;
   leader?: boolean;
   bgImg?: string;
