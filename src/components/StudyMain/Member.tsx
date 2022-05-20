@@ -9,11 +9,7 @@ interface props {
   memberslimit: string | null | undefined;
 }
 
-export const Member = ({
-  leader,
-  memberlist,
-  memberslimit
-  }: props) => {
+export const Member = ({ leader, memberlist, memberslimit }: props) => {
   return (
     <Container>
       <Title>스터디원</Title>
@@ -23,10 +19,10 @@ export const Member = ({
           <strong>{memberlist?.length}</strong>/{memberslimit}
         </MemberLength>
         <MemberDetail>
-            <MemberList id="leader" key="leader">
-              <Img src="/images/profile.svg" alt="스터디원 이미지" />
-              <p>{leader?.userId}</p>
-            </MemberList>
+          <MemberList id="leader" key="leader">
+            <Img src="/images/profile.svg" alt="스터디원 이미지" />
+            <p>{leader?.userId}</p>
+          </MemberList>
           {memberlist?.slice(1).map((member: string) => (
             <MemberList key={member}>
               <Img src="/images/profile.svg" alt="스터디원 이미지" />
@@ -41,7 +37,7 @@ export const Member = ({
 
 const Container = styled.section`
   position: relative;
-  padding: 48px 24px 16px;
+  padding: 48px 24px 30px;
   min-height: 250px;
   border: 1px solid ${COLOR.boxBorder};
   &::after {
@@ -115,10 +111,10 @@ const MemberDetail = styled.ul`
   gap: 32px;
   @media (max-width: 1024px) {
     justify-content: space-evenly;
-  } ;
+  }
   & #leader {
     position: relative;
-      &::after {
+    &::after {
       content: '';
       position: absolute;
       display: block;
@@ -132,7 +128,6 @@ const MemberDetail = styled.ul`
       background-size: 20px;
       background-color: ${COLOR.main};
       border-radius: 100%;
-      
     }
   }
 `;
