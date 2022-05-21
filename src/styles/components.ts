@@ -47,7 +47,7 @@ export const H1 = styled.h1`
   border-bottom: 4px solid ${COLOR.main};
   position: relative;
   span {
-    width: 700px;
+    width: 350px;
     position: absolute;
     bottom: 16px;
     text-align: center;
@@ -102,8 +102,9 @@ export const InputWrap = styled.div`
 
 export const DefaultCont = styled.section`
   padding: 10px;
-  margin: 100px auto;
-  width: 400px;
+  margin: 100px auto 0;
+  max-width: 400px;
+  min-width: 300px;
   text-align: center;
   select,
   form {

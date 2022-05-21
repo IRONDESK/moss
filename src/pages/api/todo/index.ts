@@ -43,7 +43,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return res.json({ ok: true, studyTodo });
     }
-  } else {
+  }
+  if (!studyId) {
     if (req.method === 'POST') {
       const studyTodo = await client.studyTodo.create({
         data: {

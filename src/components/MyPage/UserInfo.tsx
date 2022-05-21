@@ -25,16 +25,28 @@ const UserInfos = styled.section`
   justify-content: center;
   gap: 20px;
   margin-bottom: 37px;
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+  }
   .title {
     font-size: 40px;
     line-height: 50px;
     font-weight: 700;
     color: #fff;
+    @media (max-width: 640px) {
+      font-size: 25px;
+    }
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
   .user-name {
     font-size: 40px;
     line-height: 50px;
     color: #fff;
+    @media (max-width: 640px) {
+      font-size: 25px;
+    }
   }
 `;
 

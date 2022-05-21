@@ -151,6 +151,9 @@ export const Container = styled.div`
   padding: 40px;
   grid-column-start: 1;
   grid-column-end: 3;
+  @media (max-width: 640px) {
+    padding: 40px 20px;
+  }
 
   & > div:first-of-type {
     padding-right: 24px;
@@ -177,6 +180,9 @@ export const StudyListWrap = styled.div`
     span {
       font-size: 16px;
       color: ${COLOR.grayText};
+      @media (max-width: 640px) {
+        display: block;
+      }
     }
   }
   .btn {
@@ -222,14 +228,21 @@ export const Wrap = styled.div`
   .content {
     width: 80%;
     text-align: center;
+    padding: 0 10px;
   }
 `;
 export const SecondWrap = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
   .time {
     width: 100px;
+    @media (max-width: 640px) {
+      display: none;
+    }
   }
 `;
 export const BtnWrap = styled.div`
@@ -238,6 +251,9 @@ export const BtnWrap = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 export const EditBtn = styled.input`
   background-color: white;
