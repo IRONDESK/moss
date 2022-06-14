@@ -4,7 +4,13 @@ import withHandler from 'src/libs/server/withHandler';
 import { withApiSession } from 'src/libs/server/withSession';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const totalStudies = await client.study.findMany();
+  const totalStudies = await client.study.findMany({
+    orderBy: [
+      {
+        createdAt: 'desc',
+      },
+    ],
+  });
   if (!totalStudies) {
     return res.json({ ok: false, message: '존재하는 스터디가 없습니다!' });
   }
