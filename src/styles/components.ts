@@ -42,6 +42,7 @@ export const H1 = styled.h1`
   display: flex;
   justify-content: center;
   width: 60px;
+  font-family: 'Gmarket Sans';
   font-size: 25px;
   margin: 10px auto 32px;
   border-bottom: 4px solid ${COLOR.main};
