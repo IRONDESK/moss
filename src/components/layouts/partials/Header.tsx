@@ -64,6 +64,7 @@ const HeaderCont = styled.header`
       align-items: center;
       gap: 10px;
       strong {
+        font-family: 'Gmarket Sans';
         font-weight: 400;
       }
     }
@@ -91,6 +92,7 @@ const HeaderCont = styled.header`
       align-items: center;
       justify-content: center;
       gap: 4px;
+      font-family: 'Gmarket Sans';
       font-size: 14px;
       line-height: 14px;
       transition: all 0.2s;

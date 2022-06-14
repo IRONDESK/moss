@@ -34,6 +34,7 @@ const BannerPage = styled.section`
   align-items: center;
   text-align: center;
   padding: 100px 0;
+  font-family: 'Gmarket Sans';
   h2 {
     margin-bottom: 24px;
     color: ${COLOR.main};

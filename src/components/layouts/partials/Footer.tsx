@@ -54,6 +54,7 @@ export const Footer = () => {
 const FooterCont = styled.footer`
   position: relative;
   margin-top: 100px;
+  font-family: 'Pretendard';
   border-top: 1px solid #ddd;
   section {
     display: flex;
@@ -67,6 +68,9 @@ const FooterCont = styled.footer`
       .copyright {
         font-style: italic;
         margin-bottom: 10px;
+        @media (max-width: 640px) {
+          margin: unset;
+        }
       }
     }
   }
@@ -83,9 +87,10 @@ const Credit = styled.ul`
     }
   }
   @media (max-width: 640px) {
-    display: grid;
+    display: none;
+    /* display: grid;
     grid: repeat(2, 20px) / auto-flow 45px;
-    width: calc(100% / 2.3);
+    width: calc(100% / 2.3); */
   }
 `;
 const Slash = styled.span`

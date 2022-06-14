@@ -51,8 +51,8 @@ export const StudyChart = ({ width, height, data }: ChartProps) => {
             </linearGradient>
           </g>
         </ChartSvg>
-        <ChartDot src="/images/ChartDot.svg" />
-        <GaugeDot src="/images/GaugeDot.svg" />
+        <ChartDot src="/images/chartDot.svg" />
+        <GaugeDot src="/images/gaugeDot.svg" />
         <PercentText>
           {data}
           <small>%</small>

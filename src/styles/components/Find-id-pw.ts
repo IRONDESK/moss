@@ -48,24 +48,41 @@ export const FoundResultModal = styled(Modal)`
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-size: 20px;
+  font-family: 'Gmarket Sans';
+  .btn-wrap {
+    display: flex;
+    gap: 20px;
+  }
   .btn {
-    color: white;
-    font-size: inherit;
-    padding: 10px 20px;
-    width: 50%;
-    border: none;
-    border-radius: 10px;
-    background-color: ${COLOR.main};
+    cursor: pointer;
+    background-color: #fff;
+    padding: 9px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-family: 'Gmarket Sans';
+    font-size: 14px;
+    line-height: 14px;
+    transition: all 0.2s;
+    border: 1px solid #e7e6e2;
     &:hover {
-      color: #27ae60;
+      background: #eee;
     }
   }
   a {
-    text-decoration: underline;
-    font-style: italic;
+    padding: 9px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${COLOR.main};
+    font-size: 14px;
+    line-height: 14px;
+    transition: all 0.2s;
+    border: 1px solid ${COLOR.main};
     &:hover {
-      color: ${COLOR.main};
+      background: ${COLOR.main};
+      color: #fff;
     }
   }
 `;

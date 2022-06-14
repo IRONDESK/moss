@@ -34,19 +34,23 @@ export const MyStudyChart = () => {
   return (
     <MyStudyCharts>
       <GoalDay>
-        <p>출석일</p>
-        <p className="content">{dayData}일</p>
-        <p>공부시간</p>
-        <p className="content">
-          {hour}시간{minute}분
-        </p>
+        <div className="flex">
+          <p>출석일</p>
+          <p className="content">{dayData}일</p>
+        </div>
+        <div className="flex">
+          <p>공부시간</p>
+          <p className="content">
+            {hour}시간{minute}분
+          </p>
+        </div>
       </GoalDay>
     </MyStudyCharts>
   );
 };
 
 const MyStudyCharts = styled.section`
-  width: 50vw;
+  /* width: 50vw; */
   color: #fff;
 `;
 
@@ -55,9 +59,26 @@ const GoalDay = styled.section`
   margin-top: 30px;
   align-items: center;
   margin-bottom: 43px;
+  width: max-content;
+  @media (max-width: 640px) {
+    gap: 50px;
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+    @media (max-width: 640px) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
   .content {
     font-size: 32px;
     margin: 0 24px 0 17px;
     vertical-align: top;
+    @media (max-width: 640px) {
+      margin: unset;
+      font-size: 25px;
+    }
   }
 `;

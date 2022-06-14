@@ -17,16 +17,11 @@ export const StudyComponents = () => {
 
   const { isLoggedIn, loggedInUser } = useUser();
 
-  const [userCheck, setUserCheck] = useState<boolean>(false);
-  useEffect(() => {
-    if (data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 || loggedInUser?.userId == data?.study?.user?.userId) {
-      setUserCheck(true);
-    }
-  }, [data?.study?.memberlist])
-
   return (
     <>
-      {userCheck ? (
+      { ( data?.study?.memberlist?.indexOf(loggedInUser?.userId) !== -1 ||
+          loggedInUser?.userId == data?.study?.user?.userId
+              )  ? (
         <Container>
           <TodoList studyId={data?.study?.id} />
           <Notice studyId={data?.study?.id} />
