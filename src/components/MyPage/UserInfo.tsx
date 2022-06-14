@@ -25,6 +25,7 @@ const UserInfos = styled.section`
   justify-content: center;
   gap: 20px;
   margin-bottom: 37px;
+  font-family: 'Gmarket Sans';
   @media (max-width: 480px) {
     flex-wrap: wrap;
   }

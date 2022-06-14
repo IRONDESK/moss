@@ -64,7 +64,7 @@ export const FindForm = ({
             <p>아이디찾기 페이지로 이동하시겠습니까?</p>
             <div>
               <Link href="/login/find_id">
-                <a className="move">이동하기</a>
+                <a className="move">이동</a>
               </Link>
               <button onClick={() => window.location.reload()}>취소</button>
             </div>

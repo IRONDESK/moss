@@ -134,7 +134,8 @@ const LeaderTag = styled.div<{ default: boolean }>`
 const Title = styled.h3`
   position: absolute;
   bottom: calc(14px + 1rem);
-  font-size: 1.4rem;
+  font-family: 'Gmarket Sans';
+  font-size: 1.36rem;
   font-weight: 700;
   color: #fff;
 `;
@@ -163,6 +164,7 @@ const MemberIcon = styled.img`
 `;
 const Member = styled.span`
   padding-top: 6px;
+  font-family: 'Pretendard';
   font-size: 0.9rem;
 `;
 const StudyBtn = styled.a`

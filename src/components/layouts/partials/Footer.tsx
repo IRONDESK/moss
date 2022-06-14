@@ -54,6 +54,7 @@ export const Footer = () => {
 const FooterCont = styled.footer`
   position: relative;
   margin-top: 100px;
+  font-family: 'Pretendard';
   border-top: 1px solid #ddd;
   section {
     display: flex;

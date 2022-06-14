@@ -6,15 +6,17 @@ export const FindModal = ({ message, modalClick }: any) => {
     <>
       <FoundResultModal>
         <p>{message}</p>
-        <input
-          className="btn"
-          type="button"
-          value="확인"
-          onClick={modalClick}
-        />
-        <Link href="/login">
-          <a>로그인 페이지로 이동 &rarr;</a>
-        </Link>
+        <article className="btn-wrap">
+          <input
+            className="btn"
+            type="button"
+            value="닫기"
+            onClick={modalClick}
+          />
+          <Link href="/login">
+            <a>로그인 화면으로</a>
+          </Link>
+        </article>
       </FoundResultModal>
       <Dim onClick={modalClick} />
     </>

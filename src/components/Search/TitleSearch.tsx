@@ -30,7 +30,7 @@ export const TitleSearch = () => {
   return (
     <>
       <Wrap>
-        <h2>공개 스터디</h2>
+        <MainTitle>최근 개설된 스터디</MainTitle>
         <SearchForm onSubmit={handleSubmit(onValid)}>
           <label htmlFor="search-input" className="a11y-hidden">
             검색
@@ -61,6 +61,10 @@ export const TitleSearch = () => {
     </>
   );
 };
+
+const MainTitle = styled.h2`
+  font-family: 'Gmarket Sans';
+`;
 
 export const NoSearchResult = styled.div`
   text-align: center;
